@@ -5,6 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Khu Vực Nội Bộ Chi Bộ - Cổng Thông Tin TDP Lương Hậu</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://docs.google.com">
+  <link rel="dns-prefetch" href="https://drive.google.com">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     // ==================== TỰ ĐỘNG ĐỒNG BỘ TIN TỨC TỪ GOOGLE SHEETS ====================
@@ -84,7 +89,8 @@
 
             let imgHtml = "";
             if (fileId) {
-              imgHtml = '<div class="w-full bg-slate-900/5 relative overflow-hidden rounded-xl mb-2.5 border border-red-100 flex items-center justify-center p-1"><img src="https://drive.google.com/thumbnail?id=' + fileId + '&sz=w1200" alt="' + title + '" class="w-full h-auto max-h-[520px] object-contain rounded-lg shadow-sm" loading="lazy" onerror="this.src=\'https://lh3.googleusercontent.com/d/' + fileId + '\'"></div>';
+              const imgThumbUrl = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w1200";
+              imgHtml = '<div class="w-full bg-slate-900/5 relative overflow-hidden rounded-xl mb-2.5 border border-red-100 flex items-center justify-center p-1"><img src="' + imgThumbUrl + '" alt="' + title + '" class="w-full h-auto max-h-[520px] object-contain rounded-lg shadow-sm" loading="lazy" onerror="this.src=\'https://lh3.googleusercontent.com/d/' + fileId + '\'"></div>';
             }
 
             html += '<article class="bg-white rounded-xl border border-gray-200 shadow-sm p-3.5 space-y-2 hover:border-red-300 transition">' +

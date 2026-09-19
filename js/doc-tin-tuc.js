@@ -196,56 +196,85 @@
         // Đảo ngược để bài mới nhất lên trước
         newsItems.reverse();
 
-        // Chèn vào danh sách #news-list trong index.html
-        var newsList = document.getElementById("news-list");
-        if (newsList) {
-          newsItems.forEach(function (item) {
-            var li = document.createElement("li");
-            li.style.cursor = "pointer";
-            li.className = "gsheet-news-item";
+        // Lưu vào bộ nhớ đệm để tải tức thì lần sau
+        try {
+          localStorage.setItem("lh_cached_gsheet_news", JSON.stringify(newsItems));
+        } catch (e) {}
 
-            var thumbHtml = item.imageUrl
-              ? '<div class="th" style="position:relative;overflow:hidden;border-radius:8px;background:#f1f5f9;">' +
-                '<img src="' + escapeHtml(item.imageUrl) + '" alt="' + escapeHtml(item.title) + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\';" />' +
-                '</div>'
-              : '<div class="th"><svg viewBox="0 0 120 94" preserveAspectRatio="xMidYMid slice" role="img"><rect width="120" height="94" fill="#991b1b"/><text x="60" y="54" text-anchor="middle" font-size="28" fill="#fde047">📰</text></svg></div>';
-
-            var summaryText = item.content.length > 135
-              ? item.content.substring(0, 135) + "..."
-              : item.content;
-
-            li.innerHTML =
-              thumbHtml +
-              '<div class="txt">' +
-              '<h3><a href="javascript:void(0)" style="color:#991b1b;font-weight:bold;">' + escapeHtml(item.title) + '</a></h3>' +
-              '<div class="mt">' +
-              '<span class="pill lh" style="background:#dc2626;color:#ffffff;">' + escapeHtml(item.category) + '</span>' +
-              '<span class="d" style="font-weight:600;color:#2563eb;">📅 ' + escapeHtml(item.eventDate) + '</span>' +
-              '<span class="src">' + escapeHtml(item.author) + '</span>' +
-              '</div>' +
-              '<p class="sum" style="white-space:pre-line;line-height:1.45;color:#475569;font-size:11.5px;margin-top:4px;">' +
-              escapeHtml(summaryText) +
-              '</p>' +
-              '</div>';
-
-            li.addEventListener("click", function () {
-              openNewsModal(item);
-            });
-
-            // Chèn bài mới lên đầu danh sách
-            newsList.insertBefore(li, newsList.firstChild);
-          });
-        }
+        renderNewsToDom(newsItems);
       })
       .catch(function (err) {
         console.warn("[doc-tin-tuc] Không thể kết nối Google Sheets:", err);
       });
   }
 
+  function renderNewsToDom(newsItems) {
+    var newsList = document.getElementById("news-list");
+    if (!newsList || !newsItems || newsItems.length === 0) return;
+
+    // Xóa các item cũ đã chèn từ gsheet để tránh trùng lặp
+    var existing = newsList.querySelectorAll(".gsheet-news-item");
+    existing.forEach(function (el) { el.remove(); });
+
+    newsItems.forEach(function (item) {
+      var li = document.createElement("li");
+      li.style.cursor = "pointer";
+      li.className = "gsheet-news-item";
+
+      var thumbHtml = item.imageUrl
+        ? '<div class="th" style="position:relative;overflow:hidden;border-radius:8px;background:#f1f5f9;">' +
+          '<img src="' + escapeHtml(item.imageUrl) + '" alt="' + escapeHtml(item.title) + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.style.display=\'none\';" />' +
+          '</div>'
+        : '<div class="th"><svg viewBox="0 0 120 94" preserveAspectRatio="xMidYMid slice" role="img"><rect width="120" height="94" fill="#991b1b"/><text x="60" y="54" text-anchor="middle" font-size="28" fill="#fde047">📰</text></svg></div>';
+
+      var summaryText = item.content.length > 135
+        ? item.content.substring(0, 135) + "..."
+        : item.content;
+
+      li.innerHTML =
+        thumbHtml +
+        '<div class="txt">' +
+        '<h3><a href="javascript:void(0)" style="color:#991b1b;font-weight:bold;">' + escapeHtml(item.title) + '</a></h3>' +
+        '<div class="mt">' +
+        '<span class="pill lh" style="background:#dc2626;color:#ffffff;">' + escapeHtml(item.category) + '</span>' +
+        '<span class="d" style="font-weight:600;color:#2563eb;">📅 ' + escapeHtml(item.eventDate) + '</span>' +
+        '<span class="src">' + escapeHtml(item.author) + '</span>' +
+        '</div>' +
+        '<p class="sum" style="white-space:pre-line;line-height:1.45;color:#475569;font-size:11.5px;margin-top:4px;">' +
+        escapeHtml(summaryText) +
+        '</p>' +
+        '</div>';
+
+      li.addEventListener("click", function () {
+        openNewsModal(item);
+      });
+
+      // Chèn bài mới lên đầu danh sách
+      newsList.insertBefore(li, newsList.firstChild);
+    });
+  }
+
+  // Tải dữ liệu đệm tức thì (Instant Load) nếu có
+  function loadCachedNews() {
+    try {
+      var cached = localStorage.getItem("lh_cached_gsheet_news");
+      if (cached) {
+        var items = JSON.parse(cached);
+        if (Array.isArray(items) && items.length > 0) {
+          renderNewsToDom(items);
+        }
+      }
+    } catch (e) {}
+  }
+
   // Tự động khởi chạy khi DOM sẵn sàng
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", fetchAndRenderNews);
+    document.addEventListener("DOMContentLoaded", function() {
+      loadCachedNews();
+      fetchAndRenderNews();
+    });
   } else {
+    loadCachedNews();
     fetchAndRenderNews();
   }
 })();
