@@ -1,0 +1,20 @@
+# Cổng TTĐT Tổ dân phố Lương Hậu — phường Hương Thủy, thành phố Huế
+User-agent: *
+Allow: /$
+Allow: /index.html
+Allow: /assets/
+
+# KHU VỰC NỘI BỘ CHI BỘ — cấm mọi công cụ tìm kiếm lập chỉ mục
+Disallow: /noi_bo
+Disallow: /noi_bo/
+Disallow: /noi-bo
+Disallow: /noi-bo/
+Disallow: /data/data.js
+
+# Chặn bot thu thập dữ liệu huấn luyện AI (tuỳ chọn — bỏ comment nếu cần)
+# User-agent: GPTBot
+# Disallow: /
+# User-agent: ClaudeBot
+# Disallow: /
+
+Sitemap: https://tdpluonghau.vercel.app/sitemap-index.xml

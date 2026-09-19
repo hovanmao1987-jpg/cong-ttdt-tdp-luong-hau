@@ -1,0 +1,62 @@
+---
+/**
+ * BaseLayout.astro — khung trang dùng chung cho Cổng TTĐT TDP Lương Hậu.
+ * Dùng cho cả khu công khai (index.astro) và khu nội bộ (noi_bo.astro / noi-bo.astro).
+ */
+interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+  themeColor?: string;
+  noindex?: boolean;
+  bodyClass?: string;
+  htmlClass?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Cổng thông tin điện tử Tổ dân phố Lương Hậu, phường Hương Thủy, thành phố Huế.",
+  keywords = "TDP Lương Hậu, phường Hương Thủy, thành phố Huế, tổ dân phố, Hue-S, biểu mẫu, phòng chống thiên tai, an ninh trật tự",
+  themeColor = "#B21C2B",
+  noindex = false,
+  bodyClass = "",
+  htmlClass = "",
+  canonical = "",
+} = Astro.props;
+
+const buildTime = new Date().toLocaleString("vi-VN", { hour12: false, timeZone: "Asia/Ho_Chi_Minh" });
+---
+
+<!DOCTYPE html>
+<html lang="vi" class={htmlClass}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content={themeColor} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="generator" content={`Astro — Cổng TTĐT TDP Lương Hậu, build ${buildTime}`} />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:site_name" content="Cổng TTĐT TDP Lương Hậu" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <title>{title}</title>
+
+    <link
+      rel="icon"
+      href={`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23${themeColor.replace("#", "")}'/><path d='M32 14l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L32 28.6l-5.9 3.5 1.7-6.7-5.3-4.5 6.9-.5z' fill='%23FFC72C'/></svg>`}
+    />
+    <link rel="stylesheet" href="/assets/css/portal.css" />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,1212 @@
+---
+// Khu Vực Công Khai Chuẩn Hue.gov.vn Mobile V3
+---
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cổng Thông Tin Điện Tử Tổ Dân Phố Lương Hậu - TP Huế</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    .drawer-transition { transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
+    .drawer-hidden { transform: translateX(-100%); }
+    .drawer-visible { transform: translateX(0); }
+    .lotus-icon { color: #dc2626; display: inline-block; }
+  </style>
+  <script>
+    // Tự động điều hướng nếu truy cập qua link Zalo có hash #/noi-bo
+    if (window.location.hash && window.location.hash.includes("noi-bo")) {
+      window.location.href = "/noi-bo" + window.location.hash;
+    }
+  
+    // ==================== TỰ ĐỘNG ĐỒNG BỘ BÀI VIẾT MỚI TỪ GOOGLE SHEETS ====================
+    function loadPublicDynamicNews() {
+      const sheetUrl = "https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/gviz/tq?tqx=out:json";
+      const container = document.getElementById("dynamic-public-news");
+      if (!container) return;
+
+      fetch(sheetUrl)
+        .then(res => res.text())
+        .then(text => {
+          const match = text.match(/setResponse\(([\s\S]*)\);?/) /* fixed */;
+          if (!match) return;
+          const jsonStr = match[1].endsWith(';') ? match[1].slice(0, -1) : match[1];
+          const data = JSON.parse(jsonStr);
+          const rows = data.table.rows;
+          if (!rows || rows.length === 0) return;
+
+          const reversedRows = [...rows].reverse();
+          let html = "";
+
+          reversedRows.forEach((r) => {
+            const c = r.c || [];
+            const timestamp = c[0] ? (c[0].f || c[0].v || "") : "";
+            const date = c[1] ? (c[1].f || c[1].v || "") : "";
+            const category = (c[2] ? (c[2].v || "") : "").trim() || "Tin Lương Hậu";
+            const title = (c[3] ? (c[3].v || "") : "").trim();
+            const content = (c[4] ? (c[4].v || "") : "").trim();
+            const rawImg = (c[5] ? (c[5].v || "") : "").trim();
+
+            if (!title && !content) return;
+
+            let fileId = "";
+            if (rawImg) {
+              const idMatch = rawImg.match(/id=([a-zA-Z0-9_-]+)/) || rawImg.match(/\/d\/([a-zA-Z0-9_-]+)/);
+              if (idMatch) fileId = idMatch[1];
+            }
+            const imgSrc = fileId ? ("https://drive.google.com/thumbnail?id=" + fileId + "&sz=w800") : "";
+
+            html += '<article class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-red-100 shadow-sm active:bg-gray-50 transition">' +
+              '<div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">' +
+                '<img src="' + imgSrc + '" alt="' + title + '" class="w-full h-full object-cover">' +
+                '<span class="absolute top-1 left-1 bg-red-700 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase">' + category + '</span>' +
+              '</div>' +
+              '<div class="flex-1 min-w-0">' +
+                '<h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">' + title + '</h4>' +
+                '<p class="text-[11px] text-gray-600 line-clamp-2 mt-0.5 leading-tight">' + content + '</p>' +
+                '<p class="text-[10px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">' +
+                  '<i class="fa-regular fa-calendar-days text-[9px]"></i> ' + (date || timestamp) +
+                '</p>' +
+              '</div>' +
+            '</article>';
+          });
+
+          if (html) {
+            container.innerHTML = '<div class="flex items-center gap-1.5 text-xs font-bold text-red-800 border-b border-red-200 pb-1 mt-2"><i class="fa-solid fa-clock-rotate-left"></i> <span>Tin mới đăng từ Ban điều hành:</span></div>' + html;
+          }
+        })
+        .catch(err => console.error("Lỗi nạp tin công khai:", err));
+    }
+    window.addEventListener("DOMContentLoaded", loadPublicDynamicNews);
+
+  </script>
+</head>
+<body class="bg-[#fcfcfd] text-gray-800 antialiased pb-24 select-none">
+
+  <!-- ==================== TOP HEADER CHUẨN CỔNG TT THÀNH PHỐ HUẾ (HÌNH 5106) ==================== -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="px-3 py-2.5 max-w-lg mx-auto flex items-center justify-between gap-2">
+      
+      <!-- Quốc huy & Tên Cổng Thông Tin -->
+      <div class="flex items-center gap-2.5 flex-1 min-w-0">
+        <!-- Quốc huy Việt Nam thu nhỏ viền vàng chuẩn Cổng Huế -->
+        <div class="w-10 h-10 rounded-full bg-[#da251d] border-2 border-yellow-400 flex-shrink-0 flex items-center justify-center shadow-sm relative overflow-hidden">
+          <i class="fa-solid fa-star text-yellow-300 text-sm"></i>
+          <div class="absolute bottom-0 inset-x-0 h-2 bg-yellow-500/30 border-t border-yellow-300 flex items-center justify-center">
+            <span class="text-[6px] text-yellow-200 font-bold">VIỆT NAM</span>
+          </div>
+        </div>
+
+        <div class="leading-tight truncate">
+          <span class="block text-[10px] font-bold text-[#b91c1c] tracking-tight uppercase">CỔNG THÔNG TIN ĐIỆN TỬ</span>
+          <span class="block text-[13.5px] sm:text-[15px] font-black text-[#991b1b] tracking-tight uppercase">TỔ DÂN PHỐ LƯƠNG HẬU</span>
+          <div class="flex items-center gap-2 text-[10px] text-gray-400 mt-0.5">
+            <span class="text-gray-500 hover:text-red-700 cursor-pointer">English</span>
+            <span>•</span>
+            <span class="text-gray-500 hover:text-red-700 cursor-pointer">Français</span>
+            <span>•</span>
+            <span class="text-green-700 font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Trực tuyến
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nút Hamburger Menu (Màu đỏ sẫm chuẩn hình 5106) -->
+      <button id="btn-open-menu" class="w-9 h-9 flex items-center justify-center text-[#991b1b] text-2xl active:opacity-70 focus:outline-none" aria-label="Mở menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+    </div>
+
+    <!-- Ô TÌM KIẾM TỪ KHÓA CHUẨN HÌNH 5106 -->
+    <div class="px-3 pb-2.5 pt-0.5 max-w-lg mx-auto">
+      <div class="relative">
+        <input type="text" placeholder="Từ khóa..." 
+               class="w-full bg-[#f8fafc] text-gray-800 text-xs rounded-lg border border-gray-300 pl-3 pr-9 py-2 focus:border-red-600 focus:bg-white focus:outline-none shadow-inner placeholder-gray-400">
+        <button class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm hover:text-red-700" aria-label="Tìm kiếm">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- DÒNG CHỮ CHẠY / TICKER NỔI BẬT CHUẨN HÌNH 5106 -->
+    <div class="bg-gray-100 border-t border-gray-200 px-3 py-1 text-[11px] text-gray-600 flex items-center gap-2 overflow-hidden whitespace-nowrap">
+      <span class="text-red-700 font-bold flex-shrink-0 flex items-center gap-1">
+        <i class="fa-solid fa-bell text-[10px]"></i> Tiếp nhận:
+      </span>
+      <marquee class="text-gray-700 font-medium" scrollamount="4">
+        Ban Điều hành TDP Lương Hậu tiếp nhận kiến nghị, phản ánh và tháo gỡ vướng mắc của nhân dân, hộ kinh doanh trên địa bàn • Hotline: 0965.712.812 • Trực ban phòng chống mưa lũ 24/24.
+      </marquee>
+    </div>
+  </header>
+
+  <!-- ==================== DRAWER MENU TRƯỢT DI ĐỘNG ==================== -->
+  <div id="drawer-backdrop" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-[1px]"></div>
+  <aside id="drawer-nav" class="fixed top-0 left-0 bottom-0 w-[84%] max-w-xs bg-white z-50 shadow-2xl overflow-y-auto drawer-transition drawer-hidden flex flex-col">
+    <!-- Header Drawer -->
+    <div class="bg-[#b91c1c] p-3.5 flex items-center justify-between text-white border-b border-red-900">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-landmark text-yellow-300 text-sm"></i>
+        <span class="text-xs font-black uppercase tracking-wider">CỔNG THÔNG TIN ĐIỆN TỬ</span>
+      </div>
+      <button id="btn-close-menu" class="w-8 h-8 flex items-center justify-center text-white text-xl active:opacity-70" aria-label="Đóng">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Danh sách Menu phân cấp (Giữ nguyên toàn bộ nội dung & liên kết) -->
+    <nav class="flex-1 py-1 text-sm font-semibold divide-y divide-gray-100 overflow-y-auto">
+      <a href="/" class="block px-4 py-3 text-gray-800 active:bg-gray-100 uppercase tracking-wide">TRANG CHỦ</a>
+
+      <!-- Tin tức - Sự kiện -->
+      <div>
+        <div class="flex items-center justify-between px-4 py-3 text-red-700 bg-red-50/40 cursor-pointer" onclick="toggleMenu('sub-tt')">
+          <span class="uppercase tracking-wide font-bold flex items-center gap-1.5">
+            <span class="lotus-icon">🪷</span> Tin tức - Sự kiện
+          </span>
+          <i id="icon-sub-tt" class="fa-solid fa-chevron-up text-xs text-red-700"></i>
+        </div>
+        <div id="sub-tt" class="bg-gray-50/80 py-1 text-xs text-gray-700 space-y-0.5">
+          <a href="#tin-tp-hue" class="block pl-7 pr-4 py-2 hover:text-red-600 font-normal"><span class="text-gray-400 mr-1.5">&gt;</span> Sự kiện nổi bật TP Huế</a>
+          <a href="#tin-huong-thuy" class="block pl-7 pr-4 py-2 hover:text-red-600 font-normal"><span class="text-gray-400 mr-1.5">&gt;</span> Hoạt động phường Hương Thủy</a>
+          <a href="#tin-luong-hau" class="block pl-7 pr-4 py-2 text-red-600 font-bold bg-white"><span class="text-red-600 mr-1.5">&gt;</span> Đời sống Tổ dân phố Lương Hậu</a>
+          <a href="#tin-luong-hau" class="block pl-7 pr-4 py-2 hover:text-red-600 font-normal"><span class="text-gray-400 mr-1.5">&gt;</span> Ra quân Ngày Chủ nhật xanh (13/09)</a>
+          <a href="#tiem-chung" class="block pl-7 pr-4 py-2 hover:text-red-600 font-normal"><span class="text-gray-400 mr-1.5">&gt;</span> Tiêm chủng Trạm Y tế KV3 (23-24/09)</a>
+        </div>
+      </div>
+
+      <!-- Tin chỉ đạo điều hành -->
+      <a href="#tin-dieu-hanh" class="block px-4 py-3 text-gray-800 active:bg-gray-100 uppercase tracking-wide flex items-center gap-1.5">
+        <span class="lotus-icon">🪷</span> Tin điều hành UBND Thành phố & Phường
+      </a>
+
+      <!-- Công khai Danh sách Ban Cán bộ Tổ dân phố -->
+      <a href="#danh-sach-can-bo" class="block px-4 py-3 text-gray-800 active:bg-gray-100 uppercase tracking-wide flex items-center gap-1.5 text-blue-800">
+        <i class="fa-solid fa-users text-blue-600 text-xs"></i> Danh Sách Cán Bộ TDP Lương Hậu (10 Đ/c)
+      </a>
+
+      <!-- Phản ánh công dân & Biểu mẫu -->
+      <a href="#gui-phan-anh" class="block px-4 py-3 text-gray-800 active:bg-gray-100 uppercase tracking-wide flex items-center gap-1.5 text-amber-700">
+        <i class="fa-solid fa-comments text-amber-600 text-xs"></i> Gửi Ý Kiến & Phản Ánh Hiện Trường
+      </a>
+      <a href="#bieu-mau" class="block px-4 py-3 text-gray-800 active:bg-gray-100 uppercase tracking-wide flex items-center gap-1.5">
+        <i class="fa-solid fa-file-invoice text-gray-500 text-xs"></i> Kho Biểu Mẫu Dịch Vụ Công (11)
+      </a>
+      <a href="#cam-nang-so" class="block px-4 py-3 text-gray-800 active:bg-gray-100 uppercase tracking-wide flex items-center gap-1.5">
+        <i class="fa-solid fa-mobile-screen text-indigo-600 text-xs"></i> Cẩm Nang Số: Hue-S & VNeID
+      </a>
+    </nav>
+
+    <!-- Nút chuyển sang Khu vực Nội bộ Chi bộ (GIỮ NGUYÊN BẢO MẬT) -->
+    <div class="p-3 bg-red-50 border-t border-red-200">
+      <a href="noi_bo.html" class="w-full py-2.5 px-3 bg-[#b91c1c] hover:bg-[#991b1b] text-white text-xs font-bold rounded-lg flex items-center justify-center gap-2 shadow-md">
+        <i class="fa-solid fa-shield-halved text-yellow-300"></i> Vào Khu Vực Nội Bộ Chi Bộ
+      </a>
+    </div>
+  </aside>
+
+  <!-- ==================== BỐ CỤC NỘI DUNG CHÍNH (CHUẨN HÌNH 5106, 5107, 5108, 5109) ==================== -->
+  <main class="max-w-lg mx-auto px-3 py-3 space-y-6">
+
+    <!-- ==================== MỤC 1: 🪷 TIN TỨC - SỰ KIỆN (CHUẨN HÌNH 5106) ==================== -->
+    <section class="space-y-3">
+      <!-- Tiêu đề hoa sen đỏ chuẩn hình 5106 -->
+      <div class="flex items-center gap-2 border-b-2 border-gray-200 pb-1.5">
+        <span class="text-xl lotus-icon">🪷</span>
+        <h2 class="text-base sm:text-lg font-black text-gray-900 tracking-tight">Tin tức - Sự kiện</h2>
+      </div>
+
+      <!-- TIN TIÊU ĐIỂM LỚN (HERO ARTICLE CHUẨN HÌNH 5106) -->
+      <article class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm space-y-2.5">
+        <div class="w-full aspect-[16/9] bg-gray-100 relative overflow-hidden">
+          <div class="w-full h-full bg-gradient-to-br from-[#8b0018] via-[#a80f27] to-[#700013] flex flex-col items-center justify-center p-4 text-center">
+                     <div class="w-12 h-12 rounded-full bg-yellow-400/20 border-2 border-yellow-400 flex items-center justify-center text-yellow-300 text-xl mb-1 shadow">
+                       <i class="fa-solid fa-cloud-bolt"></i>
+                     </div>
+                     <span class="text-xs font-black uppercase text-yellow-300 tracking-wider">PHÒNG CHỐNG THIÊN TAI & TÌM KIẾM CỨU NẠN</span>
+                     <span class="text-[10px] text-red-100">Chủ động từ sớm, từ xa · Bảo vệ tính mạng và tài sản nhân dân</span>
+                   </div>
+          <span class="absolute top-2 left-2 bg-[#b91c1c] text-white text-[9.5px] font-black px-2 py-0.5 rounded shadow uppercase">
+            HỘI NGHỊ TRỌNG TÂM
+          </span>
+        </div>
+
+        <div class="p-3 pt-0 space-y-1.5">
+          <h3 class="text-sm sm:text-base font-bold text-gray-900 leading-snug hover:text-red-700 cursor-pointer">
+            Chủ động từ sớm, từ xa, sẵn sàng ứng phó với các tình huống thiên tai, mưa lũ tại TP Huế và TDP Lương Hậu
+          </h3>
+
+          <div class="flex items-center gap-1 text-[11px] text-[#2563eb] font-semibold">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span>10/09/2026</span>
+          </div>
+
+          <p class="text-xs text-gray-600 leading-relaxed text-justify">
+            (CTTĐT) - Sáng 10/9, Phó Bí thư Thành ủy, Chủ tịch UBND thành phố Lê Trí Thanh chủ trì Hội nghị đánh giá công tác phòng chống thiên tai 8 tháng đầu năm và triển khai nhiệm vụ 4 tháng cuối năm 2026. Tại cơ sở, TDP Lương Hậu đã hoàn tất rà soát phương án bảo đảm an toàn cho các cụm dân cư vùng trũng.
+          </p>
+        </div>
+      </article>
+
+      <!-- DANH SÁCH TIN MỚI TP HUẾ, HƯƠNG THỦY & LƯƠNG HẬU (THẺ NGANG CHUẨN HÌNH 5107) -->
+      
+      <!-- DANH SÁCH BÀI VIẾT MỚI TỰ ĐỘNG ĐỒNG BỘ TỪ BIỂU MẪU ĐĂNG TIN -->
+      <div id="dynamic-public-news" class="space-y-2.5 pt-1"></div>
+
+      <div id="tin-tp-hue" class="space-y-2.5 pt-1">
+        
+        <!-- Tin 1: TP Huế - The Times -->
+        <article class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm active:bg-gray-50 transition">
+          <div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+            <div class="w-full h-full bg-gradient-to-br from-[#4c1d95] to-[#7c3aed] flex flex-col items-center justify-center text-white p-1 text-center"><i class="fa-solid fa-landmark text-lg text-yellow-300"></i><span class="text-[8px] font-black uppercase text-yellow-200 mt-0.5">DU LỊCH HUẾ</span></div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">
+              <a href="#tin-tp-hue">Huế vào top 11 điểm đến đẹp nhất Việt Nam theo Tạp chí The Times</a>
+            </h4>
+            <p class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+              <i class="fa-regular fa-calendar-days text-[10px]"></i> 10/09/2026
+            </p>
+          </div>
+        </article>
+
+        <!-- Tin 2: TP Huế - Cảnh báo mưa lớn kéo dài -->
+        <article class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm active:bg-gray-50 transition">
+          <div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+            <div class="w-full h-full bg-gradient-to-br from-[#1e3a8a] to-[#2563eb] flex flex-col items-center justify-center text-white p-1 text-center"><i class="fa-solid fa-cloud-showers-heavy text-lg text-blue-200"></i><span class="text-[8px] font-black uppercase text-blue-100 mt-0.5">CẢNH BÁO MƯA</span></div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">
+              <a href="#tin-tp-hue">Thành phố Huế cảnh báo mưa lớn diện rộng, kéo dài từ 10 - 17/9, nguy cơ ngập úng</a>
+            </h4>
+            <p class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+              <i class="fa-regular fa-calendar-days text-[10px]"></i> 10/09/2026
+            </p>
+          </div>
+        </article>
+
+        <!-- Tin 3: Phường Hương Thủy - Đề án 06 -->
+        <article id="tin-huong-thuy" class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm active:bg-gray-50 transition">
+          <div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+            <div class="w-full h-full bg-gradient-to-br from-[#831843] to-[#be185d] flex flex-col items-center justify-center text-white p-1 text-center"><i class="fa-solid fa-id-card text-lg text-yellow-300"></i><span class="text-[8px] font-black uppercase text-yellow-200 mt-0.5">ĐỀ ÁN 06</span></div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">
+              <a href="#tin-huong-thuy">Phường Hương Thủy triển khai hiệu quả Đề án 06, nâng cao chất lượng phục vụ nhân dân</a>
+            </h4>
+            <p class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+              <i class="fa-regular fa-calendar-days text-[10px]"></i> 09/09/2026
+            </p>
+          </div>
+        </article>
+
+        <!-- Tin 4: Tổ dân phố Lương Hậu - Ngày Chủ nhật xanh đợt 4 -->
+        <article id="tin-luong-hau" class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-red-100 shadow-sm active:bg-gray-50 transition">
+          <div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+            <div class="w-full h-full bg-gradient-to-br from-[#064e3b] to-[#059669] flex flex-col items-center justify-center text-white p-1 text-center"><i class="fa-solid fa-tree text-lg text-emerald-200"></i><span class="text-[8px] font-black uppercase text-emerald-100 mt-0.5">CHỦ NHẬT XANH</span></div>
+            <span class="absolute bottom-0.5 right-0.5 bg-green-700 text-white text-[8px] font-bold px-1 rounded">13/09</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">
+              <a href="#tin-luong-hau">TDP Lương Hậu: Thông báo số 14/TB-TDP ra quân "Ngày Chủ nhật xanh" đợt 4 năm 2026</a>
+            </h4>
+            <p class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+              <i class="fa-regular fa-calendar-days text-[10px]"></i> 10/09/2026 • 06h30 tại 83 Thái Thuận
+            </p>
+          </div>
+        </article>
+
+        <!-- Tin 5: Tổ dân phố Lương Hậu - Lịch tiêm chủng mở rộng -->
+        <article id="tiem-chung" class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm active:bg-gray-50 transition">
+          <div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+            <div class="w-full h-full bg-gradient-to-br from-[#991b1b] to-[#dc2626] flex flex-col items-center justify-center text-white p-1 text-center"><i class="fa-solid fa-syringe text-lg text-yellow-300"></i><span class="text-[8px] font-black uppercase text-yellow-200 mt-0.5">TIÊM CHỦNG</span></div>
+            <span class="absolute bottom-0.5 right-0.5 bg-red-600 text-white text-[8px] font-bold px-1 rounded">23-24/09</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">
+              <a href="#tiem-chung">Thông báo lịch tiêm chủng mở rộng tháng 9/2026 tại Trạm Y tế phường Hương Thủy KV3</a>
+            </h4>
+            <p class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+              <i class="fa-regular fa-calendar-days text-[10px]"></i> 10/09/2026 • CTV Y tế Thu Thanh
+            </p>
+          </div>
+        </article>
+
+        <!-- Tin 6: Tết Trung Thu 2026 -->
+        <article class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm active:bg-gray-50 transition">
+          <div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+            <div class="w-full h-full bg-gradient-to-br from-[#78350f] to-[#d97706] flex flex-col items-center justify-center text-white p-1 text-center"><i class="fa-solid fa-moon text-lg text-yellow-200"></i><span class="text-[8px] font-black uppercase text-yellow-100 mt-0.5">TRUNG THU</span></div>
+            <span class="absolute bottom-0.5 right-0.5 bg-amber-600 text-white text-[8px] font-bold px-1 rounded">25/09</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">
+              <a href="#tin-luong-hau">Kế hoạch tổ chức "Đêm hội Trăng rằm 2026" cho toàn thể thiếu nhi Tổ dân phố Lương Hậu</a>
+            </h4>
+            <p class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+              <i class="fa-regular fa-calendar-days text-[10px]"></i> 19h00 ngày 25/09 (15/8 ÂL) tại Nhà SHCĐ
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==================== CHUYÊN MỤC CÔNG KHAI: ANTT & PCTT (CHUYỂN TỪ NỘI BỘ SANG) ==================== -->
+    <section id="tin-antt-pctt" class="space-y-3 pt-1">
+      <div class="flex items-center justify-between border-b-2 border-gray-200 pb-1.5">
+        <div class="flex items-center gap-2">
+          <span class="text-xl lotus-icon">🪷</span>
+          <h2 class="text-base sm:text-lg font-black text-gray-900 tracking-tight">ANTT Cơ Sở & Phòng Chống Thiên Tai</h2>
+        </div>
+        <span class="text-[10px] bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded">Trực ban 24/7</span>
+      </div>
+
+      <div class="space-y-3.5">
+        
+        <!-- Bài 1: Nhật ký tuần tra đêm Tổ BV ANTT -->
+        <article class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm space-y-2">
+          <div class="w-full aspect-[16/9] bg-gray-100 relative overflow-hidden">
+            <div class="w-full h-full bg-gradient-to-br from-[#111827] to-[#374151] flex flex-col items-center justify-center text-white p-4 text-center"><div class="w-12 h-12 rounded-full bg-yellow-400/20 border-2 border-yellow-400 flex items-center justify-center text-yellow-300 text-xl mb-1 shadow"><i class="fa-solid fa-shield-halved"></i></div><span class="text-xs font-black uppercase text-yellow-300 tracking-wider">LỰC LƯỢNG BẢO VỆ ANTT CƠ SỞ</span><span class="text-[10px] text-gray-300">Tuần tra đêm · Giữ vững bình yên TDP Lương Hậu</span></div>
+            <span class="absolute top-2 right-2 bg-black/75 text-white text-[9.5px] font-bold px-2 py-0.5 rounded shadow">
+              Tổ BV ANTT Cơ Sở Lương Hậu
+            </span>
+          </div>
+          <div class="p-3 pt-0 space-y-1.5">
+            <div class="flex items-center gap-2 text-xs text-green-700 font-bold">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>Chỉ huy tuần tra: Đ/c Nguyễn Thúc Thành (0975.175.361)</span>
+            </div>
+            <h3 class="text-sm font-bold text-gray-900 leading-snug hover:text-red-700">
+              Nhật ký tuần tra đêm của Lực lượng Bảo vệ ANTT cơ sở: Duy trì nghiêm tuần tra Thứ 3 và Thứ 7 hằng tuần
+            </h3>
+            <p class="text-xs text-gray-600 leading-relaxed text-justify">
+              Lực lượng tham gia bảo vệ an ninh trật tự cơ sở TDP Lương Hậu phối hợp cùng Công an phường Hương Thủy thực hiện tuần tra kiểm soát địa bàn từ 22h00 đến 02h00 sáng. Trọng tâm: Nắm chắc tình hình tạm trú, tạm vắng; phòng ngừa trộm cắp tài sản; kiểm tra an toàn PCCC tại các cơ sở sản xuất kinh doanh kết hợp nhà ở và các kiệt ngõ giáp ranh.
+            </p>
+          </div>
+        </article>
+
+        <!-- Bài 2: Phương án phòng bão lũ từ ngày 10 – 17/9/2026 -->
+        <article class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm space-y-2">
+          <div class="w-full aspect-[16/9] bg-gray-100 relative overflow-hidden">
+            <div class="w-full h-full bg-gradient-to-br from-[#991b1b] to-[#b91c1c] flex flex-col items-center justify-center text-white p-4 text-center"><div class="w-12 h-12 rounded-full bg-yellow-400/20 border-2 border-yellow-400 flex items-center justify-center text-yellow-300 text-xl mb-1 shadow"><i class="fa-solid fa-life-ring"></i></div><span class="text-xs font-black uppercase text-yellow-300 tracking-wider">PHƯƠNG ÁN 4 TẠI CHỖ</span><span class="text-[10px] text-red-100">Sẵn sàng phương tiện, lực lượng ứng phó mưa bão</span></div>
+            <span class="absolute top-2 right-2 bg-red-700 text-white text-[9.5px] font-bold px-2 py-0.5 rounded shadow">
+              Ban Chỉ Huy PCTT & TKCN
+            </span>
+          </div>
+          <div class="p-3 pt-0 space-y-1.5">
+            <div class="flex items-center gap-2 text-xs text-blue-700 font-bold">
+              <i class="fa-solid fa-cloud-showers-heavy"></i>
+              <span>Trực chỉ huy: Đ/c Nguyễn Trọng Nghĩa (0965.712.812) & Đ/c Nguyễn Như Khải (0388.886.876)</span>
+            </div>
+            <h3 class="text-sm font-bold text-gray-900 leading-snug hover:text-red-700">
+              Phương án chủ động ứng phó bão lũ, mưa lớn diện rộng từ ngày 10 đến ngày 17/9/2026 tại TDP Lương Hậu
+            </h3>
+            <p class="text-xs text-gray-600 leading-relaxed text-justify">
+              Thực hiện phương án "4 tại chỗ", Ban Chỉ huy PCTT & TKCN TDP Lương Hậu đã hoàn thành rà soát các hộ neo đơn, người già tại các vùng thấp trũng Đội 8, 9, 10, 11; tập kết sẵn sàng phương tiện xuồng cứu hộ nhỏ, áo phao và túi cứu thương tại Nhà sinh hoạt cộng đồng (83 Thái Thuận) để hỗ trợ nhân dân kịp thời khi nước dâng.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+    <!-- ==================== MỤC 2: CÔNG KHAI DANH SÁCH CÁN BỘ TỔ DÂN PHỐ LƯƠNG HẬU ==================== -->
+    <!-- CHÍNH XÁC 10 CÁN BỘ TỪ FILE EXCEL Ds_Can_bộ_Luong_Hau_V2.xlsx & HÌNH 5108 -->
+    <section id="danh-sach-can-bo" class="space-y-3 pt-1">
+      <div class="text-center border-b-2 border-red-700 pb-2">
+        <h2 class="text-xs sm:text-sm font-bold text-[#b91c1c] uppercase tracking-wider">CÔNG KHAI DANH BẠ & NHIỆM VỤ</h2>
+        <div class="text-sm sm:text-base font-black text-[#991b1b] uppercase">BAN CÁN BỘ TỔ DÂN PHỐ LƯƠNG HẬU (10 ĐỒNG CHÍ)</div>
+        <p class="text-[11px] text-gray-500 mt-0.5">Tiếp nhận yêu cầu, giải quyết thủ tục hành chính và hỗ trợ nhân dân</p>
+      </div>
+
+      <!-- BẢNG CÔNG KHAI 10 CÁN BỘ CHỦ CHỐT -->
+      <div class="space-y-2.5 pt-1">
+        
+        <!-- 1. Hồ Văn Mão -->
+        <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-red-200 shadow-sm">
+          <div class="w-16 h-20 sm:w-20 sm:h-24 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200 shadow-inner"><div class="w-full h-full bg-gradient-to-br from-[#365314] to-[#4d7c0f] flex flex-col items-center justify-center text-white p-1 text-center shadow-inner"><span class="text-2xl leading-none">🌾</span><span class="text-[8px] font-black text-yellow-200 uppercase tracking-tighter mt-1 leading-tight">Nông dân & ANTT</span></div></div>
+        </div>
+
+        <!-- 6. Nguyễn Cưỡng -->
+        <div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between text-xs">
+          <div>
+            <div class="text-xs font-bold text-[#2563eb]">Chi hội trưởng Cựu chiến binh</div>
+            <div class="font-black text-gray-900 text-sm">NGUYỄN CƯỠNG (1964)</div>
+            <div class="text-[10.5px] text-gray-500">Giáo dục truyền thống cách mạng, phối hợp tuần tra ANTT toàn TDP</div>
+          </div>
+          <a href="tel:0981710242" class="p-2 bg-blue-50 text-blue-700 rounded-lg font-bold text-[11px] flex items-center gap-1 flex-shrink-0">
+            <i class="fa-solid fa-phone"></i> 0981.710.242
+          </a>
+        </div>
+
+        <!-- 7. Phan Đăng Chiến -->
+        <div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between text-xs">
+          <div>
+            <div class="text-xs font-bold text-[#2563eb]">Chi hội trưởng Người cao tuổi</div>
+            <div class="font-black text-gray-900 text-sm">PHAN ĐĂNG CHIẾN (1951)</div>
+            <div class="text-[10.5px] text-gray-500">Phong trào Tuổi cao - Gương sáng, mừng thọ, khuyến học toàn TDP</div>
+          </div>
+          <a href="tel:0913469434" class="p-2 bg-blue-50 text-blue-700 rounded-lg font-bold text-[11px] flex items-center gap-1 flex-shrink-0">
+            <i class="fa-solid fa-phone"></i> 0913.469.434
+          </a>
+        </div>
+
+        <!-- 8. Nguyễn Thị Ngọc Tú -->
+        <div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between text-xs">
+          <div>
+            <div class="text-xs font-bold text-[#2563eb]">Bí thư Chi đoàn Thanh niên</div>
+            <div class="font-black text-gray-900 text-sm">NGUYỄN THỊ NGỌC TÚ (2003)</div>
+            <div class="text-[10.5px] text-gray-500">Phong trào thanh thiếu nhi, Ngày Chủ nhật xanh, Tổ Chuyển đổi số cộng đồng</div>
+          </div>
+          <a href="tel:0386003175" class="p-2 bg-blue-50 text-blue-700 rounded-lg font-bold text-[11px] flex items-center gap-1 flex-shrink-0">
+            <i class="fa-solid fa-phone"></i> 0386.003.175
+          </a>
+        </div>
+
+        <!-- 9. Nguyễn Như Khải -->
+        <div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between text-xs">
+          <div>
+            <div class="text-xs font-bold text-[#2563eb]">Tổ đội trưởng Quân sự</div>
+            <div class="font-black text-gray-900 text-sm">NGUYỄN NHƯ KHẢI (1993)</div>
+            <div class="text-[10.5px] text-gray-500">Quốc phòng địa phương, 74 nguồn NVQS năm 2027, trực PCTT • Phụ trách Đội 10</div>
+          </div>
+          <a href="tel:0388886876" class="p-2 bg-blue-50 text-blue-700 rounded-lg font-bold text-[11px] flex items-center gap-1 flex-shrink-0">
+            <i class="fa-solid fa-phone"></i> 0388.886.876
+          </a>
+        </div>
+
+        <!-- 10. Phạm Thị Thu Thanh -->
+        <div class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between text-xs">
+          <div>
+            <div class="text-xs font-bold text-[#2563eb]">Cộng tác viên Dân số & Y tế cơ sở</div>
+            <div class="font-black text-gray-900 text-sm">PHẠM THỊ THU THANH (1987)</div>
+            <div class="text-[10.5px] text-gray-500">Biến động dân số (Sổ A0), tiêm chủng mở rộng, phòng chống dịch, vận động BHYT (4 Đội)</div>
+          </div>
+          <a href="tel:0332886309" class="p-2 bg-blue-50 text-blue-700 rounded-lg font-bold text-[11px] flex items-center gap-1 flex-shrink-0">
+            <i class="fa-solid fa-phone"></i> 0332.886.309
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== MỤC 3: 🪷 TIN ĐIỀU HÀNH CHỈ ĐẠO CẤP THÀNH PHỐ & PHƯỜNG (CHUẨN HÌNH 5109) ==================== -->
+    <section id="tin-dieu-hanh" class="space-y-3 pt-1">
+      <div class="flex items-center gap-2 border-b-2 border-gray-200 pb-1.5">
+        <span class="text-xl lotus-icon">🪷</span>
+        <h2 class="text-base sm:text-lg font-black text-gray-900 tracking-tight">Tin điều hành của UBND thành phố & Phường</h2>
+      </div>
+
+      <!-- Danh sách tin điều hành dạng bullet tròn đỏ chuẩn hình 5109 -->
+      <div class="bg-white rounded-xl p-3 border border-gray-200 shadow-sm divide-y divide-gray-100 space-y-2.5">
+        
+        <!-- Bullet 1 -->
+        <div class="pt-2 first:pt-0">
+          <div class="flex items-start gap-2">
+            <span class="text-red-600 font-black text-sm leading-none mt-1">•</span>
+            <div class="flex-1">
+              <a href="https://hue.gov.vn/Trang-chu/He-thong-van-ban-phap-luat/doc/all/vb/59799" target="_blank" rel="noopener noreferrer" class="text-xs sm:text-sm font-semibold text-gray-900 hover:text-red-700 leading-snug block">
+                Kế hoạch số 333/KH-UBND của UBND TP Huế về chỉ tiêu kê khai đăng ký đất đai và CSDL dân cư năm 2026
+              </a>
+              <div class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+                <i class="fa-regular fa-calendar-days text-[10px]"></i> 10/09/2026
+              </div>
+<div class="mt-1"><a href="https://hue.gov.vn/Trang-chu/He-thong-van-ban-phap-luat/doc/all/vb/59799" target="_blank" rel="noopener noreferrer" class="px-2 py-0.5 bg-red-700 hover:bg-red-800 text-white rounded text-[10px] font-bold inline-flex items-center gap-1 shadow-sm">Xem ngay <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i></a></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bullet 2 -->
+        <div class="pt-2">
+          <div class="flex items-start gap-2">
+            <span class="text-red-600 font-black text-sm leading-none mt-1">•</span>
+            <div class="flex-1">
+              <a href="javascript:void(0)" onclick="alert(\'Đang chuyển đến toàn văn văn bản chỉ đạo...\')" class="text-xs sm:text-sm font-semibold text-gray-900 hover:text-red-700 leading-snug block">
+                UBND phường Hương Thủy ban hành kế hoạch cao điểm tấn công trấn áp tội phạm và bảo đảm an toàn mùa bão lũ
+              </a>
+              <div class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+                <i class="fa-regular fa-calendar-days text-[10px]"></i> 10/09/2026
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bullet 3 -->
+        <div class="pt-2">
+          <div class="flex items-start gap-2">
+            <span class="text-red-600 font-black text-sm leading-none mt-1">•</span>
+            <div class="flex-1">
+              <a href="javascript:void(0)" onclick="alert(\'Đang chuyển đến toàn văn văn bản chỉ đạo...\')" class="text-xs sm:text-sm font-semibold text-gray-900 hover:text-red-700 leading-snug block">
+                Công bố thủ tục hành chính nội bộ mới ban hành trong lĩnh vực quản lý công sản đối với tài sản kết cấu hạ tầng trên địa bàn thành phố
+              </a>
+              <div class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+                <i class="fa-regular fa-calendar-days text-[10px]"></i> 09/09/2026
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bullet 4 -->
+        <div class="pt-2">
+          <div class="flex items-start gap-2">
+            <span class="text-red-600 font-black text-sm leading-none mt-1">•</span>
+            <div class="flex-1">
+              <a href="javascript:void(0)" onclick="alert(\'Đang chuyển đến toàn văn văn bản chỉ đạo...\')" class="text-xs sm:text-sm font-semibold text-gray-900 hover:text-red-700 leading-snug block">
+                UBND thành phố Huế tăng cường triển khai công tác tiêm chủng mở rộng giai đoạn 2025 - 2030
+              </a>
+              <div class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+                <i class="fa-regular fa-calendar-days text-[10px]"></i> 08/09/2026
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bullet 5 -->
+        <div class="pt-2">
+          <div class="flex items-start gap-2">
+            <span class="text-red-600 font-black text-sm leading-none mt-1">•</span>
+            <div class="flex-1">
+              <a href="javascript:void(0)" onclick="alert(\'Đang chuyển đến toàn văn văn bản chỉ đạo...\')" class="text-xs sm:text-sm font-semibold text-gray-900 hover:text-red-700 leading-snug block">
+                Kế hoạch số 04/KH-UBND của UBND thành phố: Triển khai thực hiện Đề án Ngày Chủ nhật xanh "Hãy hành động để thành phố Huế thêm Xanh - Sạch - Sáng" năm 2026
+              </a>
+              <div class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+                <i class="fa-regular fa-calendar-days text-[10px]"></i> 08/09/2026
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bullet 6 -->
+        <div class="pt-2">
+          <div class="flex items-start gap-2">
+            <span class="text-red-600 font-black text-sm leading-none mt-1">•</span>
+            <div class="flex-1">
+              <a href="javascript:void(0)" onclick="alert(\'Đang chuyển đến toàn văn văn bản chỉ đạo...\')" class="text-xs sm:text-sm font-semibold text-gray-900 hover:text-red-700 leading-snug block">
+                Phấn đấu đến năm 2030 có 90% người khuyết tật trên địa bàn được tiếp cận các dịch vụ y tế và an sinh xã hội
+              </a>
+              <div class="text-[10.5px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">
+                <i class="fa-regular fa-calendar-days text-[10px]"></i> 08/09/2026
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== MỤC 4: TIẾP NHẬN Ý KIẾN PHẢN ÁNH CÔNG DÂN (GIỮ NGUYÊN NỘI DUNG NÚT BẤM) ==================== -->
+    <section id="gui-phan-anh" class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm space-y-3.5 text-xs">
+      <div class="border-b border-gray-100 pb-2 flex items-center justify-between">
+        <div>
+          <h2 class="text-xs sm:text-sm font-black text-[#b91c1c] uppercase flex items-center gap-1.5">
+            <i class="fa-solid fa-comments text-red-600"></i> Tiếp Nhận Phản Ánh Công Dân
+          </h2>
+          <p class="text-[10.5px] text-gray-500 mt-0.5">Tiếp nhận, phân loại và xử lý trong vòng 24 giờ</p>
+        </div>
+        <span class="text-[9.5px] bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded border border-red-200">Phản hồi 24h</span>
+      </div>
+
+      <div class="p-2.5 bg-blue-50/70 border border-blue-200 rounded-lg text-blue-950 text-[11px] leading-relaxed">
+        Phản ánh của nhân dân được Ban cán bộ TDP tiếp nhận, phân loại và chuyển UBND phường Hương Thủy / Hue-S theo đúng thẩm quyền. Nhân dân có thể gửi ý kiến trực tiếp qua Gmail: <strong>hovanmao1987@gmail.com</strong> hoặc hotline khẩn cấp: <strong>0965.712.812</strong>.
+      </div>
+
+      <!-- FORM TIẾP NHẬN Ý KIẾN PHẢN ÁNH ĐẦY ĐỦ CÁC TRƯỜNG -->
+      <form id="form-phan-anh" onsubmit="submitPhanAnhMoi(event)" class="space-y-2.5 pt-1 text-xs">
+        <input type="hidden" name="access_key" value="183b93c6-fffd-4323-a730-103d1e16b3a0">
+        <input type="hidden" name="from_name" value="Cổng Thông Tin Số Lương Hậu">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Họ và tên người phản ánh <span class="text-red-600">*</span></label>
+          <input type="text" id="pa-hoten" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:border-red-600 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Số điện thoại liên hệ <span class="text-red-600">*</span></label>
+            <input type="tel" id="pa-sdt" required placeholder="09xx xxx xxx" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:border-red-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Địa chỉ (Khu vực / Đội) <span class="text-red-600">*</span></label>
+            <select id="pa-diachi" required class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:border-red-600 focus:outline-none bg-white">
+              <option value="">— Chọn khu vực —</option>
+              <option value="Đội 8 (Khu vực đường Sóng Hồng / Kiệt ngõ Đội 8)">Đội 8 (Kiệt ngõ đường Sóng Hồng)</option>
+              <option value="Đội 9 (Tuyến Thái Thuận / Kiệt ngõ Đội 9)">Đội 9 (Tuyến đường Thái Thuận)</option>
+              <option value="Đội 10 (Khu vực giáp ranh / Kiệt ngõ Đội 10)">Đội 10 (Khu vực cụm dân cư Đội 10)</option>
+              <option value="Đội 11 (Tuyến Thái Vĩnh Chinh / Kiệt ngõ Đội 11)">Đội 11 (Tuyến Thái Vĩnh Chinh)</option>
+              <option value="Khu vực khác thuộc TDP Lương Hậu">Khu vực khác thuộc TDP</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Lĩnh vực phản ánh <span class="text-red-600">*</span></label>
+            <select id="pa-linhvuc" required class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:border-red-600 focus:outline-none bg-white">
+              <option value="An ninh trật tự">An ninh trật tự</option>
+              <option value="Môi trường - rác thải">Môi trường - rác thải</option>
+              <option value="Hạ tầng - điện - nước - đường">Hạ tầng - điện - nước - đường</option>
+              <option value="Thiên tai - ngập úng">Thiên tai - ngập úng</option>
+              <option value="Thủ tục hành chính">Thủ tục hành chính</option>
+              <option value="Chế độ chính sách">Chế độ chính sách</option>
+              <option value="Xây dựng - trật tự đô thị">Xây dựng - trật tự đô thị</option>
+              <option value="Ý kiến khác">Ý kiến khác</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Mức độ ưu tiên <span class="text-red-600">*</span></label>
+            <select id="pa-mucdo" required class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:border-red-600 focus:outline-none bg-white">
+              <option value="Bình thường">Bình thường</option>
+              <option value="Cần xử lý sớm">Cần xử lý sớm</option>
+              <option value="Khẩn cấp">Khẩn cấp</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Nội dung phản ánh <span class="text-red-600">*</span></label>
+          <textarea id="pa-noidung" required rows="3" minlength="20" placeholder="Mô tả cụ thể sự việc: thời gian, địa điểm, diễn biến, nguyện vọng giải quyết... (tối thiểu 20 ký tự)" class="w-full border border-gray-300 rounded-lg p-2 text-xs focus:border-red-600 focus:outline-none"></textarea>
+        </div>
+
+        <div class="p-2 bg-gray-50 border border-gray-200 rounded text-[10.5px] text-gray-500 leading-relaxed">
+          Tôi cam đoan nội dung phản ánh là đúng sự thật; đồng ý cho TDP sử dụng thông tin liên hệ để xác minh và phản hồi kết quả.
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-[#b91c1c] hover:bg-[#991b1b] text-white font-bold rounded-lg shadow text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-[0.98] transition">
+          <i class="fa-solid fa-paper-plane text-yellow-300"></i> Gửi Phản Ánh
+        </button>
+      </form>
+
+      <!-- KHUNG THÔNG BÁO GỬI THÀNH CÔNG KÈM NÚT BẤM CHUYỂN TIẾP ZALO & GMAIL -->
+      <div id="pa-success-box" class="hidden p-3 bg-green-50 border border-green-200 rounded-xl space-y-2 text-xs text-green-950">
+        <div class="flex items-center gap-2 font-bold text-green-800 text-sm">
+          <i class="fa-solid fa-circle-check text-green-600 text-base"></i> Gửi phản ánh thành công!
+        </div>
+        <p class="text-[11px] leading-relaxed">
+          Mã phản ánh: <strong id="succ-ma" class="font-mono text-red-700">PA-2026...</strong>. Để Ban cán bộ xử lý nhanh nhất, bà con có thể chọn chuyển tiếp nội dung trực tiếp qua Zalo hoặc gửi bản sao đến hộp thư Bí thư Chi bộ:
+        </p>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <a id="btn-zalo-bi-thu" href="https://zalo.me/0962481112" target="_blank" class="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-center flex items-center justify-center gap-1.5 shadow-sm text-[11px]">
+            <i class="fa-solid fa-comment-dots"></i> Nhắn Zalo Bí thư
+          </a>
+          <a id="btn-zalo-to-truong" href="https://zalo.me/0965712812" target="_blank" class="p-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg font-bold text-center flex items-center justify-center gap-1.5 shadow-sm text-[11px]">
+            <i class="fa-solid fa-comment-dots"></i> Nhắn Zalo Tổ trưởng
+          </a>
+        </div>
+        <a id="btn-send-gmail" href="mailto:luonghau.phuonghuongthuy@gmail.com?subject=Phan%20anh%20cong%20dan%20TDP%20Luong%20Hau" target="_blank" class="w-full py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg font-bold text-center flex items-center justify-center gap-1.5 shadow-sm text-[11px]">
+          <i class="fa-solid fa-envelope"></i> Gửi bản sao qua Gmail đến hovanmao1987@gmail.com
+        </a>
+      </div>
+
+      <!-- ==================== BẢNG PHẢN ÁNH ĐÃ GỬI TỪ THIẾT BỊ NÀY ==================== -->
+      <div class="space-y-2 pt-2 border-t border-gray-100">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-gray-800 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-clock-rotate-left text-gray-500"></i> Phản ánh đã gửi từ thiết bị này
+          </h3>
+          <span class="text-[10px] text-gray-400">Chạm vào để xem chi tiết</span>
+        </div>
+
+        <div class="overflow-x-auto border border-gray-200 rounded-lg">
+          <table class="w-full text-left text-[11px] divide-y divide-gray-200">
+            <thead class="bg-gray-50 text-gray-600 text-[10px] uppercase font-bold">
+              <tr>
+                <th class="p-2">Mã</th>
+                <th class="p-2">Thời gian</th>
+                <th class="p-2">Lĩnh vực</th>
+                <th class="p-2">Trạng thái</th>
+                <th class="p-2 text-center">Chi tiết</th>
+              </tr>
+            </thead>
+            <tbody id="table-phan-anh-body" class="divide-y divide-gray-100 bg-white">
+              <!-- Dòng mẫu thực tế theo log của người dùng -->
+              <tr class="hover:bg-blue-50/50 cursor-pointer" onclick="openDetailModal('PA-20260912-193146')">
+                <td class="p-2 font-mono font-bold text-blue-700">PA-20260912-193146</td>
+                <td class="p-2 text-gray-500">19:31 12/9/2026</td>
+                <td class="p-2">An ninh trật tự</td>
+                <td class="p-2"><span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Chờ phân loại</span></td>
+                <td class="p-2 text-center"><button class="text-blue-600 hover:text-blue-800 font-bold text-[10px]">👁️ Xem</button></td>
+              </tr>
+              <tr class="hover:bg-blue-50/50 cursor-pointer" onclick="openDetailModal('PA-20260902-081520')">
+                <td class="p-2 font-mono font-bold text-blue-700">PA-20260902-081520</td>
+                <td class="p-2 text-gray-500">08:15 02/9/2026</td>
+                <td class="p-2">Môi trường - rác thải</td>
+                <td class="p-2"><span class="bg-green-100 text-green-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Đã xử lý</span></td>
+                <td class="p-2 text-center"><button class="text-blue-600 hover:text-blue-800 font-bold text-[10px]">👁️ Xem</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODAL XEM CHI TIẾT PHẢN ÁNH CỦA CÔNG DÂN ==================== -->
+    <div id="modal-chi-tiet-pa" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3 backdrop-blur-sm">
+      <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl border border-gray-200 text-xs space-y-3 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b pb-2">
+          <div class="flex items-center gap-1.5">
+            <span class="w-6 h-6 rounded bg-red-100 text-red-700 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-file-lines"></i>
+            </span>
+            <span class="font-black text-gray-900 uppercase">Chi Tiết Phản Ánh Công Dân</span>
+          </div>
+          <button onclick="closeDetailModal()" class="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold">✕</button>
+        </div>
+
+        <div class="space-y-2 bg-gray-50 p-3 rounded-xl border border-gray-200 text-[11.5px]">
+          <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="text-gray-500">Mã phản ánh:</span>
+            <span id="dt-ma" class="font-mono font-bold text-red-700">PA-20260912-193146</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="text-gray-500">Người gửi:</span>
+            <span id="dt-hoten" class="font-bold text-gray-900">Nguyễn Văn A</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="text-gray-500">Số điện thoại liên hệ:</span>
+            <a id="dt-sdt" href="tel:09xx" class="font-mono font-bold text-blue-600 underline">09xx xxx xxx</a>
+          </div>
+          <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="text-gray-500">Địa chỉ / Khu vực:</span>
+            <span id="dt-diachi" class="font-semibold text-gray-800 text-right">Đội 8 Lương Hậu</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="text-gray-500">Lĩnh vực:</span>
+            <span id="dt-linhvuc" class="font-semibold text-gray-800">An ninh trật tự</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="text-gray-500">Mức độ ưu tiên:</span>
+            <span id="dt-mucdo" class="font-bold text-amber-700">Bình thường</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-200 pb-1">
+            <span class="text-gray-500">Thời gian gửi:</span>
+            <span id="dt-thoigian" class="text-gray-600">19:31:46 12/9/2026</span>
+          </div>
+          <div class="space-y-1 pt-1">
+            <div class="font-bold text-gray-700">Nội dung phản ánh chi tiết:</div>
+            <div id="dt-noidung" class="p-2 bg-white rounded border border-gray-200 text-gray-800 leading-relaxed text-justify">
+              Đề nghị Tổ bảo vệ ANTT và Ban cán bộ TDP tăng cường tuần tra tại khu vực kiệt ngõ do xuất hiện tình trạng thanh thiếu niên tụ tập đêm khuya gây ồn ào.
+            </div>
+          </div>
+          <div class="pt-1 flex justify-between items-center text-[11px]">
+            <span class="text-gray-500">Trạng thái giải quyết:</span>
+            <span id="dt-trangthai" class="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Đã tiếp nhận - chờ phân loại</span>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <a id="dt-call-btn" href="tel:09xx" class="flex-1 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold text-center flex items-center justify-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-phone"></i> Gọi Điện Thoại
+          </a>
+          <button onclick="closeDetailModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-bold">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== MỤC 5: CẨM NANG CÔNG DÂN SỐ & BIỂU MẪU (GIỮ NGUYÊN) ==================== -->
+    <section id="cam-nang-so" class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm space-y-2.5 text-xs">
+      <h2 class="text-xs font-black text-gray-900 uppercase flex items-center gap-1.5 border-b pb-1.5">
+        <i class="fa-solid fa-mobile-screen-button text-blue-600"></i> Cẩm Nang Công Dân Số Lương Hậu
+      </h2>
+      <div class="grid grid-cols-3 gap-2 text-center pt-1">
+        <a href="https://tuongtac.hue.gov.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-100 flex flex-col items-center">
+          <i class="fa-solid fa-city text-blue-600 text-xl mb-1"></i>
+          <span class="font-bold text-[11px]">Hue-S</span>
+          <span class="text-[9px] text-gray-400">Đô thị thông minh</span>
+        </a>
+        <a href="https://vneid.gov.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-100 flex flex-col items-center">
+          <i class="fa-solid fa-id-card text-red-600 text-xl mb-1"></i>
+          <span class="font-bold text-[11px]">VNeID</span>
+          <span class="text-[9px] text-gray-400">Định danh Mức 2</span>
+        </a>
+        <a href="https://dichvucong.gov.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-100 flex flex-col items-center">
+          <i class="fa-solid fa-laptop-code text-green-600 text-xl mb-1"></i>
+          <span class="font-bold text-[11px]">Dịch Vụ Công</span>
+          <span class="text-[9px] text-gray-400">Hồ sơ trực tuyến</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== CHUYÊN MỤC CHÍNH (THEO YÊU CẦU) ==================== -->
+    <section id="chuyen-muc-chinh" class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm space-y-2.5 text-xs">
+      <div class="border-b border-gray-200 pb-1.5 flex items-center justify-between">
+        <h2 class="text-xs sm:text-sm font-black text-[#991b1b] uppercase flex items-center gap-1.5">
+          <i class="fa-solid fa-layer-group text-red-600"></i> Chuyên Mục Chính
+        </h2>
+        <span class="text-[10px] text-gray-400">TDP Lương Hậu</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-1 text-xs">
+        <a href="/" class="p-2.5 bg-gray-50 hover:bg-red-50 hover:text-red-700 rounded-lg border border-gray-200 flex items-center gap-2 font-bold text-gray-800 transition">
+          <i class="fa-solid fa-house text-[#b91c1c] text-sm"></i>
+          <span>Trang chủ</span>
+        </a>
+        <a href="#tin-luong-hau" class="p-2.5 bg-gray-50 hover:bg-red-50 hover:text-red-700 rounded-lg border border-gray-200 flex items-center gap-2 font-bold text-gray-800 transition">
+          <i class="fa-solid fa-newspaper text-[#b91c1c] text-sm"></i>
+          <span>Tin tức Lương Hậu</span>
+        </a>
+        <a href="#kho-bieu-mau-tai-file" class="p-2.5 bg-gray-50 hover:bg-red-50 hover:text-red-700 rounded-lg border border-gray-200 flex items-center gap-2 font-bold text-gray-800 transition">
+          <i class="fa-solid fa-file-arrow-down text-[#b91c1c] text-sm"></i>
+          <span>Kho Biểu mẫu - Tải file</span>
+        </a>
+        <a href="#tin-luong-hau" class="p-2.5 bg-gray-50 hover:bg-red-50 hover:text-red-700 rounded-lg border border-gray-200 flex items-center gap-2 font-bold text-gray-800 transition">
+          <i class="fa-solid fa-leaf text-green-600 text-sm"></i>
+          <span>Ngày Chủ nhật xanh</span>
+        </a>
+        <a href="#cam-nang-so" class="col-span-2 p-2.5 bg-gray-50 hover:bg-red-50 hover:text-red-700 rounded-lg border border-gray-200 flex items-center justify-center gap-2 font-bold text-gray-800 transition">
+          <i class="fa-solid fa-id-card-clip text-blue-600 text-sm"></i>
+          <span>Cẩm nang VNeID & Hue-S</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==================== KHO BIỂU MẪU ĐIỆN TỬ (11 TÀI LIỆU) - TẢI VỀ MIỄN PHÍ ==================== -->
+    <section id="kho-bieu-mau-dien-tu" class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm space-y-3 text-xs">
+      <div class="border-b border-gray-200 pb-2 flex items-center justify-between">
+        <div>
+          <h2 class="text-xs sm:text-sm font-black text-[#991b1b] uppercase flex items-center gap-1.5">
+            <i class="fa-solid fa-folder-open text-yellow-600"></i> Kho Biểu Mẫu Điện Tử (11 Tài Liệu)
+          </h2>
+          <p class="text-[10.5px] text-gray-500 mt-0.5">Tải về miễn phí • Văn bản chuẩn quy cách hành chính nhà nước</p>
+        </div>
+        <span class="text-[9.5px] bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded border border-green-200">
+          Tải Miễn Phí
+        </span>
+      </div>
+
+      <!-- Lưới 11 biểu mẫu điện tử công khai -->
+      <div class="space-y-2">
+        
+        <!-- 1. BM-TDP-01 -->
+        <div class="p-2.5 bg-gray-50 hover:bg-red-50/60 rounded-lg border border-gray-200 flex items-center justify-between gap-2 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded bg-blue-100 text-blue-700 flex items-center justify-center font-black text-xs flex-shrink-0">
+              <i class="fa-solid fa-file-word"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-bold text-gray-900 text-xs">BM-TDP-01: Xác nhận cư trú</div>
+              <div class="text-[10.5px] text-gray-500 truncate">Giấy đề nghị xác nhận thông tin cư trú / nhân khẩu thực tế</div>
+            </div>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded text-[10.5px] font-bold flex items-center gap-1 flex-shrink-0 shadow-sm">
+            <i class="fa-solid fa-download"></i> Tải về
+          </a>
+        </div>
+
+        <!-- 2. BM-CSXH-03 -->
+        <div class="p-2.5 bg-gray-50 hover:bg-red-50/60 rounded-lg border border-gray-200 flex items-center justify-between gap-2 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded bg-red-100 text-red-700 flex items-center justify-center font-black text-xs flex-shrink-0">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-bold text-gray-900 text-xs">BM-CSXH-03: Khó khăn đột xuất</div>
+              <div class="text-[10.5px] text-gray-500 truncate">Đơn xin hỗ trợ đối tượng có hoàn cảnh khó khăn, ốm đau đột xuất</div>
+            </div>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded text-[10.5px] font-bold flex items-center gap-1 flex-shrink-0 shadow-sm">
+            <i class="fa-solid fa-download"></i> Tải về
+          </a>
+        </div>
+
+        <!-- 3. BM-PA-02 -->
+        <div class="p-2.5 bg-gray-50 hover:bg-red-50/60 rounded-lg border border-gray-200 flex items-center justify-between gap-2 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded bg-amber-100 text-amber-700 flex items-center justify-center font-black text-xs flex-shrink-0">
+              <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-bold text-gray-900 text-xs">BM-PA-02: Phiếu xử lý phản ánh</div>
+              <div class="text-[10.5px] text-gray-500 truncate">Mẫu phiếu tiếp nhận, phân loại và xử lý kiến nghị của công dân</div>
+            </div>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded text-[10.5px] font-bold flex items-center gap-1 flex-shrink-0 shadow-sm">
+            <i class="fa-solid fa-download"></i> Tải về
+          </a>
+        </div>
+
+        <!-- 4. VBPL-DD-2024 -->
+        <div class="p-2.5 bg-gray-50 hover:bg-red-50/60 rounded-lg border border-gray-200 flex items-center justify-between gap-2 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded bg-purple-100 text-purple-700 flex items-center justify-center font-black text-xs flex-shrink-0">
+              <i class="fa-solid fa-book"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-bold text-gray-900 text-xs">VBPL-DD-2024: Luật Đất đai</div>
+              <div class="text-[10.5px] text-gray-500 truncate">Trích yếu quy định Luật Đất đai 2024 liên quan đến cấp đổi GCN quyền sử dụng đất</div>
+            </div>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded text-[10.5px] font-bold flex items-center gap-1 flex-shrink-0 shadow-sm">
+            <i class="fa-solid fa-download"></i> Tải về
+          </a>
+        </div>
+
+        <!-- 5. BM-DT-05 -->
+        <div class="p-2.5 bg-gray-50 hover:bg-red-50/60 rounded-lg border border-gray-200 flex items-center justify-between gap-2 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded bg-green-100 text-green-700 flex items-center justify-center font-black text-xs flex-shrink-0">
+              <i class="fa-solid fa-file-word"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-bold text-gray-900 text-xs">BM-DT-05: Đăng ký đoàn thể & Chủ nhật xanh</div>
+              <div class="text-[10.5px] text-gray-500 truncate">Phiếu đăng ký sinh hoạt đoàn thể và phong trào vệ sinh môi trường</div>
+            </div>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded text-[10.5px] font-bold flex items-center gap-1 flex-shrink-0 shadow-sm">
+            <i class="fa-solid fa-download"></i> Tải về
+          </a>
+        </div>
+
+        <!-- 6. HD-DVC-08 -->
+        <div class="p-2.5 bg-gray-50 hover:bg-red-50/60 rounded-lg border border-gray-200 flex items-center justify-between gap-2 transition">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded bg-blue-100 text-blue-700 flex items-center justify-center font-black text-xs flex-shrink-0">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="font-bold text-gray-900 text-xs">HD-DVC-08: Tình trạng hôn nhân</div>
+              <div class="text-[10.5px] text-gray-500 truncate">Hướng dẫn nộp hồ sơ online cấp Giấy xác nhận tình trạng hôn nhân</div>
+            </div>
+          </div>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded text-[10.5px] font-bold flex items-center gap-1 flex-shrink-0 shadow-sm">
+            <i class="fa-solid fa-download"></i> Tải về
+          </a>
+        </div>
+
+        <!-- 7 - 11 Tóm lược các biểu mẫu còn lại -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="p-2 bg-gray-50 hover:bg-red-50 rounded border border-gray-200 flex items-center justify-between">
+            <span class="truncate">HD-DVC-09: Khai sinh / Khai tử</span>
+            <i class="fa-solid fa-download text-gray-400 text-xs"></i>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="p-2 bg-gray-50 hover:bg-red-50 rounded border border-gray-200 flex items-center justify-between">
+            <span class="truncate">BM-TN-04: Cấp đổi thẻ BHYT</span>
+            <i class="fa-solid fa-download text-gray-400 text-xs"></i>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="p-2 bg-gray-50 hover:bg-red-50 rounded border border-gray-200 flex items-center justify-between">
+            <span class="truncate">BM-CT-06: Xác nhận sửa chữa nhà</span>
+            <i class="fa-solid fa-download text-gray-400 text-xs"></i>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="p-2 bg-gray-50 hover:bg-red-50 rounded border border-gray-200 flex items-center justify-between">
+            <span class="truncate">BM-HT-07: Đăng ký lưu trú Hue-S</span>
+            <i class="fa-solid fa-download text-gray-400 text-xs"></i>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="col-span-2 p-2 bg-gray-50 hover:bg-red-50 rounded border border-gray-200 flex items-center justify-between">
+            <span class="truncate">QD-UBND-10: Quy chế tiếp công dân và giải quyết TTHC tại cơ sở</span>
+            <i class="fa-solid fa-download text-gray-400 text-xs"></i>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== LIÊN KẾT QUỐC GIA & ĐỊA PHƯƠNG (THEO YÊU CẦU) ==================== -->
+    <section id="lien-ket-quoc-gia" class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm space-y-2.5 text-xs">
+      <div class="border-b border-gray-200 pb-1.5 flex items-center justify-between">
+        <h2 class="text-xs sm:text-sm font-black text-[#991b1b] uppercase flex items-center gap-1.5">
+          <i class="fa-solid fa-link text-red-600"></i> Liên Kết Quốc Gia & Địa Phương
+        </h2>
+        <span class="text-[10px] text-gray-400">Cổng Thông Tin Số</span>
+      </div>
+      <div class="space-y-1.5 pt-1 text-xs">
+        <a href="https://vbpl.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-red-50 rounded-lg border border-gray-100 flex items-center justify-between group transition">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-scale-balanced text-red-700 text-sm"></i>
+            <span class="font-bold text-gray-800 group-hover:text-red-700">Cơ sở dữ liệu QG về Pháp luật</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+        </a>
+        <a href="https://vanban.chinhphu.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-red-50 rounded-lg border border-gray-100 flex items-center justify-between group transition">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-landmark text-red-700 text-sm"></i>
+            <span class="font-bold text-gray-800 group-hover:text-red-700">Hệ thống Văn bản Chính phủ</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+        </a>
+        <a href="https://dichvucong.gov.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-red-50 rounded-lg border border-gray-100 flex items-center justify-between group transition">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-laptop-file text-blue-700 text-sm"></i>
+            <span class="font-bold text-gray-800 group-hover:text-red-700">Cổng Dịch vụ công Quốc gia</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+        </a>
+        <a href="https://tulieuvankien.dangcongsan.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-red-50 rounded-lg border border-gray-100 flex items-center justify-between group transition">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-flag text-red-600 text-sm"></i>
+            <span class="font-bold text-gray-800 group-hover:text-red-700">Tư liệu Văn kiện Đảng</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+        </a>
+        <a href="https://huongthuy.hue.gov.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-red-50 rounded-lg border border-gray-100 flex items-center justify-between group transition">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-building-columns text-emerald-700 text-sm"></i>
+            <span class="font-bold text-gray-800 group-hover:text-red-700">Cổng TTĐT Phường Hương Thủy</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+        </a>
+        <a href="https://hue.gov.vn" target="_blank" class="p-2.5 bg-gray-50 hover:bg-red-50 rounded-lg border border-gray-100 flex items-center justify-between group transition">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-city text-purple-700 text-sm"></i>
+            <span class="font-bold text-gray-800 group-hover:text-red-700">Văn bản & Cổng TTĐT TP. Huế (hue.gov.vn)</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER CHUẨN CỔNG THÔNG TIN ĐIỆN TỬ HUẾ -->
+    <footer class="pt-3 text-center text-gray-500 text-[10.5px] space-y-1.5 border-t border-gray-200">
+      <div class="font-black text-[#991b1b] uppercase text-[11px]">CỔNG THÔNG TIN ĐIỆN TỬ TỔ DÂN PHỐ LƯƠNG HẬU</div>
+      <div>ỦY BAN NHÂN DÂN PHƯỜNG HƯƠNG THỦY • CHI BỘ & BAN CÁN BỘ TDP LƯƠNG HẬU</div>
+      <div>Trụ sở Nhà SHCĐ: Số 83 Thái Thuận, TDP Lương Hậu, Phường Hương Thủy, TP. Huế</div>
+      <div>Hotline tiếp công dân: 0965.712.812 (Tổ trưởng) • 0962.481.112 (Bí thư Chi bộ)</div>
+      <div class="text-[9.5px] text-gray-400 pt-1">Bản quyền © 2026 Tổ Dân Phố Lương Hậu • Giao diện chuẩn hóa di động Hue.gov.vn</div>
+    </footer>
+
+  </main>
+
+  <!-- ==================== NÚT NỔI ĐIỀU HƯỚNG NHANH BÊN PHẢI (CHUẨN HÌNH 5106, 5107, 5108) ==================== -->
+  
+  <!-- Nút Menu Nổi Phụ (Floating Navigation Drawer Icon hình 5106) -->
+  <button id="btn-floating-menu" class="fixed right-0 top-1/2 -translate-y-1/2 bg-white/95 text-gray-800 w-9 h-9 rounded-l-xl shadow-lg border-y border-l border-gray-300 flex items-center justify-center z-40 active:bg-gray-100" aria-label="Menu nhanh">
+    <i class="fa-solid fa-bars-staggered text-sm"></i>
+  </button>
+
+  <!-- Nút Cuộn Lên Đầu Trang (Back to top hình tròn trắng viền xanh mũi tên xanh chuẩn hình 5107, 5108) -->
+  <button id="btn-back-to-top" class="fixed bottom-16 right-4 w-10 h-10 bg-white text-[#2563eb] rounded-full shadow-lg border-2 border-[#93c5fd] flex items-center justify-center active:bg-blue-50 focus:outline-none z-40" aria-label="Lên đầu trang">
+    <i class="fa-solid fa-arrow-up text-sm font-black"></i>
+  </button>
+
+  <!-- Nút Chatbot / Hỗ trợ công dân số (hình tròn xanh chuẩn hình 5106, 5107, 5108) -->
+  <a href="#gui-phan-anh" class="fixed bottom-4 right-4 w-11 h-11 bg-[#2563eb] text-white rounded-full shadow-xl flex items-center justify-center active:scale-95 focus:outline-none z-40 shadow-blue-500/40" title="Trợ lý công dân">
+    <i class="fa-solid fa-robot text-lg"></i>
+  </a>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const btnOpenMenu = document.getElementById("btn-open-menu");
+    const btnFloatingMenu = document.getElementById("btn-floating-menu");
+    const btnCloseMenu = document.getElementById("btn-close-menu");
+    const drawerNav = document.getElementById("drawer-nav");
+    const drawerBackdrop = document.getElementById("drawer-backdrop");
+
+    function openMenu() {
+      drawerNav.classList.remove("drawer-hidden");
+      drawerNav.classList.add("drawer-visible");
+      drawerBackdrop.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMenu() {
+      drawerNav.classList.remove("drawer-visible");
+      drawerNav.classList.add("drawer-hidden");
+      drawerBackdrop.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+
+    if (btnOpenMenu) btnOpenMenu.addEventListener("click", openMenu);
+    if (btnFloatingMenu) btnFloatingMenu.addEventListener("click", openMenu);
+    if (btnCloseMenu) btnCloseMenu.addEventListener("click", closeMenu);
+    if (drawerBackdrop) drawerBackdrop.addEventListener("click", closeMenu);
+
+    function toggleMenu(id) {
+      const sub = document.getElementById(id);
+      const icon = document.getElementById("icon-" + id);
+      if (sub.classList.contains("hidden")) {
+        sub.classList.remove("hidden");
+        if (icon) icon.classList.replace("fa-chevron-down", "fa-chevron-up");
+      } else {
+        sub.classList.add("hidden");
+        if (icon) icon.classList.replace("fa-chevron-up", "fa-chevron-down");
+      }
+    }
+
+    const btnBackToTop = document.getElementById("btn-back-to-top");
+    if (btnBackToTop) {
+      btnBackToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    function submitPhanAnh(e) {
+      e.preventDefault();
+      document.getElementById("form-phan-anh").reset();
+      const successBox = document.getElementById("pa-success");
+      successBox.classList.remove("hidden");
+      setTimeout(() => { successBox.classList.add("hidden"); }, 5000);
+    }
+  
+    // ==================== TỰ ĐỘNG ĐỒNG BỘ BÀI VIẾT MỚI TỪ GOOGLE SHEETS ====================
+    function loadPublicDynamicNews() {
+      const sheetUrl = "https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/gviz/tq?tqx=out:json";
+      const container = document.getElementById("dynamic-public-news");
+      if (!container) return;
+
+      fetch(sheetUrl)
+        .then(res => res.text())
+        .then(text => {
+          const match = text.match(/setResponse\(([\s\S]*)\);?/) /* fixed */;
+          if (!match) return;
+          const jsonStr = match[1].endsWith(';') ? match[1].slice(0, -1) : match[1];
+          const data = JSON.parse(jsonStr);
+          const rows = data.table.rows;
+          if (!rows || rows.length === 0) return;
+
+          const reversedRows = [...rows].reverse();
+          let html = "";
+
+          reversedRows.forEach((r) => {
+            const c = r.c || [];
+            const timestamp = c[0] ? (c[0].f || c[0].v || "") : "";
+            const date = c[1] ? (c[1].f || c[1].v || "") : "";
+            const category = (c[2] ? (c[2].v || "") : "").trim() || "Tin Lương Hậu";
+            const title = (c[3] ? (c[3].v || "") : "").trim();
+            const content = (c[4] ? (c[4].v || "") : "").trim();
+            const rawImg = (c[5] ? (c[5].v || "") : "").trim();
+
+            if (!title && !content) return;
+
+            let fileId = "";
+            if (rawImg) {
+              const idMatch = rawImg.match(/id=([a-zA-Z0-9_-]+)/) || rawImg.match(/\/d\/([a-zA-Z0-9_-]+)/);
+              if (idMatch) fileId = idMatch[1];
+            }
+            const imgSrc = fileId ? ("https://drive.google.com/thumbnail?id=" + fileId + "&sz=w800") : "";
+
+            html += '<article class="flex gap-2.5 items-start bg-white p-2.5 rounded-lg border border-red-100 shadow-sm active:bg-gray-50 transition">' +
+              '<div class="w-24 sm:w-28 aspect-video flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">' +
+                '<img src="' + imgSrc + '" alt="' + title + '" class="w-full h-full object-cover">' +
+                '<span class="absolute top-1 left-1 bg-red-700 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase">' + category + '</span>' +
+              '</div>' +
+              '<div class="flex-1 min-w-0">' +
+                '<h4 class="text-xs font-bold text-gray-900 leading-snug line-clamp-2 hover:text-red-700">' + title + '</h4>' +
+                '<p class="text-[11px] text-gray-600 line-clamp-2 mt-0.5 leading-tight">' + content + '</p>' +
+                '<p class="text-[10px] text-[#2563eb] font-medium mt-1 flex items-center gap-1">' +
+                  '<i class="fa-regular fa-calendar-days text-[9px]"></i> ' + (date || timestamp) +
+                '</p>' +
+              '</div>' +
+            '</article>';
+          });
+
+          if (html) {
+            container.innerHTML = '<div class="flex items-center gap-1.5 text-xs font-bold text-red-800 border-b border-red-200 pb-1 mt-2"><i class="fa-solid fa-clock-rotate-left"></i> <span>Tin mới đăng từ Ban điều hành:</span></div>' + html;
+          }
+        })
+        .catch(err => console.error("Lỗi nạp tin công khai:", err));
+    }
+    window.addEventListener("DOMContentLoaded", loadPublicDynamicNews);
+
+  </script>
+  <script is:inline src="/js/doc-tin-tuc.js"></script>
+<script>
+    // ==================== TẢI BIỂU MẪU ĐIỆN TỬ ====================
+    function downloadBieuMau(btn) {
+      const parent = btn.closest('.flex');
+      const name = parent ? parent.querySelector('.font-bold').innerText.trim() : 'Biểu mẫu';
+      alert('Hệ thống đang chuẩn bị tệp: ' + name + '\nVui lòng liên hệ Văn phòng TDP Lương Hậu (83 Thái Thuận) hoặc nộp trực tuyến qua Cổng Dịch vụ công.');
+    }
+</script>
+</body>
+</html>

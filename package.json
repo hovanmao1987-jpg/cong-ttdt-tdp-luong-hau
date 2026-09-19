@@ -1,0 +1,29 @@
+{
+  "name": "cong-ttdt-tdp-luong-hau",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cổng thông tin điện tử Tổ dân phố Lương Hậu — phường Hương Thủy, thành phố Huế. Chuẩn Hue.gov.vn Mobile V3 (khu công khai) & DangCongSan Mobile V2 (khu nội bộ). Bản tĩnh + bản Astro SSG, deploy Vercel.",
+  "scripts": {
+    "build:data": "node astro/build-data.mjs",
+    "sync": "node astro/sync-public.mjs",
+    "sync:static": "node astro/sync-static.mjs",
+    "astro:build": "astro build --config astro/astro.config.mjs",
+    "build": "npm run build:data && npm run sync && npm run astro:build && npm run sync:static",
+    "dev": "npm run build:data && npm run sync && astro dev --config astro/astro.config.mjs --host 0.0.0.0 --port 4321",
+    "start": "npm run dev",
+    "preview": "npm run build && astro preview --config astro/astro.config.mjs --host 0.0.0.0 --port 4321",
+    "serve": "node astro/server.mjs",
+    "test": "node tests/test.cjs",
+    "check": "npm run build:data && npm run test"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.0"
+  }
+}

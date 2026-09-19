@@ -1,0 +1,48 @@
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.js
+
+# --- Build output ---
+dist/
+.astro/
+.vercel/
+.build/
+
+# --- Tệp sinh tự động (npm run sync) — có thể tạo lại bất cứ lúc nào ---
+# (public/robots.txt là nội dung gốc nên VẪN được commit)
+public/assets/
+public/data/
+
+# --- Môi trường / bí mật ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Hệ điều hành / IDE ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.log
+npm-debug.log*
+
+# --- Test / coverage ---
+coverage/
+.nyc_output/
+
+# --- DỮ LIỆU CÁ NHÂN THẬT CỦA CHI BỘ (ĐÃ KÍCH HOẠT — KHÔNG COMMIT LÊN KHO CÔNG KHAI) ---
+# Từ 11/09/2026 dự án chứa danh sách thật: 10 cán bộ TDP + 22 đảng viên theo QĐ 46-QĐ/ĐU ngày 30/6/2026.
+# Nếu bắt buộc phải dùng Git, chỉ đẩy lên KHO RIÊNG TƯ (private). Kiểm tra bằng: git remote -v
+data/van-ban/
+data/dang-vien-that.*
+VAN-HANH-NOI-BO.md
+
+# --- Temporary scripts & archives ---
+*.py
+*.zip
+

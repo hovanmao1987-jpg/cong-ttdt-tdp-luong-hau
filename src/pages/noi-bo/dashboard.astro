@@ -1,0 +1,27 @@
+---
+/**
+ * src/pages/noi-bo/dashboard.astro
+ * Đường dẫn ngắn "/noi-bo/dashboard" → mở thẳng tab “Cán bộ, đảng viên”
+ * (nơi đặt nút Dashboard phân công nhiệm vụ “6 Rõ”) trong khu nội bộ.
+ */
+---
+
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Đang mở Dashboard “6 Rõ” — Chi bộ TDP Lương Hậu</title>
+    <script is:inline>
+      location.replace("/noi_bo#/noi-bo/canbo");
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; url=/noi_bo" /></noscript>
+  </head>
+  <body style="font-family:system-ui,sans-serif;background:#170509;color:#fff;display:grid;place-items:center;min-height:100vh;margin:0">
+    <p style="text-align:center;padding:24px">
+      Đang mở <b>Dashboard phân công nhiệm vụ “6 Rõ”</b>…<br />
+      <a href="/noi_bo#/noi-bo/canbo" style="color:#FFC72C">Bấm vào đây nếu trình duyệt không tự chuyển</a>
+    </p>
+  </body>
+</html>

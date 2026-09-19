@@ -1,0 +1,499 @@
+---
+/**
+ * src/pages/noi-bo/van-ban-moi.astro
+ * Trang hiển thị văn bản mới của Đảng ủy phường Hương Thủy và Thành ủy Huế (tháng 9/2026)
+ * Cấu trúc phân nhóm theo chỉ đạo:
+ * 1. 📌 Văn bản chỉ đạo, chỉ thị (Chỉ thị 02-CT/ĐU)
+ * 2. 📖 Hướng dẫn quán triệt, học tập (Hướng dẫn 33-HD/ĐU, Hướng dẫn 32-HD/ĐU)
+ * 3. 📋 Kế hoạch triển khai & Mô hình thi đua (Kế hoạch 72-KH/ĐU, Kế hoạch 71-KH/ĐU, Kế hoạch 70-KH/ĐU)
+ */
+import rawData from "../../data/van-ban-phuong-thanh-pho.json";
+
+const vanBans = rawData;
+
+// Phân loại nhóm chuyên biệt
+const nhomChiDao = vanBans.filter(v => v.loaiVanBan === 'Chỉ thị');
+const nhomHuongDan = vanBans.filter(v => v.loaiVanBan === 'Hướng dẫn');
+const nhomKeHoach = vanBans.filter(v => v.loaiVanBan === 'Kế hoạch');
+---
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Văn bản mới Phường &amp; Thành phố — Chi bộ TDP Lương Hậu</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%2393061d'/><path d='M32 14l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L32 28.6l-5.9 3.5 1.7-6.7-5.3-4.5 6.9-.5z' fill='%23FFC72C'/></svg>">
+  <style>
+    :root {
+      --primary: #93061d;
+      --primary-dark: #630312;
+      --gold: #FFC72C;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
+    
+    header { background: var(--primary); color: #fff; padding: 12px 20px; border-bottom: 2px solid var(--gold); }
+    .header-inner { max-width: 1240px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo-box { display: flex; align-items: center; gap: 12px; }
+    .star-badge { width: 38px; height: 38px; border-radius: 50%; background: var(--gold); color: var(--primary); font-size: 20px; font-weight: bold; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .header-title h1 { font-size: 15px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+    .header-title p { font-size: 11px; color: #ffccd3; }
+    .header-links a { color: #fff; text-decoration: none; font-size: 12px; padding: 6px 12px; border-radius: 6px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); margin-left: 8px; transition: 0.2s; }
+    .header-links a:hover { background: rgba(255,255,255,0.25); }
+
+    .breadcrumbs { background: #fff; border-bottom: 1px solid var(--border); padding: 8px 20px; font-size: 12px; color: var(--muted); }
+    .breadcrumbs-inner { max-width: 1240px; margin: 0 auto; }
+    .breadcrumbs a { color: var(--primary); text-decoration: none; font-weight: 500; }
+
+    main { max-width: 1240px; margin: 20px auto; padding: 0 16px; flex: 1; display: grid; grid-template-columns: 280px 1fr; gap: 20px; width: 100%; }
+    @media (max-width: 860px) {
+      main { grid-template-columns: 1fr; }
+    }
+
+    aside { background: #1b060a; color: #fff; border-radius: 12px; padding: 16px; height: fit-content; border: 1px solid rgba(255,199,44,0.25); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    aside .brand { font-size: 12px; font-weight: bold; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 6px; }
+    
+    .nav-tree { list-style: none; display: flex; flex-direction: column; gap: 3px; font-size: 12px; }
+    .nav-item { border-radius: 6px; }
+    .nav-link { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: #fecdd3; transition: 0.15s; }
+    .nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-link.active { background: var(--primary); color: #fff; font-weight: 600; border: 1px solid var(--gold); }
+    .badge-tag { background: var(--gold); color: #1e070c; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+
+    .sub-tree { list-style: none; margin: 4px 0 6px 14px; padding-left: 10px; border-left: 2px solid rgba(255,199,44,0.3); display: flex; flex-direction: column; gap: 2px; }
+    .sub-link { display: flex; justify-content: space-between; align-items: center; padding: 5px 8px; border-radius: 4px; text-decoration: none; color: #fbcfe8; font-size: 11px; transition: 0.15s; }
+    .sub-link:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .sub-link.active { background: rgba(255,199,44,0.2); color: var(--gold); font-weight: 600; }
+
+    .content-area { display: flex; flex-direction: column; gap: 20px; }
+    .card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.03); overflow: hidden; }
+    .card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .card-header h2 { font-size: 16px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    
+    .filter-bar { padding: 12px 20px; background: #fafbfc; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .tabs-btn { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab-btn { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #475569; cursor: pointer; transition: 0.15s; }
+    .tab-btn:hover { background: #cbd5e1; }
+    .tab-btn.active { background: var(--primary); color: #fff; }
+
+    .search-box input { padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 12px; width: 230px; }
+
+    .group-section { padding: 16px 20px; }
+    .group-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; padding-bottom: 6px; border-bottom: 2px solid #e2e8f0; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    th { background: #f8fafc; color: #475569; font-weight: 600; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; text-transform: uppercase; }
+    td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+    tr:hover td { background: #fafcff; }
+
+    .doc-num { font-weight: 700; color: var(--primary); font-size: 13px; }
+    .doc-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .doc-auth { font-size: 11px; color: #475569; }
+
+    .type-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
+    .type-hd { background: #f3e8ff; color: #7e22ce; border-color: #d8b4fe; }
+    .type-ct { background: #ffe4e6; color: #be123c; border-color: #fecdd3; }
+    .type-kh { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+
+    .deadline-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: 6px; font-size: 11.5px; font-weight: 600; border: 1px solid transparent; }
+    .dl-khancap { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .dl-sapdenhan { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .dl-dangxuly { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+
+    .btn-act { padding: 5px 10px; font-size: 11.5px; border-radius: 5px; border: 1px solid #cbd5e1; background: #fff; color: var(--text); cursor: pointer; transition: 0.15s; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-act:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-act.primary { background: #93061d; color: #fff; border-color: #93061d; }
+    .btn-act.primary:hover { background: #630312; }
+
+    /* Modal số hóa văn bản */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(3px); z-index: 9999; align-items: center; justify-content: center; padding: 16px; overflow-y: auto; }
+    .modal-overlay.active { display: flex; }
+    .modal-card { background: #fff; border-radius: 12px; max-width: 780px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.25); border: 1px solid var(--border); overflow: hidden; animation: modalPop 0.2s ease-out; }
+    @keyframes modalPop { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+    .modal-header { padding: 14px 20px; background: #93061d; color: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); }
+    .modal-header h3 { font-size: 15px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .modal-close { background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; line-height: 1; opacity: 0.85; transition: 0.15s; }
+    .modal-close:hover { opacity: 1; transform: scale(1.1); }
+    .modal-body { padding: 24px; overflow-y: auto; flex: 1; background: #fafbfc; }
+    
+    /* Trình bày văn bản số hóa */
+    .doc-paper { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 28px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-size: 13.5px; line-height: 1.7; color: #1e293b; }
+    .doc-top-bar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #e2e8f0; }
+    .doc-agency { font-weight: 700; color: #93061d; font-size: 13px; text-transform: uppercase; }
+    .doc-motto { text-align: center; }
+    .doc-motto b { font-size: 12px; text-transform: uppercase; display: block; color: #0f172a; }
+    .doc-motto span { font-size: 11.5px; color: #475569; }
+    .doc-main-title { text-align: center; margin: 18px 0 14px; }
+    .doc-main-title h4 { font-size: 16px; font-weight: 800; color: #93061d; text-transform: uppercase; margin-bottom: 4px; }
+    .doc-main-title p { font-size: 12px; color: #64748b; font-style: italic; }
+    .doc-meta-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 12.5px; }
+    .doc-meta-table td { padding: 6px 10px; border: 1px solid #e2e8f0; background: #f8fafc; }
+    .doc-meta-table td.lbl { width: 180px; font-weight: 600; color: #475569; }
+    .doc-meta-table td.val { background: #fff; color: #0f172a; }
+    .doc-content-box { background: #fff; padding: 16px; border: 1px dashed #cbd5e1; border-radius: 6px; font-size: 13px; line-height: 1.8; white-space: pre-line; color: #0f172a; margin-top: 12px; }
+    .modal-footer { padding: 12px 20px; background: #f1f5f9; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+
+    footer { background: #0f172a; color: #94a3b8; text-align: center; padding: 16px; font-size: 12px; margin-top: auto; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo-box">
+        <div class="star-badge">★</div>
+        <div class="header-title">
+          <h1>CHI BỘ TỔ DÂN PHỐ LƯƠNG HẬU</h1>
+          <p>Đảng bộ phường Hương Thủy · Thành ủy Huế</p>
+        </div>
+      </div>
+      <div class="header-links">
+        <a href="/noi_bo">Cổng nội bộ</a>
+        <a href="/">Trang công khai</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+      <a href="/">Trang chủ</a> / <a href="/noi_bo">Khu vực nội bộ</a> / <b>Văn bản mới của Phường và Thành phố</b>
+    </div>
+  </div>
+
+  <main>
+    {/* Sidebar theo đúng sơ đồ cây chỉ đạo */}
+    <aside>
+      <div class="brand">
+        <span>🔒 KHU VỰC NỘI BỘ CHI BỘ</span>
+      </div>
+      <ul class="nav-tree">
+        <li class="nav-item">
+          <a href="/noi_bo#/noi-bo/tongquan" class="nav-link">
+            <span>📊 Dashboard Chi bộ</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/noi_bo#/noi-bo/canbo" class="nav-link">
+            <span>👤 Danh sách đảng viên</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/noi_bo#/noi-bo/tongquan" class="nav-link">
+            <span>📅 Sinh hoạt Chi bộ</span>
+          </a>
+          <ul class="sub-tree">
+            <li><a href="/noi_bo#/noi-bo/tongquan" class="sub-link"><span>✅ Điểm danh</span></a></li>
+            <li><a href="/noi_bo#/noi-bo/tongquan" class="sub-link"><span>📝 Nội dung sinh hoạt</span></a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="/noi_bo#/noi-bo/vanban" class="nav-link">
+            <span>📜 Nghị quyết Chi bộ</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/noi-bo/van-ban-moi" class="nav-link active">
+            <span>📂 Văn bản mới Phường &amp; TP</span>
+            <span class="badge-tag">MỚI (6)</span>
+          </a>
+          <ul class="sub-tree">
+            <li>
+              <a href="#nhom-chidao" class="sub-link" onclick="filterDocs('Chỉ thị')">
+                <span>📌 Văn bản chỉ đạo, chỉ thị</span>
+                <span style="background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px">1</span>
+              </a>
+            </li>
+            <li>
+              <a href="#nhom-huongdan" class="sub-link" onclick="filterDocs('Hướng dẫn')">
+                <span>📖 Hướng dẫn quán triệt, học tập</span>
+                <span style="background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px">2</span>
+              </a>
+            </li>
+            <li>
+              <a href="#nhom-kehoach" class="sub-link" onclick="filterDocs('Kế hoạch')">
+                <span>📋 Kế hoạch triển khai &amp; Thi đua</span>
+                <span style="background:rgba(0,0,0,0.3);padding:1px 5px;border-radius:3px">3</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="/noi_bo#/noi-bo/trunguong" class="nav-link">
+            <span>📁 Hồ sơ – Tài liệu</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/noi_bo#/noi-bo/canbo" class="nav-link">
+            <span>📊 Phân công nhiệm vụ (6 rõ)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/noi_bo#/noi-bo/canbo" class="nav-link">
+            <span>📈 Theo dõi tiến độ nhiệm vụ</span>
+          </a>
+        </li>
+      </ul>
+
+      <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1)">
+        <a href="/" style="color:#fca5a5; font-size:11.5px; text-decoration:none; display:flex; align-items:center; gap:6px">
+          <span>←</span> <span>Về cổng thông tin công khai</span>
+        </a>
+      </div>
+    </aside>
+
+    {/* Nội dung danh mục văn bản */}
+    <div class="content-area">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>
+              <span style="width:10px;height:10px;background:#93061d;border-radius:50%;display:inline-block"></span>
+              Văn bản mới của Phường và Thành phố (Đợt Tháng 9/2026)
+            </h2>
+            <p style="font-size:12px; color:var(--muted); margin-top:2px">
+              Hệ thống theo dõi thực hiện các văn bản chỉ đạo của Đảng ủy phường Hương Thủy &amp; Thành ủy Huế
+            </p>
+          </div>
+          <span style="font-size:12px; font-weight:700; color:var(--primary); background:#fee2e2; padding:4px 10px; border-radius:8px">
+            Tổng cộng: {vanBans.length} văn bản
+          </span>
+        </div>
+
+        {/* Thanh chuyển nhóm nhanh */}
+        <div class="filter-bar">
+          <div class="tabs-btn">
+            <button class="tab-btn active" onclick="filterDocs('ALL')">Tất cả ({vanBans.length})</button>
+            <button class="tab-btn" onclick="filterDocs('Chỉ thị')">📌 Chỉ đạo, chỉ thị ({nhomChiDao.length})</button>
+            <button class="tab-btn" onclick="filterDocs('Hướng dẫn')">📖 Hướng dẫn quán triệt ({nhomHuongDan.length})</button>
+            <button class="tab-btn" onclick="filterDocs('Kế hoạch')">📋 Kế hoạch &amp; Thi đua ({nhomKeHoach.length})</button>
+          </div>
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Tìm số hiệu, từ khóa..." onkeyup="searchDocs()" />
+          </div>
+        </div>
+
+        {/* Bảng hiển thị danh mục */}
+        <div style="overflow-x:auto">
+          <table id="docsTable">
+            <thead>
+              <tr>
+                <th style="width:40px; text-align:center">STT</th>
+                <th style="width:150px">Số hiệu / Ngày</th>
+                <th style="width:95px">Phân nhóm</th>
+                <th>Trích yếu nội dung &amp; Căn cứ</th>
+                <th style="width:180px">Hạn xử lý / Báo cáo</th>
+                <th style="width:90px; text-align:center">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vanBans.map((doc, index) => {
+                const loaiClass = doc.loaiVanBan === 'Hướng dẫn' ? 'type-hd' : doc.loaiVanBan === 'Chỉ thị' ? 'type-ct' : 'type-kh';
+                const dlClass = doc.trangThai === 'KhanCap' ? 'dl-khancap' : doc.trangThai === 'SapDenHan' ? 'dl-sapdenhan' : 'dl-dangxuly';
+                const nhomLabel = doc.loaiVanBan === 'Chỉ thị' ? '📌 Chỉ thị' : doc.loaiVanBan === 'Hướng dẫn' ? '📖 Hướng dẫn' : '📋 Kế hoạch';
+                return (
+                  <tr data-loai={doc.loaiVanBan} data-search={`${doc.soHieu} ${doc.trichYeu} ${doc.coQuan}`.toLowerCase()}>
+                    <td style="text-align:center; color:var(--muted); font-weight:600">{index + 1}</td>
+                    <td>
+                      <div class="doc-num">{doc.soHieu}</div>
+                      <div class="doc-date">📅 {doc.ngayBanHanh}</div>
+                      <div class="doc-auth">{doc.coQuan}</div>
+                    </td>
+                    <td>
+                      <span class={`type-badge ${loaiClass}`}>{nhomLabel}</span>
+                    </td>
+                    <td>
+                      <div style="font-weight:600; color:#0f172a; margin-bottom:4px; font-size:13.5px">{doc.trichYeu}</div>
+                      <div style="font-size:11.5px; color:var(--muted); background:#f8fafc; padding:4px 8px; border-radius:4px; border:1px solid #f1f5f9; display:inline-block">
+                        <b>Căn cứ:</b> {doc.canCu}
+                      </div>
+                      {(doc.canBoPhuTrach || doc.nguoiTheoDoi) && (
+                        <div style="font-size:11.5px; color:#9a3412; margin-top:6px; background:#fffbeb; padding:5px 8px; border-radius:4px; border:1px solid #fef3c7; line-height:1.4">
+                          👤 <b>Phụ trách thực hiện:</b> {doc.canBoPhuTrach || doc.nguoiTheoDoi}
+                        </div>
+                      )}
+                    </td>
+                    <td>
+                      <span class={`deadline-badge ${dlClass}`}>
+                        ⏰ {doc.hanXuLy}
+                      </span>
+                    </td>
+                    <td style="text-align:center">
+                      <button class="btn-act primary" onclick={`openDocModal('${doc.id}')`} title="Xem toàn văn bản số hóa">
+                        <span>📄</span> Xem văn bản
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <div style="padding:12px 20px; background:#f8fafc; border-top:1px solid var(--border); font-size:12px; color:var(--muted); display:flex; justify-content:space-between">
+          <span>Khu vực lưu hành nội bộ Chi bộ TDP Lương Hậu</span>
+          <span style="font-style:italic">Bảo mật theo QĐ 556-QĐ/VPTW</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL POPUP XEM TOÀN VĂN SỐ HÓA VĂN BẢN -->
+  <div id="docModalOverlay" class="modal-overlay" onclick="closeDocModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>
+          <span>📄</span> <span id="mDocHeaderTitle">BẢN SỐ HÓA VĂN BẢN CHỈ ĐẠO</span>
+        </h3>
+        <button class="modal-close" onclick="closeDocModalDirect()" title="Đóng modal (Esc)">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="doc-paper">
+          <div class="doc-top-bar">
+            <div>
+              <div id="mDocAgency" class="doc-agency">ĐẢNG ỦY PHƯỜNG HƯƠNG THỦY</div>
+              <div style="font-size:12px;color:#64748b;margin-top:2px">Số: <b id="mDocNum" style="color:#93061d">33-HD/ĐU</b></div>
+            </div>
+            <div class="doc-motto">
+              <b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b>
+              <span>Độc lập – Tự do – Hạnh phúc</span>
+              <div style="font-size:11px;color:#64748b;margin-top:4px">Hương Thủy, ngày <span id="mDocDate">14/09/2026</span></div>
+            </div>
+          </div>
+
+          <div class="doc-main-title">
+            <h4 id="mDocTypeTitle">HƯỚNG DẪN</h4>
+            <p id="mDocSummary">Về việc triển khai thực hiện Kết luận số 83-KL/TW...</p>
+          </div>
+
+          <table class="doc-meta-table">
+            <tbody>
+              <tr>
+                <td class="lbl">Cơ quan ban hành</td>
+                <td class="val" id="mDocAgencyVal">Đảng ủy phường Hương Thủy</td>
+              </tr>
+              <tr>
+                <td class="lbl">Căn cứ pháp lý</td>
+                <td class="val" id="mDocLegalBase">...</td>
+              </tr>
+              <tr>
+                <td class="lbl">Thời hạn xử lý / Báo cáo</td>
+                <td class="val" style="color:#b91c1c;font-weight:700" id="mDocDeadline">...</td>
+              </tr>
+              <tr>
+                <td class="lbl">Phụ trách triển khai (Chi bộ)</td>
+                <td class="val" style="font-weight:600;color:#0f172a" id="mDocAssignee">...</td>
+              </tr>
+              <tr>
+                <td class="lbl">Tệp đính kèm số hóa</td>
+                <td class="val" style="color:#0369a1;font-weight:500" id="mDocFile">...</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="font-weight:700;color:#93061d;margin-top:14px;font-size:13px;text-transform:uppercase;border-bottom:1px dashed #cbd5e1;padding-bottom:4px">
+            Toàn văn nội dung số hóa &amp; Giao nhiệm vụ thực hiện
+          </div>
+          <div id="mDocContent" class="doc-content-box">
+            ...
+          </div>
+          <div style="margin-top:16px;font-size:11.5px;color:#64748b;font-style:italic">
+            * Ghi chú: Bản số hóa được lưu hành nội bộ phục vụ công tác lãnh đạo, điều hành của Chi bộ Tổ dân phố Lương Hậu.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-act" onclick="window.print()">
+          <span>🖨️</span> In văn bản
+        </button>
+        <button class="btn-act primary" onclick="closeDocModalDirect()">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Chi bộ Tổ dân phố Lương Hậu · Đảng bộ phường Hương Thủy · Thành phố Huế.<br />
+    Khu vực nội bộ Chi bộ — Phục vụ công tác lãnh đạo, điều hành của Cấp ủy.
+  </footer>
+
+  <script is:inline define:vars={{ rawDocsList: vanBans }}>
+    const allDocs = rawDocsList || [];
+
+    let currentFilter = 'ALL';
+    function filterDocs(loai) {
+      currentFilter = loai;
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent.includes(loai) || (loai === 'ALL' && b.textContent.includes('Tất cả')));
+      });
+      applyFilter();
+    }
+    function searchDocs() {
+      applyFilter();
+    }
+    function applyFilter() {
+      const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+      const rows = document.querySelectorAll('#docsTable tbody tr');
+      rows.forEach(r => {
+        const matchLoai = currentFilter === 'ALL' || r.dataset.loai === currentFilter;
+        const matchQ = !q || r.dataset.search.includes(q);
+        r.style.display = (matchLoai && matchQ) ? '' : 'none';
+      });
+    }
+
+    // Modal popup số hóa
+    function openDocModal(docId) {
+      const doc = allDocs.find(d => d.id === docId);
+      if (!doc) return;
+
+      document.getElementById('mDocHeaderTitle').textContent = `BẢN SỐ HÓA: ${doc.soHieu}`;
+      document.getElementById('mDocAgency').textContent = (doc.coQuan || '').toUpperCase();
+      document.getElementById('mDocNum').textContent = doc.soHieu || '';
+      document.getElementById('mDocDate').textContent = doc.ngayBanHanh || '';
+      document.getElementById('mDocTypeTitle').textContent = (doc.loaiVanBan || 'VĂN BẢN').toUpperCase();
+      document.getElementById('mDocSummary').textContent = doc.trichYeu || '';
+      document.getElementById('mDocAgencyVal').textContent = doc.coQuan || '';
+      document.getElementById('mDocLegalBase').textContent = doc.canCu || '';
+      document.getElementById('mDocDeadline').textContent = doc.hanXuLy || '';
+      document.getElementById('mDocAssignee').textContent = doc.canBoPhuTrach || doc.nguoiTheoDoi || 'Toàn thể Chi bộ';
+      document.getElementById('mDocFile').textContent = `📄 ${doc.fileDinhKem || doc.soHieu + '.pdf'} (Bản số hóa lưu trữ)`;
+      document.getElementById('mDocContent').textContent = doc.noiDungChiTiet || doc.trichYeu || 'Đang cập nhật nội dung...';
+
+      const overlay = document.getElementById('docModalOverlay');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDocModalDirect() {
+      const overlay = document.getElementById('docModalOverlay');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function closeDocModal(event) {
+      if (event.target.id === 'docModalOverlay') {
+        closeDocModalDirect();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDocModalDirect();
+      }
+    });
+
+    // Gắn vào window để gọi từ inline onclick
+    window.openDocModal = openDocModal;
+    window.closeDocModalDirect = closeDocModalDirect;
+    window.closeDocModal = closeDocModal;
+    window.filterDocs = filterDocs;
+    window.searchDocs = searchDocs;
+  </script>
+</body>
+</html>

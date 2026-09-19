@@ -1,0 +1,79 @@
+---
+/**
+ * src/pages/chu-nhat-xanh.astro
+ * Trang chuyên đề: Phong trào Ngày Chủ Nhật Xanh - Tổ Dân Phố Lương Hậu
+ * Nhận diện tuyến đường: Thái Thuận & Thái Vĩnh Chinh
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ChuNhatXanhSection from "../components/ChuNhatXanhSection.astro";
+import data from "../data/du-lieu-moi.json";
+import { fetchGoogleSheetArticles, sheetArticleToChuNhatXanhItem } from "../lib/googleSheets";
+
+let chuNhatXanhList = [...data.chuNhatXanh];
+
+try {
+  const gsheetData = await fetchGoogleSheetArticles();
+  if (gsheetData && gsheetData.chuNhatXanh.length > 0) {
+    const sheetItems = gsheetData.chuNhatXanh.map(sheetArticleToChuNhatXanhItem);
+    chuNhatXanhList = [...sheetItems, ...chuNhatXanhList];
+  }
+} catch (e) {
+  // Dự phòng an toàn
+}
+---
+
+<BaseLayout
+  title="Ngày Chủ Nhật Xanh — Tổ dân phố Lương Hậu"
+  description="Phong trào Ngày Chủ Nhật Xanh tại Tổ dân phố Lương Hậu, phường Hương Thủy, TP. Huế: Hành động vì môi trường Xanh - Sạch - Sáng tuyến đường Thái Thuận & Thái Vĩnh Chinh."
+  canonical={`${Astro.site?.origin ?? ""}/chu-nhat-xanh`}
+>
+  <div class="wrap" style="max-width: 1100px; margin: 0 auto; padding: 16px;">
+    <!-- Breadcrumbs -->
+    <nav style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
+      <a href="/" style="color: #93061d; text-decoration: none; font-weight: 500;">Trang chủ</a> / 
+      <span style="color: #0f172a; font-weight: 600;">Ngày Chủ Nhật Xanh</span>
+    </nav>
+
+    <!-- Component hiển thị dữ liệu từ du-lieu-moi.json -->
+    <ChuNhatXanhSection />
+
+    <!-- Danh sách chi tiết các đợt ra quân -->
+    <section style="margin-top: 24px; background: #fff; border-radius: 16px; padding: 24px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <h3 style="color: #065f46; font-size: 18px; font-weight: 700; margin-bottom: 16px; border-bottom: 2px solid #a7f3d0; padding-bottom: 8px;">
+        📋 Kế hoạch &amp; Kết quả các đợt ra quân môi trường
+      </h3>
+      <div id="cnx-plan-list" style="display: flex; flex-direction: column; gap: 16px;">
+        {chuNhatXanhList.map((item) => (
+          <div style="background: #f0fdf4; border-radius: 12px; padding: 16px; border: 1px solid #bbf7d0;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+              <h4 style="color: #14532d; font-size: 15px; font-weight: 700; margin: 0;">
+                {item.tieuDe}
+              </h4>
+              <span style="background: #059669; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 8px; border-radius: 6px;">
+                📅 {item.thoiGian}
+              </span>
+            </div>
+            <p style="color: #047857; font-size: 12.5px; font-weight: 600; margin: 6px 0;">
+              📍 Địa điểm: {item.diaDiem}
+            </p>
+            <p style="color: #334155; font-size: 13px; line-height: 1.6; margin: 0;">
+              {item.noiDung}
+            </p>
+            <div style="margin-top: 10px; font-size: 12px; color: #059669; font-weight: 500;">
+              📷 Hồ sơ ảnh lưu trữ: {item.hinhAnh.join(', ')}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Nút quay lại trang chủ -->
+    <div style="margin-top: 24px; text-align: center;">
+      <a href="/" style="display: inline-block; padding: 8px 18px; background: #93061d; color: #fff; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600;">
+        ← Về Cổng thông tin điện tử Tổ dân phố
+      </a>
+    </div>
+  </div>
+
+  <script is:inline src="/assets/js/google-sheets-sync.js"></script>
+</BaseLayout>

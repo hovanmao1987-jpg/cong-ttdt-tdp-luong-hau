@@ -1,0 +1,137 @@
+{
+  "to_dan_pho": {
+    "ten": "Tổ dân phố Lương Hậu",
+    "phuong": "Phường Hương Thủy",
+    "thanh_pho": "Thành phố Huế",
+    "dia_chi_nha_shcd": "Số 83 Thái Thuận, TDP Lương Hậu, Phường Hương Thủy, TP. Huế",
+    "hotline": "0965.712.812",
+    "cong_an_phuong": "0234.43852870",
+    "so_ho": 469,
+    "nhan_khau": 1947,
+    "dang_vien": 22
+  },
+  "can_bo_chu_chot": [
+    {
+      "stt": 1,
+      "ho_ten": "Hồ Văn Mão",
+      "nam_sinh": 1989,
+      "chuc_danh": "Bí thư Chi bộ",
+      "sdt": "0962.481.112",
+      "dia_ban": "Phụ trách Đội 11",
+      "tien_do": "90%",
+      "danh_gia": "Xuất sắc"
+    },
+    {
+      "stt": 2,
+      "ho_ten": "Nguyễn Trọng Nghĩa",
+      "nam_sinh": 1980,
+      "chuc_danh": "Phó Bí thư, Tổ trưởng TDP",
+      "sdt": "0965.712.812",
+      "dia_ban": "Phụ trách Đội 8",
+      "tien_do": "85%",
+      "danh_gia": "Tốt"
+    },
+    {
+      "stt": 3,
+      "ho_ten": "Hoàng Hữu Rớt",
+      "nam_sinh": 1978,
+      "chuc_danh": "Chi ủy viên, Trưởng ban CT Mặt trận",
+      "sdt": "0965.943.303",
+      "dia_ban": "Phụ trách Đội 9",
+      "tien_do": "90%",
+      "danh_gia": "Xuất sắc"
+    },
+    {
+      "stt": 4,
+      "ho_ten": "Nguyễn Thị Mừng",
+      "nam_sinh": 1979,
+      "chuc_danh": "Chi ủy viên, Chi hội trưởng Phụ nữ",
+      "sdt": "0377.412.815",
+      "dia_ban": "Phụ trách Đội 9",
+      "tien_do": "90%",
+      "danh_gia": "Xuất sắc"
+    },
+    {
+      "stt": 5,
+      "ho_ten": "Nguyễn Thúc Thành",
+      "nam_sinh": 1970,
+      "chuc_danh": "Chi hội trưởng Nông dân, Tổ trưởng LL ANTT cơ sở",
+      "sdt": "0975.175.361",
+      "dia_ban": "Toàn địa bàn TDP",
+      "tien_do": "85%",
+      "danh_gia": "Tốt"
+    },
+    {
+      "stt": 6,
+      "ho_ten": "Nguyễn Cưỡng",
+      "nam_sinh": 1964,
+      "chuc_danh": "Chi hội trưởng Cựu chiến binh",
+      "sdt": "0981.710.242",
+      "dia_ban": "Toàn địa bàn TDP",
+      "tien_do": "85%",
+      "danh_gia": "Tốt"
+    },
+    {
+      "stt": 7,
+      "ho_ten": "Phan Đăng Chiến",
+      "nam_sinh": 1951,
+      "chuc_danh": "Chi hội trưởng Người cao tuổi",
+      "sdt": "0913.469.434",
+      "dia_ban": "Toàn địa bàn TDP",
+      "tien_do": "90%",
+      "danh_gia": "Xuất sắc"
+    },
+    {
+      "stt": 8,
+      "ho_ten": "Nguyễn Thị Ngọc Tú",
+      "nam_sinh": 2003,
+      "chuc_danh": "Bí thư Chi đoàn Thanh niên",
+      "sdt": "0386.003.175",
+      "dia_ban": "Toàn địa bàn TDP",
+      "tien_do": "90%",
+      "danh_gia": "Xuất sắc"
+    },
+    {
+      "stt": 9,
+      "ho_ten": "Nguyễn Như Khải",
+      "nam_sinh": 1993,
+      "chuc_danh": "Tổ đội trưởng Quân sự",
+      "sdt": "0388.886.876",
+      "dia_ban": "Phụ trách Đội 10",
+      "tien_do": "80%",
+      "danh_gia": "Tốt"
+    },
+    {
+      "stt": 10,
+      "ho_ten": "Phạm Thị Thu Thanh",
+      "nam_sinh": 1987,
+      "chuc_danh": "Cộng tác viên Dân số & Y tế cơ sở",
+      "sdt": "0332.886.309",
+      "dia_ban": "4 Đội (8, 9, 10, 11)",
+      "tien_do": "85%",
+      "danh_gia": "Tốt"
+    }
+  ],
+  "lien_ket_quoc_gia": [
+    { "ten": "Cơ sở dữ liệu QG về Pháp luật", "url": "https://vbpl.vn" },
+    { "ten": "Hệ thống Văn bản Chính phủ", "url": "https://vanban.chinhphu.vn" },
+    { "ten": "Cổng Dịch vụ công Quốc gia", "url": "https://dichvucong.gov.vn" },
+    { "ten": "Tư liệu Văn kiện Đảng", "url": "https://tulieuvankien.dangcongsan.vn" },
+    { "ten": "Cổng TTĐT Phường Hương Thủy", "url": "https://huongthuy.hue.gov.vn" },
+    { "ten": "Văn bản & Cổng TTĐT TP. Huế", "url": "https://hue.gov.vn" },
+    { "ten": "Sổ tay Đảng viên điện tử Thừa Thiên Huế", "url": "https://sotaydangvien.hue.gov.vn" }
+  ],
+  "kho_bieu_mau_11": [
+    "BM-TDP-01: Xác nhận thông tin cư trú thực tế",
+    "BM-CSXH-03: Đơn xin hỗ trợ khó khăn đột xuất",
+    "BM-PA-02: Mẫu phiếu tiếp nhận và xử lý kiến nghị",
+    "VBPL-DD-2024: Luật Đất đai năm 2024",
+    "BM-DT-05: Đăng ký đoàn thể & Ngày Chủ nhật xanh",
+    "HD-DVC-08: Hướng dẫn online cấp xác nhận tình trạng hôn nhân",
+    "HD-DVC-09: Hướng dẫn đăng ký khai sinh, khai tử qua VNeID",
+    "BM-TN-04: Cấp đổi thẻ BHYT y tế cơ sở",
+    "BM-CT-06: Xác nhận sửa chữa nhà ở",
+    "BM-HT-07: Đăng ký tạm trú qua Hue-S",
+    "QD-UBND-10: Quy chế tiếp công dân và giải quyết TTHC"
+  ]
+}
