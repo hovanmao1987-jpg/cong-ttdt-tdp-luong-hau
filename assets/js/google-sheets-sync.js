@@ -24,6 +24,35 @@
       .replace(/"/g, "&quot;");
   }
 
+  function formatGvizDate(cell) {
+    if (!cell) return "";
+    if (cell.f) {
+      var mf = cell.f.match(/^(\d{1,2}\/\d{1,2}\/\d{4})/);
+      if (mf) return mf[1];
+      return String(cell.f).trim();
+    }
+    var v = String(cell.v || "").trim();
+    var md = v.match(/Date\((\d+),(\d+),(\d+)/);
+    if (md) {
+      var y = md[1];
+      var mo = String(parseInt(md[2], 10) + 1).padStart(2, "0");
+      var d = String(parseInt(md[3], 10)).padStart(2, "0");
+      return d + "/" + mo + "/" + y;
+    }
+    return v;
+  }
+
+  function getDriveImageUrl(raw) {
+    if (!raw) return null;
+    var str = String(raw).trim();
+    if (!str) return null;
+    var m = str.match(/id=([a-zA-Z0-9_-]+)/) || str.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (m && m[1]) {
+      return "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1200";
+    }
+    return str;
+  }
+
   function parseGviz(text) {
     try {
       var start = text.indexOf("{");
@@ -40,20 +69,37 @@
           return String(cells[idx].v).trim();
         };
 
-        var thoiGian = getVal(0);
-        var chuyenMuc = getVal(1);
-        var tieuDe = getVal(2);
-        var noiDung = getVal(3);
-        var linkHinhAnh = getVal(4);
+        // Thứ tự cột chuẩn theo Google Sheets TDP Lương Hậu:
+        // Col 0: Dấu thời gian
+        // Col 1: Thời gian diễn ra
+        // Col 2: Chuyên mục
+        // Col 3: Tiêu đề thông tin
+        // Col 4: Nội dung chi tiết bài viết
+        // Col 5: Địa điểm thực hiện
+        // Col 6: Bộ phận đăng tin
+        // Col 7: Tải hình ảnh (Drive URL)
+        // Col 8: Link hình ảnh
+        var timeStamp = formatGvizDate(cells[0]);
+        var eventDate = formatGvizDate(cells[1]);
+        var thoiGian = eventDate || timeStamp;
+        var chuyenMuc = getVal(2);
+        var tieuDe = getVal(3);
+        var noiDung = getVal(4);
+        var diaDiem = getVal(5);
+        var boPhan = getVal(6);
+        var rawImg = getVal(7) || getVal(8);
+        var linkHinhAnh = getDriveImageUrl(rawImg);
 
-        // Bỏ qua dòng tiêu đề
-        var lowThoiGian = thoiGian.toLowerCase();
-        var lowChuyenMuc = chuyenMuc.toLowerCase();
+        // Bỏ qua dòng tiêu đề nếu có
+        var lowThoiGian = (thoiGian || "").toLowerCase();
+        var lowChuyenMuc = (chuyenMuc || "").toLowerCase();
+        var lowTieuDe = (tieuDe || "").toLowerCase();
         if (
           lowThoiGian.indexOf("thoigian") >= 0 ||
           lowThoiGian.indexOf("thời gian") >= 0 ||
           lowChuyenMuc.indexOf("chuyenmuc") >= 0 ||
-          lowChuyenMuc.indexOf("chuyên mục") >= 0
+          lowChuyenMuc.indexOf("chuyên mục") >= 0 ||
+          lowTieuDe.indexOf("tiêu đề") >= 0
         ) {
           continue;
         }
@@ -82,6 +128,8 @@
           categoryType: catType,
           tieuDe: tieuDe || "Thông tin từ Tổ dân phố Lương Hậu",
           noiDung: noiDung || "",
+          diaDiem: diaDiem || "Tổ dân phố Lương Hậu",
+          boPhan: boPhan || "Ban điều hành TDP",
           body: body.length ? body : [noiDung || ""],
           linkHinhAnh: linkHinhAnh || null,
         });
