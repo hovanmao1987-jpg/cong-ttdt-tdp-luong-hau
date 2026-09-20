@@ -46,3 +46,8 @@ VAN-HANH-NOI-BO.md
 *.py
 *.zip
 
+.vercel
+
+# Backups
+backup-before-ui-reset/
+backup_20260919_222629/

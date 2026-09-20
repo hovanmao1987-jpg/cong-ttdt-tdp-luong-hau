@@ -20,6 +20,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jobs = [
   { from: "dist/index.html", to: "index.html", label: "Khu công khai" },
   { from: "dist/noi_bo/index.html", to: "noi_bo.html", label: "Khu nội bộ Chi bộ" },
+  { from: "dist/noi-bo/van-ban-moi/index.html", to: "van-ban-moi.html", label: "Văn bản mới Phường & Thành phố" },
   { from: "dist/van-ban/index.html", to: "van-ban.html", label: "Văn bản 3 cấp & Kế hoạch 333" },
   { from: "dist/chu-nhat-xanh/index.html", to: "chu-nhat-xanh.html", label: "Ngày Chủ Nhật Xanh" },
 ];
@@ -33,7 +34,7 @@ function toStatic(html) {
     // liên kết khu nội bộ
     .replace(/(["'])\/noi_bo(["'#])/g, "$1noi_bo.html$2")
     .replace(/(["'])\/noi-bo\/dashboard(["'])/g, "$1noi_bo.html#/noi-bo/canbo$2")
-    .replace(/(["'])\/noi-bo\/van-ban-moi(["'])/g, "$1noi_bo.html#/noi-bo/vanbanmoi$2")
+    .replace(/(["'])\/noi-bo\/van-ban-moi(["'#])/g, "$1van-ban-moi.html$2")
     // liên kết chuyên mục tĩnh
     .replace(/(["'])\/van-ban(["'#])/g, "$1van-ban.html$2")
     .replace(/(["'])\/chu-nhat-xanh(["'#])/g, "$1chu-nhat-xanh.html$2")

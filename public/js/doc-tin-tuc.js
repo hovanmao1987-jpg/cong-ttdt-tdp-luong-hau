@@ -209,7 +209,7 @@
   }
 
   function renderNewsToDom(newsItems) {
-    var newsList = document.getElementById("news-list");
+    var newsList = document.getElementById("dynamic-public-news") || document.getElementById("news-list");
     if (!newsList || !newsItems || newsItems.length === 0) return;
 
     // Xóa các item cũ đã chèn từ gsheet để tránh trùng lặp

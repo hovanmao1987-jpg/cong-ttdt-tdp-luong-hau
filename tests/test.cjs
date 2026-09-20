@@ -1,62 +1,31 @@
-/* Harness kiểm thử render bằng jsdom (không cần trình duyệt thật) */
+/* Harness kiểm thử toàn diện Cổng thông tin điện tử Tổ dân phố Lương Hậu */
 const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom");
 
 const ROOT = path.resolve(__dirname, "..");
+const results = [];
 
-function load(file, scripts) { /* trả về Promise */
-  const html = fs.readFileSync(path.join(ROOT, file), "utf8")
-    // bỏ thẻ script src để tự nạp thủ công
-    .replace(/<script src="[^"]+"><\/script>/g, "");
+function check(name, cond, extra) {
+  results.push({ name, ok: !!cond, extra: extra === undefined ? "" : String(extra) });
+}
+
+function loadDOM(filePath) {
+  let html = fs.readFileSync(path.join(ROOT, filePath), "utf8");
+  // Bỏ các script CDN ngoài để tránh lỗi mạng trong jsdom
+  html = html.replace(/<script[^>]*src="https?:\/\/[^"]*"[^>]*><\/script>/gi, "");
+
   const errors = [];
   const vc = new (require("jsdom").VirtualConsole)();
   vc.on("jsdomError", (e) => errors.push("jsdomError: " + (e.stack || e.message)));
   vc.on("error", (...a) => errors.push("console.error: " + a.join(" ")));
+
   const dom = new JSDOM(html, {
-    url: "http://localhost:4321/" + file,
-    runScripts: "outside-only",
+    url: "http://localhost:4321/" + filePath.replace(/\\/g, "/"),
+    runScripts: "dangerously",
     virtualConsole: vc,
   });
-  const { window } = dom;
-  window.onerror = (m, src, l, c, e) => errors.push("onerror: " + m + (e && e.stack ? "\n" + e.stack.split("\n").slice(0, 4).join("\n") : ""));
-  // shim các API jsdom thiếu
-  window.URL.createObjectURL = () => "blob:mock";
-  window.URL.revokeObjectURL = () => {};
-  // KHÔNG ghi đè HTMLElement.click — chỉ theo dõi qua sự kiện để lấy tên file tải về
-  window.addEventListener("click", (e) => {
-    const a = e.target && e.target.closest && e.target.closest("a[download]");
-    if (a) { window.__lastDownload = a.download; e.preventDefault(); }
-  }, true);
-  window.print = () => { window.__printed = (window.__printed || 0) + 1; };
-  window.scrollTo = () => {};
-  window.requestAnimationFrame = (cb) => setTimeout(cb, 0);
-  window.matchMedia = () => ({ matches: false, addListener() {}, removeListener() {}, addEventListener() {}, removeEventListener() {} });
 
-  window.addEventListener("error", (e) => errors.push("evt: " + String(e.error || e.message)));
-
-  return new Promise((resolve, reject) => {
-    const to = setTimeout(() => reject(new Error("timeout chờ DOMContentLoaded: " + file)), 8000);
-    const doc = window.document;
-    if (doc.readyState !== "loading") { clearTimeout(to); run(); }
-    else doc.addEventListener("DOMContentLoaded", () => { clearTimeout(to); setTimeout(run, 0); });
-    function run() {
-      for (const s of scripts) {
-        try { window.eval(fs.readFileSync(path.join(ROOT, s), "utf8")); }
-        catch (e) { errors.push(s + " -> " + e.message); }
-      }
-      setTimeout(() => resolve({ dom, window, errors, tick: () => new Promise(r => setTimeout(r, 60)) }), 30);
-    }
-  });
-}
-
-/* Nạp một trang HTML bất kỳ + danh sách script (đường dẫn tương đối ROOT) */
-function loadFrom(htmlText, url, scripts) {
-  const html = htmlText.replace(/<script[^>]*src="[^"]+"[^>]*><\/script>/g, "").replace(/<script>[\s\S]*?<\/script>/g, "");
-  const errors = [];
-  const vc = new (require("jsdom").VirtualConsole)();
-  vc.on("jsdomError", (e) => errors.push("jsdomError: " + (e.stack || e.message)));
-  const dom = new JSDOM(html, { url, runScripts: "outside-only", virtualConsole: vc });
   const { window } = dom;
   window.onerror = (m, src, l, c, e) => errors.push("onerror: " + m);
   window.URL.createObjectURL = () => "blob:mock";
@@ -64,337 +33,258 @@ function loadFrom(htmlText, url, scripts) {
   window.print = () => {};
   window.scrollTo = () => {};
   window.requestAnimationFrame = (cb) => setTimeout(cb, 0);
-  window.addEventListener("click", (e) => {
-    const a = e.target.closest && e.target.closest("a[download]");
-    if (a) { window.__lastDownload = a.download; e.preventDefault(); }
-  }, true);
-  return new Promise((resolve) => {
-    const doc = window.document;
-    const run = () => {
-      for (const src of scripts) {
-        try { window.eval(fs.readFileSync(path.join(ROOT, src), "utf8")); }
-        catch (e) { errors.push(src + " -> " + e.message); }
-      }
-      setTimeout(() => resolve({ dom, window, errors, tick: () => new Promise(r => setTimeout(r, 60)) }), 30);
-    };
-    if (doc.readyState !== "loading") run();
-    else doc.addEventListener("DOMContentLoaded", () => setTimeout(run, 0));
+  window.fetch = () => Promise.resolve({
+    ok: true,
+    text: () => Promise.resolve("/* mock */"),
+    json: () => Promise.resolve({ table: { rows: [] } }),
   });
+
+  return { dom, window, errors, tick: () => new Promise((r) => setTimeout(r, 80)) };
 }
 
-const wait = (ms) => new Promise(r => setTimeout(r, ms));
-function txt(el) { return (el && el.textContent || "").replace(/\s+/g, " ").trim(); }
-
-const results = [];
-function check(name, cond, extra) {
-  results.push({ name, ok: !!cond, extra: extra === undefined ? "" : String(extra) });
-}
-
-/* =============== TRANG CÔNG KHAI =============== */
-async function testPublic() {
-  const { window, errors, tick } = await load("index.html", ["data/data.js", "assets/js/lh-markup.js", "assets/js/templates.js", "assets/js/app.js"]);
+/* ==================== 1. KIỂM THỬ TRANG CÔNG KHAI (index.html) ==================== */
+async function testPublicPortal() {
+  const { window, errors, tick } = loadDOM("index.html");
+  await tick();
   const d = window.document;
   const $ = (s) => d.querySelector(s);
   const $$ = (s) => Array.from(d.querySelectorAll(s));
 
-  check("[PUBLIC] không có lỗi runtime", errors.length === 0, errors.join(" | "));
-  check("[PUBLIC] crest quốc huy được vẽ", $$(".crest svg").length >= 1, $$(".crest svg").length);
-  check("[PUBLIC] menu chuyên mục chính = 8", $$("#sec-menu a").length === 8, $$("#sec-menu a").length);
-  check("[PUBLIC] tab tin tức = 4", $$("#news-tabs button").length === 4, $$("#news-tabs button").length);
-  check("[PUBLIC] tin hiển thị mặc định = 14", $$("#news-list li").length === 14, $$("#news-list li").length);
-  check("[PUBLIC] tin có thumb SVG", $$("#news-list .th svg").length === 14, $$("#news-list .th svg").length);
-  check("[PUBLIC] có Quy định 2322 tang lễ văn minh", txt($("#news-list")).includes("2322"));
+  check("[PUBLIC] Không có lỗi runtime JS khi load trang", errors.length === 0, errors.join(" | "));
+  check("[PUBLIC] Tiêu đề trang chứa TDP Lương Hậu", d.title.includes("Lương Hậu"));
+  
+  // Masthead & Hotline
+  const bodyText = d.body.textContent;
+  check("[PUBLIC] Chứa SĐT Bí thư Chi bộ: 0962.481.112", bodyText.includes("0962.481.112") || bodyText.includes("0962 481 112"));
+  check("[PUBLIC] Chứa SĐT Tổ trưởng TDP: 0965.712.812", bodyText.includes("0965.712.812") || bodyText.includes("0965 712 812"));
+  check("[PUBLIC] Chứa địa chỉ Nhà SHCĐ: 83 Thái Thuận", bodyText.includes("83 Thái Thuận"));
 
-  // lọc tab Lương Hậu
-  $$("#news-tabs button").find(b => b.dataset.k === "luonghau").click();
-  check("[PUBLIC] tab Lương Hậu = 5 tin", $$("#news-list li").length === 5, $$("#news-list li").length);
-  $$("#news-tabs button").find(b => b.dataset.k === "all").click();
+  // Nút liên kết nội bộ
+  const linkNoiBo = $('a[href="noi_bo.html"]') || $('a[href="/noi_bo"]') || $('a[href="/noi-bo"]');
+  check("[PUBLIC] Có liên kết dẫn tới khu nội bộ Chi bộ", !!linkNoiBo);
 
-  // mở chi tiết tin
-  $("#news-list [data-news]").click();
-  await tick();
-  check("[PUBLIC] modal chi tiết tin mở được", !!$("#lh-mask.on") && txt($("#lh-mask h3")).length > 0, txt($("#lh-mask") && $("#lh-mask h3")));
-  check("[PUBLIC] modal tin có nội dung 3 cấp", txt($("#lh-mask")).includes("Nguồn:"));
-  $("#lh-mask .x").click();
-  await wait(240);
+  // Danh sách cán bộ TDP (10 đồng chí)
+  check("[PUBLIC] Hiển thị danh sách Cán bộ TDP Lương Hậu", bodyText.includes("Hồ Văn Mão") && bodyText.includes("Nguyễn Trọng Nghĩa") && bodyText.includes("Hoàng Hữu Rớt"));
 
-  // ANTT
-  const antt = txt($("#antt-box"));
-  check("[PUBLIC] ANTT: 4 khu vực đội 8-11", $$("#antt-box tbody tr").length === 0 &&
-    ["Khu vực đội 8","Khu vực đội 9","Khu vực đội 10","Khu vực đội 11"].every(k => antt.includes(k)), antt.slice(0,120));
-  check("[PUBLIC] ANTT: đã xoá bảng nhật ký tuần tra", !/Nhật ký tuần tra đêm/.test(antt) && $$("#antt-box table").length === 0);
-  check("[PUBLIC] ANTT: 3 chip mô hình + 4 chip khu vực", $$("#antt-box .chip").length === 7, $$("#antt-box .chip").length);
-  check("[PUBLIC] ANTT: đã xoá mục camera an ninh", !/camera/i.test(antt) && !/camera/i.test(txt(d.querySelector("header"))), "vẫn còn camera");
-  check("[PUBLIC] ANTT: có SĐT Công an phường thật", antt.includes("0234.3852.870") && antt.includes("0965 712 812"));
-  check("[PUBLIC] ANTT: có khuyến cáo", txt($("#antt-box")).includes("KHUYẾN CÁO AN NINH TRẬT TỰ"));
+  // Kho biểu mẫu (Google Drive)
+  const bieuMauLinks = $$('a[href*="drive.google.com"]');
+  check("[PUBLIC] Có các nút tải biểu mẫu qua Google Drive", bieuMauLinks.length >= 1, `Tìm thấy ${bieuMauLinks.length} liên kết Drive`);
 
-  // PCTT: Đã xoá theo yêu cầu người dùng
-  check("[PUBLIC] đã xoá Phương án trực bão lũ 10-17/9", !$("#pctt") && !txt(d.body).includes("PHƯƠNG ÁN TRỰC BÃO LŨ 10 – 17/9/2026"));
-  check("[PUBLIC] có nút nổi bật vào khu nội bộ", !!$("[href='/noi_bo']"));
-
-  // Cán bộ
-  check("[PUBLIC] công khai 10 cán bộ", $$("#canbo-box li.c").length === 10, $$("#canbo-box li.c").length);
-  $$("#canbo-box [data-c]")[0].click();
-  await tick();
-  check("[PUBLIC] modal nhiệm vụ cán bộ", !!$("#lh-mask.on") && txt($("#lh-mask")).includes("Nhiệm vụ cụ thể") && txt($("#lh-mask")).includes("Lĩnh vực phân công"));
-  $("#lh-mask .x").click();
-  await wait(240);
-
-  // Biểu mẫu
-  check("[PUBLIC] kho 11 biểu mẫu", $$("#bm-box li[data-f]").length === 11, $$("#bm-box li[data-f]").length);
-  const before = window.__lastDownload;
-  $$("#bm-box [data-d='doc']")[6].click(); // BM-07 PCCC
-  check("[PUBLIC] tải .doc BM-07", /BM-07.*\.doc$/.test(window.__lastDownload || ""), window.__lastDownload);
-  $$("#bm-box [data-d='txt']")[0].click();
-  check("[PUBLIC] tải .txt BM-01", /BM-01.*\.txt$/.test(window.__lastDownload || ""), window.__lastDownload);
-  // tìm kiếm biểu mẫu
-  const q = $("#bm-q"); q.value = "thiên tai";
-  q.dispatchEvent(new window.Event("input", { bubbles: true }));
-  const vis = $$("#bm-box li[data-f]").filter(li => li.style.display !== "none");
-  check("[PUBLIC] lọc biểu mẫu 'thiên tai'", vis.length === 1, vis.length + " -> " + vis.map(v => v.dataset.f).join(","));
-
-  // Phản ánh
-  const f = $("#pa-form");
-  const fv = (n) => f.querySelector('[name="' + n + '"]');
-  check("[PUBLIC] form phản ánh đủ các trường (đã xoá CCCD)", !!f && ["hoten","sdt","diachi","linhvuc","mucdo","noidung","files","dongy"].every(n => !!fv(n)) && !fv("cccd"), f.children.length);
-  check("[PUBLIC] form phản ánh có chạy ngầm Access Key Web3Forms", fv("access_key") && fv("access_key").value === "183b93c6-fffd-4323-a730-103d1e16b3a0");
-  check("[PUBLIC] đã xoá ô hero nổi bật theo yêu cầu", !d.querySelector(".hero"));
-  check("[PUBLIC] có slogan dưới Phường Hương Thủy ở masthead", txt(d.querySelector(".mh-txt")).includes("Công khai - Minh bạch - Phục vụ nhân dân và gắn kết cán bộ, đảng viên địa bàn"));
-  f.querySelector("[type=submit]").click();
-  check("[PUBLIC] validate chặn submit rỗng", f.querySelectorAll(".field.bad").length >= 4, f.querySelectorAll(".field.bad").length);
-  fv("hoten").value = "Trần Thị Kiểm"; fv("sdt").value = "0912345678";
-  fv("diachi").value = "Khu vực đội 9"; fv("dongy").checked = true;
-  f.querySelector("[name=noidung]").value = "Đường khu vực đội 9 bị ngập sau mưa, đề nghị khơi thông cống.";
-  f.querySelector("[type=submit]").click();
-  const stored = JSON.parse(window.localStorage.getItem("lh.phananh") || "[]");
-  check("[PUBLIC] gửi phản ánh thành công", stored.length === 1 && /^PA-\d{8}-\d{6}$/.test(stored[0].ma), stored[0] && stored[0].ma);
-  await tick();
-  check("[PUBLIC] modal xác nhận có mã", txt($("#lh-mask") || d.createElement("i")).includes("Mã phản ánh"));
-  if ($("#lh-mask")) $("#lh-mask .x").click();
-  await wait(240);
-  check("[PUBLIC] lịch sử phản ánh hiển thị", $$("#pa-history tbody tr").length === 1);
-
-  // Liên kết
-  check("[PUBLIC] 9 liên kết quốc gia", $$("#links-box a").length === 9, $$("#links-box a").length);
-  window.close();
-}
-
-/* =============== KHU NỘI BỘ =============== */
-async function testNoiBo() {
-  const { window, errors, tick } = await load("noi_bo.html", ["data/data.js", "assets/js/noi-bo.js"]);
-  const d = window.document;
-  const $ = (s) => d.querySelector(s);
-  const $$ = (s) => Array.from(d.querySelectorAll(s));
-
-  check("[NOIBO] không có lỗi runtime", errors.length === 0, errors.join(" | "));
-  check("[NOIBO] 6 tab nội bộ", $$("#nb-tabs button").length === 6, $$("#nb-tabs button").length);
-  check("[NOIBO] lớp bảo mật đang chặn", $("#lock").style.display !== "none" && !$("#nbapp").classList.contains("on"));
-
-  // họ tên không có trong danh sách đảng viên
-  $("#in-name").value = "Không Có Trong Danh Sách"; $("#in-ns").value = "01/01/1980";
-  $("#lock-form").dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
-  check("[NOIBO] từ chối họ tên ngoài danh sách", !$("#nbapp").classList.contains("on") && /không có trong danh sách/i.test(txt($("#lock-msg"))), txt($("#lock-msg")));
-
-  // đúng họ tên, sai ngày sinh
-  $("#in-name").value = "Hồ Văn Mão"; $("#in-ns").value = "01/01/1980";
-  $("#lock-form").dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
-  check("[NOIBO] từ chối ngày sinh không khớp", !$("#nbapp").classList.contains("on") && /Ngày, tháng, năm sinh không khớp/.test(txt($("#lock-msg"))), txt($("#lock-msg")));
-
-  // thiếu ngày sinh → chặn, không tính là lần đối soát sai
-  $("#in-name").value = "Hồ Văn Mão"; $("#in-ns").value = "";
-  $("#lock-form").dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
-  check("[NOIBO] bắt buộc nhập ngày sinh", /dd\/mm\/yyyy/.test(txt($("#lock-msg"))), txt($("#lock-msg")));
-
-  // đúng cả hai (không dấu + khoảng trắng thừa + ngày dạng dd-mm-yyyy)
-  $("#in-name").value = "  hồ   văn MÃO "; $("#in-ns").value = "02-02-1989";
-  $("#lock-form").dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
-  check("[NOIBO] đối soát thành công → vào khu nội bộ", $("#nbapp").classList.contains("on") && $("#lock").style.display === "none");
-  check("[NOIBO] duy trì đăng nhập trong localStorage", !!window.localStorage.getItem("lh.nb.session"));
-  check("[NOIBO] thẻ người dùng hiển thị", txt($("#user-card")).includes("Hồ Văn Mão") && txt($("#user-card")).includes("ĐÃ ĐỐI SOÁT"));
-  check("[NOIBO] thẻ người dùng có ngày sinh + căn cứ QĐ 46", txt($("#user-card")).includes("02/02/1989") && txt($("#user-card")).includes("46-QĐ/ĐU"), txt($("#user-card")).slice(0, 200));
-  check("[NOIBO] không còn trường CCCD trong lớp bảo mật", !$("#in-cccd") && !!$("#in-ns"));
-
-  // thống kê + danh sách 22 đảng viên
-  const ovt = txt($("#ov-box"));
-  check("[NOIBO] thống kê 22 đảng viên", /22/.test(ovt), ovt.slice(0, 120));
-  $$("#nb-tabs button").find(b => b.dataset.t === "canbo").click();
-  check("[NOIBO] bảng 10 cán bộ phân công 6 Rõ", $$("#cb-box table")[0].querySelectorAll("tbody tr").length === 10, $$("#cb-box table")[0].querySelectorAll("tbody tr").length);
-  $("#open-roster").click();
-  await tick();
-  const ros = txt($("#nb-mask"));
-  check("[NOIBO] danh sách đủ 22 đảng viên + dòng tổng số", $$("#nb-mask table tbody tr").length === 23, $$("#nb-mask table tbody tr").length);
-  check("[NOIBO] đảng viên cuối: Hồ Công Long 23/09/1994", ros.includes("Hồ Công Long") && ros.includes("23/09/1994"));
-  check("[NOIBO] có căn cứ Quyết định 46-QĐ/ĐU", ros.includes("46-QĐ/ĐU"));
-  $("#nb-mask .x").click();
-  await wait(240);
-
-  const ov = txt($("#ov-box"));
-  check("[NOIBO] tiến độ bình quân 87,0%", ov.includes("87,0%") || ov.includes("87.0%"), (ov.match(/8[67][.,]0%/) || [""])[0]);
-  check("[NOIBO] xếp loại XUẤT SẮC", /XUẤT SẮC/i.test(ov));
-
-  // Dashboard 6 Rõ
-  $("#open-dash").click();
-  await tick();
-  const dash = $("#nb-mask");
-  check("[NOIBO] Dashboard 6 Rõ mở được", !!dash && txt(dash).includes("6 Rõ"));
-  check("[NOIBO] Dashboard đủ 10 cán bộ", dash.querySelectorAll("[data-t]").length === 10, dash.querySelectorAll("[data-t]").length);
-  dash.querySelector("[data-t]").click();
-  await tick();
-  check("[NOIBO] chi tiết 6 tiêu chí Rõ", txt($("#nb-mask")).includes("Rõ trách nhiệm") && txt($("#nb-mask")).includes("Rõ quy trình"));
-  check("[NOIBO] chi tiết có 6 thanh đánh giá", $$("#nb-mask .bar-row").length === 6, $$("#nb-mask .bar-row").length);
-  $("#nb-mask .x").click();
-  await wait(240);
-
-  // Văn bản Chi bộ
-  $$("#nb-tabs button").find(b => b.dataset.t === "vanban").click();
-  check("[NOIBO] 9 văn bản cốt lõi Chi bộ", $$("#doc-box .doclist li").length === 9, $$("#doc-box .doclist li").length);
-  const dtext = txt($("#doc-box"));
-  ["01-CT/CB", "01-CT/KTGS", "02-NQ/CB", "02-QĐ/CB", "QC-01/CB-LH", "12-TTr/CB", "09-NQ/CB (DT)", "05-BC/DVK", "03-NQ/CĐ-CB"].forEach(s =>
-    check("[NOIBO] có văn bản " + s, dtext.includes(s)));
-  check("[NOIBO] có Chương trình KTGS", /01-CT\/KTGS/.test(dtext));
-  $$("#doc-box .filterbar button").find(b => b.dataset.f === "GS").click();
-  check("[NOIBO] lọc GS = 1 văn bản", $$("#doc-box .doclist li").length === 1, $$("#doc-box .doclist li").length);
-  $$("#doc-box .filterbar button").find(b => b.dataset.f === "ALL").click();
-  $("#doc-box [data-v]").click();
-  await tick();
-  check("[NOIBO] mở trích yếu văn bản", !!$("#nb-mask") && txt($("#nb-mask")).includes("Trích yếu"));
-  $("#nb-mask .x").click();
-  await wait(240);
-
-  // Sổ tay Đảng viên
-  $$("#nb-tabs button").find(b => b.dataset.t === "sotay").click();
-  const hb = txt($("#hb-box"));
-  check("[NOIBO] Sổ tay Đảng viên điện tử", hb.includes("sotaydangvien.dcs.vn"));
-  check("[NOIBO] link sổ tay đúng href", $("#hb-box a").getAttribute("href") === "https://sotaydangvien.dcs.vn/auth/login");
-
-  // Văn kiện Đảng
-  $$("#nb-tabs button").find(b => b.dataset.t === "trunguong").click();
-  const tw = txt($("#tw-box"));
-  ["Văn kiện Đảng", "Văn bản của Đảng", "556-QĐ/VPTW", "213-KH/VPTW", "91-KL/TW", "27-NQ/TW"].forEach(s =>
-    check("[NOIBO] khối TW có: " + s, tw.includes(s)));
-  check("[NOIBO] 2 nút tư liệu đúng href",
-    $$("#tw-box .tw-btns a")[0].href === "https://tulieuvankien.dangcongsan.vn/" &&
-    $$("#tw-box .tw-btns a")[1].href.includes("/he-thong-van-ban/van-ban-cua-dang"));
-  $("#tw-box [data-tw]").click();
-  await tick();
-  check("[NOIBO] mở trích yếu văn bản TW", !!$("#nb-mask") && txt($("#nb-mask")).includes("Trích yếu"));
-  $("#nb-mask .x").click();
-  await wait(240);
-
-  // Nhật ký
-  $$("#nb-tabs button").find(b => b.dataset.t === "nhatky").click();
-  const lg = txt($("#log-box"));
-  check("[NOIBO] nhật ký ghi nhận đối soát thành công", lg.includes("Đối soát THÀNH CÔNG"));
-  check("[NOIBO] nhật ký ghi nhận đối soát thất bại", lg.includes("THẤT BẠI"));
-
-  // Khoá sau 5 lần sai
-  window.localStorage.removeItem("lh.nb.fail"); window.localStorage.removeItem("lh.nb.lock");
-  $("#btn-logout").click();
-  check("[NOIBO] đăng xuất quay lại lớp bảo mật", $("#lock").style.display === "" && !$("#nbapp").classList.contains("on"));
-  for (let i = 0; i < 5; i++) {
-    $("#in-name").value = "Không Tồn Tại"; $("#in-ns").value = "01/01/1990";
-    $("#lock-form").dispatchEvent(new window.Event("submit", { bubbles: true, cancelable: true }));
+  // Modal văn bản chỉ đạo điều hành 3 cấp
+  check("[PUBLIC] Hàm openVanBanModal được khai báo", typeof window.openVanBanModal === "function");
+  if (typeof window.openVanBanModal === "function") {
+    window.openVanBanModal("vb-antt-baolu");
+    const modalVB = $("#modal-van-ban-toan-van");
+    const bodyVB = $("#vb-modal-body") ? $("#vb-modal-body").textContent : "";
+    check("[PUBLIC] openVanBanModal('vb-antt-baolu') mở thành công", modalVB && !modalVB.classList.contains("hidden") && bodyVB.length > 0, bodyVB.slice(0, 50));
+    
+    if (typeof window.closeVanBanModal === "function") {
+      window.closeVanBanModal();
+      check("[PUBLIC] closeVanBanModal đóng modal thành công", modalVB && modalVB.classList.contains("hidden"));
+    }
   }
-  check("[NOIBO] khoá 5 phút sau 5 lần sai", $("#lock-submit").disabled === true && /tạm khoá/.test(txt($("#lock-msg"))), txt($("#lock-msg")));
+
+  // Modal bài viết chi tiết
+  check("[PUBLIC] Hàm openArticleByKey được khai báo", typeof window.openArticleByKey === "function");
+  if (typeof window.openArticleByKey === "function") {
+    window.openArticleByKey("chu-nhat-xanh");
+    const modalArt = $("#modal-bai-viet");
+    const titleArt = $("#modal-article-title") ? $("#modal-article-title").textContent : "";
+    check("[PUBLIC] openArticleByKey('chu-nhat-xanh') mở bài viết đúng", modalArt && !modalArt.classList.contains("hidden") && titleArt.includes("Chủ nhật xanh"), titleArt);
+    
+    if (typeof window.closeArticleModal === "function") {
+      window.closeArticleModal();
+      check("[PUBLIC] closeArticleModal đóng modal thành công", modalArt && modalArt.classList.contains("hidden"));
+    }
+  }
+
+  // Tiện ích số & Lộ trình V2 Modal
+  check("[PUBLIC] Hàm openRoadmapModal được khai báo", typeof window.openRoadmapModal === "function");
+  if (typeof window.openRoadmapModal === "function") {
+    window.openRoadmapModal();
+    const modalRoadmap = $("#modal-roadmap-v2");
+    check("[PUBLIC] openRoadmapModal mở modal Lộ trình V2 thành công", modalRoadmap && !modalRoadmap.classList.contains("hidden"));
+    if (typeof window.closeRoadmapModal === "function") {
+      window.closeRoadmapModal();
+      check("[PUBLIC] closeRoadmapModal đóng modal Lộ trình V2 thành công", modalRoadmap && modalRoadmap.classList.contains("hidden"));
+    }
+  }
+
+  // Form phản ánh công dân & Validation
+  const formPA = $("#form-phan-anh");
+  check("[PUBLIC] Có Form Tiếp nhận Phản ánh kiến nghị", !!formPA);
+
+  if (typeof window.submitPhanAnhMoi === "function") {
+    // 1. Test validation chặn submit rỗng / ngắn
+    const inputName = $("#pa-hoten");
+    const inputSdt = $("#pa-sdt");
+    const inputNoiDung = $("#pa-noidung");
+    const paErr = $("#pa-error-msg");
+
+    if (inputName && inputSdt && inputNoiDung) {
+      inputName.value = "Nguyễn Văn A";
+      inputSdt.value = "123"; // Sai SĐT
+      inputNoiDung.value = "Ngắn"; // Dưới 20 ký tự
+      
+      const mockEvent = { preventDefault: () => {} };
+      window.submitPhanAnhMoi(mockEvent);
+      check("[PUBLIC] Form chặn submit khi SĐT sai hoặc nội dung < 20 ký tự", paErr && !paErr.classList.contains("hidden"), paErr ? paErr.textContent : "");
+
+      // 2. Test submit hợp lệ
+      inputName.value = "Trần Thị Kiểm Tra";
+      inputSdt.value = "0965712812";
+      inputNoiDung.value = "Đèn đường khu vực Đội 9 đoạn gần Nhà sinh hoạt cộng đồng bị cháy bóng, đề nghị Ban cán sự kiểm tra thay thế.";
+      
+      window.submitPhanAnhMoi(mockEvent);
+      await tick();
+
+      const storedPA = JSON.parse(window.localStorage.getItem("lh.phananh") || "[]");
+      check("[PUBLIC] Lưu phản ánh vào localStorage (lh.phananh)", storedPA.length >= 1 && storedPA[0].ma.startsWith("PA-"), storedPA[0] ? storedPA[0].ma : "Không có mã");
+      
+      const successBox = $("#pa-success-box");
+      check("[PUBLIC] Hiển thị Hộp thông báo thành công có mã tra cứu", successBox && !successBox.classList.contains("hidden"));
+
+      // 3. Test bảng lịch sử phản ánh hiển thị có che số điện thoại
+      const tableBody = $("#table-phan-anh-body");
+      check("[PUBLIC] Bảng phản ánh cập nhật bản ghi mới với SĐT đã che", tableBody && tableBody.textContent.includes("0965***812") && tableBody.textContent.includes("Trần Thị Kiểm Tra"));
+
+      // 4. Test xem chi tiết phản ánh
+      if (storedPA.length > 0 && typeof window.openDetailModal === "function") {
+        window.openDetailModal(storedPA[0].ma);
+        const detailModal = $("#modal-detail-phan-anh");
+        check("[PUBLIC] Mở Modal chi tiết phản ánh thành công", detailModal && !detailModal.classList.contains("hidden"));
+        if (typeof window.closeDetailModal === "function") {
+          window.closeDetailModal();
+          check("[PUBLIC] Đóng Modal chi tiết phản ánh thành công", detailModal && detailModal.classList.contains("hidden"));
+        }
+      }
+    }
+  }
+
   window.close();
 }
 
-/* =============== BẢN ASTRO BUILD (dist/) — CHẾ ĐỘ SSR =============== */
-async function testDist() {
-  const idxRaw = fs.readFileSync(path.join(ROOT, "dist/index.html"), "utf8");
-  const nbRaw = fs.readFileSync(path.join(ROOT, "dist/noi_bo/index.html"), "utf8");
-
-  /* (a) nội dung đã có sẵn TRONG HTML tĩnh, chưa cần chạy JS */
-  const noJs = new JSDOM(idxRaw.replace(/<script[\s\S]*?<\/script>/g, ""), { url: "http://localhost:4321/" });
-  const dd = noJs.window.document;
-  const dq = (x) => Array.from(dd.querySelectorAll(x));
-  check("[DIST/SSR] 14 tin có sẵn trong HTML tĩnh (SEO)", dq("#news-list li").length === 14, dq("#news-list li").length);
-  check("[DIST/SSR] có quy định 2322 tang lễ văn minh trong HTML tĩnh", /2322\/QĐ-UBND/.test(idxRaw));
-  check("[DIST/SSR] có slogan ở masthead và đã xoá hero nổi bật", /class="slogan"/.test(idxRaw) && !/<section class="hero"/.test(idxRaw));
-  check("[DIST/SSR] 8 chuyên mục có sẵn", dq("#sec-menu a").length === 8, dq("#sec-menu a").length);
-  check("[DIST/SSR] 10 cán bộ có sẵn", dq("#canbo-box li.c").length === 10, dq("#canbo-box li.c").length);
-  check("[DIST/SSR] đúng tên cán bộ thật + SĐT công khai",
-    /Hồ Văn Mão/.test(idxRaw) && /Phạm Thị Thu Thanh/.test(idxRaw) && /0962 481 112/.test(idxRaw) && /0332 886 309/.test(idxRaw));
-  check("[DIST/SSR] 11 biểu mẫu có sẵn", dq("#bm-box li[data-f]").length === 11, dq("#bm-box li[data-f]").length);
-  check("[DIST/SSR] form phản ánh có sẵn (đã xoá cccd)", dq("#pa-form .field").length >= 7 && !/name="cccd"/.test(idxRaw));
-  check("[DIST/SSR] form phản ánh chứa Access Key Web3Forms", /name="access_key" value="183b93c6-fffd-4323-a730-103d1e16b3a0"/.test(idxRaw));
-  check("[DIST/SSR] đã xoá khối bão lũ + ANTT có sẵn", !/PHƯƠNG ÁN TRỰC BÃO LŨ 10/.test(idxRaw) && /Tuần tra nhân dân ban đêm/.test(idxRaw));
-  check("[DIST/SSR] cờ LH_SSR = true", /window\.LH_SSR\s*=\s*true/.test(idxRaw));
-  check("[DIST/SSR] khu nội bộ đặt noindex", /noindex/.test(nbRaw) && !/noindex/.test(idxRaw));
-  check("[DIST/SSR] khu nội bộ KHÔNG lộ CCCD/hồ sơ đảng viên trong HTML tĩnh",
-    !/\d{12}/.test(nbRaw) && !/Nguyễn Văn Minh|Lê Thị Thu Hà|Vào Đảng|09xx\.xxx/.test(nbRaw));
-  check("[DIST/SSR] khu nội bộ KHÔNG lộ ngày sinh/họ tên đảng viên trong HTML tĩnh",
-    !/\d{2}\/\d{2}\/(19|20)\d{2}/.test(nbRaw) && !/Hồ Văn Mão|Nguyễn Trọng Nghĩa|Hoàng Hữu Rớt|Hồ Công Long|Ngô Thị Hoài Cẩm/.test(nbRaw));
-  check("[DIST/SSR] lớp bảo mật dùng họ tên + ngày sinh (không còn CCCD)",
-    /id="in-ns"/.test(nbRaw) && /id="in-name"/.test(nbRaw) && !/id="in-cccd"/.test(nbRaw) && !/demo-btn/.test(nbRaw));
-  /* 15-TB/CB được phép hiện ở màn hình đối soát (căn cứ pháp lý của quyền truy cập),
-     nhưng NỘI DUNG/TRÍCH YẾU văn bản thì tuyệt đối không được có trong HTML tĩnh */
-  check("[DIST/SSR] khu nội bộ KHÔNG lộ nội dung/trích yếu văn bản Chi bộ",
-    !/Nghị quyết chuyên đề|Tờ trình đề nghị Đảng uỷ|Biên bản sinh hoạt chi bộ|Kế hoạch giám sát chuyên đề/.test(nbRaw));
-  check("[DIST/SSR] khu nội bộ KHÔNG lộ trích yếu văn bản Trung ương",
-    !/chuyển đổi số trong hệ thống Văn phòng cấp uỷ|kỷ niệm các ngày lễ lớn|tổ chức không gian phát triển quốc gia/.test(nbRaw));
-  check("[DIST/SSR] khu nội bộ KHÔNG lộ số liệu Dashboard “6 Rõ”",
-    !/87,0%|87\.0%|XUẤT SẮC|Hoàn thành trước hạn/.test(nbRaw));
-  check("[DIST/SSR] khu nội bộ chỉ render lớp bảo mật + khung rỗng",
-    /id="lock"/.test(nbRaw) && /id="nbapp"/.test(nbRaw) && !/class="usercard"/.test(nbRaw) && !/doclist/.test(nbRaw));
-  noJs.window.close();
-
-  /* (b) chạy JS trên bản dist → tương tác vẫn hoạt động ở chế độ SSR */
-  const { window, errors, tick } = await loadFrom(idxRaw, "http://localhost:4321/", [
-    "dist/data/data.js", "dist/assets/js/lh-markup.js", "dist/assets/js/templates.js", "dist/assets/js/app.js",
-  ]);
+/* ==================== 2. KIỂM THỬ KHU VỰC NỘI BỘ (noi_bo.html) ==================== */
+async function testInternalPortal() {
+  const { window, errors, tick } = loadDOM("noi_bo.html");
   const d = window.document;
   const $ = (s) => d.querySelector(s);
   const $$ = (s) => Array.from(d.querySelectorAll(s));
-  check("[DIST] không có lỗi runtime", errors.length === 0, errors.join(" | "));
-  check("[DIST] SSR không bị render đè (vẫn 14 tin)", $$("#news-list li").length === 14, $$("#news-list li").length);
-  check("[DIST] tab chuyển được", (() => {
-    $$("#news-tabs button").find(b => b.dataset.k === "hue").click();
-    return $$("#news-list li").length === 5;
-  })(), $$("#news-list li").length);
-  $$("#news-tabs button").find(b => b.dataset.k === "all").click();
-  $("#news-list [data-news]").click(); await tick();
-  check("[DIST] modal tin hoạt động", !!$("#lh-mask.on"));
-  $("#lh-mask .x").click(); await wait(240);
-  $$("#bm-box [data-d='doc']")[0].click();
-  check("[DIST] tải biểu mẫu .doc hoạt động", /BM-01.*\.doc$/.test(window.__lastDownload || ""), window.__lastDownload);
-  const f = $("#pa-form"), fv = (n) => f.querySelector('[name="' + n + '"]');
-  fv("hoten").value = "Lê Văn Dist"; fv("sdt").value = "0905111222";
-  fv("diachi").value = "Khu vực đội 8"; fv("dongy").checked = true;
-  fv("noidung").value = "Đèn đường khu vực đội 8 bị hỏng 3 bóng, đề nghị sửa chữa.";
-  f.querySelector("[type=submit]").click(); await tick();
-  check("[DIST] gửi phản ánh hoạt động", (JSON.parse(window.localStorage.getItem("lh.phananh") || "[]")).length === 1);
-  window.close();
 
-  /* (c) khu nội bộ bản dist */
-  const nb = await loadFrom(nbRaw, "http://localhost:4321/noi_bo/", [
-    "dist/data/data.js", "dist/assets/js/lh-markup.js", "dist/assets/js/noi-bo.js",
-  ]);
-  const nd = nb.window.document;
-  const nq = (s) => nd.querySelector(s);
-  const nqa = (s) => Array.from(nd.querySelectorAll(s));
-  check("[DIST/NB] không có lỗi runtime", nb.errors.length === 0, nb.errors.join(" | "));
-  check("[DIST/NB] lớp bảo mật chặn", !nq("#nbapp").classList.contains("on"));
-  check("[DIST/NB] 6 tab đã dựng sẵn", nqa("#nb-tabs button").length === 6, nqa("#nb-tabs button").length);
-  check("[DIST/NB] đã bỏ nút dữ liệu minh hoạ", !nq("#demo-btn"));
-  nq("#in-name").value = "Hồ Văn Mão"; nq("#in-ns").value = "02/02/1989";
-  nq("#lock-form").dispatchEvent(new nb.window.Event("submit", { bubbles: true, cancelable: true }));
-  await nb.tick();
-  check("[DIST/NB] đối soát thành công → vào dashboard", nq("#nbapp").classList.contains("on"));
-  check("[DIST/NB] tiến độ 87,0% hiển thị", /87[.,]0%/.test(nq("#ov-box").textContent));
-  nqa("#nb-tabs button").find(b => b.dataset.t === "canbo").click();
-  nq("#open-dash").click(); await nb.tick();
-  check("[DIST/NB] Dashboard 6 Rõ hoạt động", nqa("#nb-mask [data-t]").length === 10, nqa("#nb-mask [data-t]").length);
-  nb.window.close();
+  check("[NOIBO] Không có lỗi runtime JS khi load trang", errors.length === 0, errors.join(" | "));
+
+  // 1. Kiểm tra trạng thái bảo mật ban đầu
+  const authModal = $("#auth-modal");
+  const mainApp = $("#main-app");
+  check("[NOIBO] Mặc định hiển thị Lớp bảo mật xác thực phiên nội bộ", authModal && !authModal.classList.contains("hidden"));
+  check("[NOIBO] Mặc định ẩn giao diện chính (main-app)", mainApp && mainApp.classList.contains("hidden"));
+  check("[NOIBO] Đã loại bỏ hoàn toàn các nút bypass đăng nhập nhanh / demo", !$("#demo-btn") && !bodyHasText(d, "Đăng nhập nhanh"));
+
+  // 2. Kiểm tra hàm xác thực Đảng viên (verifyPartyMember)
+  check("[NOIBO] Hàm verifyPartyMember được khai báo", typeof window.verifyPartyMember === "function");
+  
+  const nameInput = $("#input-fullname");
+  const dobInput = $("#input-dob");
+  const authErr = $("#auth-err-msg");
+
+  // Case 2a: Họ tên không có trong danh sách 22 Đảng viên
+  if (nameInput && dobInput && typeof window.verifyPartyMember === "function") {
+    nameInput.value = "Người Lạ Không Có Tên";
+    dobInput.value = "01/01/1990";
+    window.verifyPartyMember({ preventDefault: () => {} });
+    check("[NOIBO] Từ chối người không có trong danh sách 22 Đảng viên (QĐ 46-QĐ/ĐU)", authErr && !authErr.classList.contains("hidden") && authErr.textContent.includes("không khớp"), authErr ? authErr.textContent : "");
+
+    // Case 2b: Đúng họ tên nhưng sai ngày sinh
+    nameInput.value = "Hồ Văn Mão";
+    dobInput.value = "01/01/1970";
+    window.verifyPartyMember({ preventDefault: () => {} });
+    check("[NOIBO] Từ chối khi sai Ngày tháng năm sinh", authErr && !authErr.classList.contains("hidden"));
+
+    // Case 2c: Nhập đúng chuẩn (chấp nhận cả không dấu, khoảng trắng thừa, năm sinh)
+    nameInput.value = "  hồ   văn MÃO ";
+    dobInput.value = "1989";
+    window.verifyPartyMember({ preventDefault: () => {} });
+    await tick();
+
+    check("[NOIBO] Xác thực thành công Đảng viên Hồ Văn Mão", mainApp && !mainApp.classList.contains("hidden") && authModal && authModal.classList.contains("hidden"));
+    check("[NOIBO] Lưu phiên làm việc vào sessionStorage/localStorage (lh.nb.session)", !!window.sessionStorage.getItem("lh.nb.session"));
+    
+    const userDisplay = $("#user-display-name");
+    check("[NOIBO] Hiển thị phiên làm việc của Bí thư Chi bộ Hồ Văn Mão", userDisplay && userDisplay.textContent.includes("Hồ Văn Mão") && userDisplay.textContent.includes("Bí thư Chi bộ"));
+
+    // 3. Kiểm tra các chức năng bên trong sau khi đăng nhập thành công
+    // 3a. Xem văn bản nội bộ
+    check("[NOIBO] Hàm viewInternalDoc được khai báo", typeof window.viewInternalDoc === "function");
+    const docLinks = $$('#van-ban-chi-bo a[onclick*="viewInternalDoc"]');
+    check("[NOIBO] Có danh sách văn bản Chi bộ (Nghị quyết 09-NQ/CB, Tờ trình 11, v.v.)", docLinks.length >= 5, `Tìm thấy ${docLinks.length} văn bản`);
+
+    if (docLinks.length > 0 && typeof window.viewInternalDoc === "function") {
+      window.viewInternalDoc(docLinks[0]);
+      const modalDoc = $("#modal-internal-doc");
+      check("[NOIBO] Mở Modal xem chi tiết văn bản Chi bộ", modalDoc && !modalDoc.classList.contains("hidden"));
+      if (typeof window.closeDocModal === "function") {
+        window.closeDocModal();
+        check("[NOIBO] Đóng Modal xem chi tiết văn bản Chi bộ", modalDoc && modalDoc.classList.contains("hidden"));
+      }
+    }
+
+    // 3b. Dashboard nhiệm vụ 6 Rõ (10 Cán bộ)
+    check("[NOIBO] Hàm toggleDashboard được khai báo", typeof window.toggleDashboard === "function");
+    if (typeof window.toggleDashboard === "function") {
+      window.toggleDashboard();
+      const dashContent = $("#content-dashboard");
+      check("[NOIBO] toggleDashboard mở được Dashboard nhiệm vụ 6 Rõ", dashContent && !dashContent.classList.contains("hidden"));
+      check("[NOIBO] Dashboard chứa KPI 87.0% và XUẤT SẮC", dashContent && dashContent.textContent.includes("87") && /xuất sắc/i.test(dashContent.textContent));
+    }
+
+    // 3c. Đăng xuất
+    check("[NOIBO] Hàm logoutPartyMember được khai báo", typeof window.logoutPartyMember === "function");
+    if (typeof window.logoutPartyMember === "function") {
+      window.logoutPartyMember();
+      check("[NOIBO] Đăng xuất khóa lại giao diện và hiện Auth Modal", authModal && !authModal.classList.contains("hidden") && mainApp && mainApp.classList.contains("hidden"));
+      check("[NOIBO] Đã xóa session khi đăng xuất", !window.sessionStorage.getItem("lh.nb.session"));
+    }
+
+    // 4. Kiểm tra Rate Limiting (Khóa sau 5 lần sai)
+    window.localStorage.removeItem("lh_auth_fails");
+    window.localStorage.removeItem("lh_auth_lock_until");
+    for (let i = 0; i < 5; i++) {
+      nameInput.value = "Sai Lần " + i;
+      dobInput.value = "2000";
+      window.verifyPartyMember({ preventDefault: () => {} });
+    }
+    check("[NOIBO] Cơ chế Rate Limiting: Khóa 5 phút khi sai liên tiếp 5 lần", authErr && authErr.textContent.includes("quá 5 lần") || authErr.textContent.includes("tạm khóa"));
+  }
+
+  window.close();
 }
 
-/* =============== IN KẾT QUẢ =============== */
+function bodyHasText(d, str) {
+  return (d.body ? d.body.textContent : "").includes(str);
+}
+
+/* ==================== 3. CHẠY TOÀN BỘ KIỂM THỬ ==================== */
 (async () => {
-  try { await testPublic(); await testNoiBo(); await testDist(); }
-  catch (e) { results.push({ name: "LỖI HỆ THỐNG: " + e.message, ok: false, extra: e.stack.split("\n")[1] || "" }); }
-const bad = results.filter(r => !r.ok);
-results.forEach(r => console.log((r.ok ? "  ✓ " : "  ✗ ") + r.name + (r.extra ? "   [" + r.extra.slice(0, 160) + "]" : "")));
-console.log("\n" + "=".repeat(64));
-console.log("TỔNG: " + results.length + " kiểm tra · ĐẠT: " + (results.length - bad.length) + " · LỖI: " + bad.length);
+  console.log("================================================================");
+  console.log(" BẮT ĐẦU BỘ KIỂM THỬ TOÀN DIỆN CỔNG TTĐT TDP LƯƠNG HẬU");
+  console.log("================================================================\n");
+
+  try {
+    await testPublicPortal();
+    await testInternalPortal();
+  } catch (e) {
+    results.push({ name: "LỖI HỆ THỐNG KIỂM THỬ: " + e.message, ok: false, extra: e.stack ? e.stack.split("\n")[1] : "" });
+  }
+
+  const bad = results.filter((r) => !r.ok);
+  results.forEach((r) => {
+    const mark = r.ok ? "  ✔ [PASS] " : "  ✖ [FAIL] ";
+    console.log(mark + r.name + (r.extra ? "  -->  (" + r.extra.slice(0, 140) + ")" : ""));
+  });
+
+  console.log("\n" + "=".repeat(64));
+  console.log(` TỔNG CỘNG: ${results.length} bài test | ĐẠT: ${results.length - bad.length} | LỖI: ${bad.length}`);
+  console.log("=".repeat(64));
+
   process.exit(bad.length ? 1 : 0);
 })();

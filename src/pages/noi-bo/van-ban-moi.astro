@@ -269,9 +269,9 @@ const nhomKeHoach = vanBans.filter(v => v.loaiVanBan === 'Kế hoạch');
         <div class="filter-bar">
           <div class="tabs-btn">
             <button class="tab-btn active" onclick="filterDocs('ALL')">Tất cả ({vanBans.length})</button>
-            <button class="tab-btn" onclick="filterDocs('Chỉ thị')">📌 Chỉ đạo, chỉ thị ({nhomChiDao.length})</button>
-            <button class="tab-btn" onclick="filterDocs('Hướng dẫn')">📖 Hướng dẫn quán triệt ({nhomHuongDan.length})</button>
-            <button class="tab-btn" onclick="filterDocs('Kế hoạch')">📋 Kế hoạch &amp; Thi đua ({nhomKeHoach.length})</button>
+            <button id="nhom-chidao" class="tab-btn" onclick="filterDocs('Chỉ thị')">📌 Chỉ đạo, chỉ thị ({nhomChiDao.length})</button>
+            <button id="nhom-huongdan" class="tab-btn" onclick="filterDocs('Hướng dẫn')">📖 Hướng dẫn quán triệt ({nhomHuongDan.length})</button>
+            <button id="nhom-kehoach" class="tab-btn" onclick="filterDocs('Kế hoạch')">📋 Kế hoạch &amp; Thi đua ({nhomKeHoach.length})</button>
           </div>
           <div class="search-box">
             <input type="text" id="searchInput" placeholder="Tìm số hiệu, từ khóa..." onkeyup="searchDocs()" />
