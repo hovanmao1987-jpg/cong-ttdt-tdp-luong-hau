@@ -1,37 +1,10 @@
 {
-  "version": 2,
   "cleanUrls": true,
-  "routes": [
-    {
-      "src": "/(app|css|documents|assets|data|js)/(.*)",
-      "dest": "/$1/$2"
-    },
-    {
-      "src": "/robots.txt",
-      "dest": "/robots.txt"
-    },
-    {
-      "src": "/quan-tri(.*)",
-      "dest": "/quan-tri/index.html"
-    },
-    {
-      "src": "/cms(.*)",
-      "dest": "/cms.html"
-    },
-    {
-      "src": "/noi-bo(.*)",
-      "dest": "/noi_bo.html"
-    },
-    {
-      "src": "/noi_bo(.*)",
-      "dest": "/noi_bo.html"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+  "rewrites": [
+    { "source": "/quan-tri", "destination": "/quan-tri/index.html" },
+    { "source": "/quan-tri/:match*", "destination": "/quan-tri/index.html" },
+    { "source": "/cms", "destination": "/cms.html" },
+    { "source": "/noi-bo", "destination": "/noi_bo.html" },
+    { "source": "/noi_bo", "destination": "/noi_bo.html" }
   ]
 }
