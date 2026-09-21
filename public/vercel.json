@@ -3,12 +3,31 @@
   "cleanUrls": true,
   "routes": [
     {
-      "src": "/(app|css|documents|assets|data)/(.*)",
+      "src": "/(app|css|documents|assets|data|js)/(.*)",
       "dest": "/$1/$2"
     },
     {
       "src": "/robots.txt",
       "dest": "/robots.txt"
+    },
+    {
+      "src": "/quan-tri(.*)",
+      "dest": "/quan-tri/index.html"
+    },
+    {
+      "src": "/cms(.*)",
+      "dest": "/cms.html"
+    },
+    {
+      "src": "/noi-bo(.*)",
+      "dest": "/noi_bo.html"
+    },
+    {
+      "src": "/noi_bo(.*)",
+      "dest": "/noi_bo.html"
+    },
+    {
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
