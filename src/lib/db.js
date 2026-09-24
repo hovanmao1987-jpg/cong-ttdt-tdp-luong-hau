@@ -308,10 +308,10 @@ const SEED_DATA = {
       category: 'Trung ương',
       issuer: 'Quốc hội',
       issue_date: '2024-01-18',
-      file_url: 'https://vbpl.vn',
+      file_url: '[cần bổ sung]',
       source_url: 'https://vanban.chinhphu.vn',
-      description: 'Cơ sở pháp lý hướng dẫn bà con nhân dân đăng ký cấp mới, cấp đổi sổ đỏ',
-      is_public: true,
+      description: 'Cơ sở pháp lý hướng dẫn bà con nhân dân đăng ký cấp mới, cấp đổi sổ đỏ [cần bổ sung]',
+      is_public: false,
       created_by: 'usr_admin',
       created_at: '2026-01-01T00:00:00Z',
       updated_at: '2026-01-01T00:00:00Z'
@@ -1014,3 +1014,8 @@ if (typeof window !== 'undefined') {
 }
 
 export { LuongHauDatabase, SEED_DATA, hashPassword };
+
+if (typeof window !== 'undefined') {
+  window.hashPassword = hashPassword;
+  window.LuongHauDatabase = LuongHauDatabase;
+}

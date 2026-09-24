@@ -149,20 +149,40 @@ class AuthEngine {
 
   // Quick PIN login for Cổng Đảng viên
   loginWithPin(pin) {
+    const RATE_KEY = 'LUONG_HAU_PIN_RATE';
+    let rate = { count: 0, time: Date.now() };
+    try {
+      const stored = localStorage.getItem(RATE_KEY);
+      if (stored) rate = JSON.parse(stored);
+    } catch (e) {}
+
+    // Reset after 15 minutes (900000 ms)
+    if (Date.now() - rate.time > 900000) {
+      rate = { count: 0, time: Date.now() };
+    }
+
+    if (rate.count >= 5) {
+      const remainMins = Math.ceil((900000 - (Date.now() - rate.time)) / 60000);
+      return { success: false, message: `Đã thử sai quá 5 lần. Vui lòng thử lại sau ${remainMins} phút.` };
+    }
+
     if (pin === '2026' || pin === '1989') {
-      // Find default party secretary or cadre
+      try { localStorage.removeItem(RATE_KEY); } catch (e) {}
       const users = this.db.getAll('users');
       const bithu = users.find(u => u.role === 'BI_THU') || users[0];
       this.saveSession(bithu);
       this.db.addAuditLog({
         action: 'LOGIN_PIN',
         resource: 'AUTH',
-        details: `Đăng nhập nhanh qua mã xác thực Chi bộ (${bithu.full_name})`,
+        details: `Đăng nhập thành công qua mã xác thực Chi bộ (${bithu.full_name})`,
         user: bithu
       });
       return { success: true, user: bithu };
     }
-    return { success: false, message: 'Mã PIN bảo vệ không đúng. Vui lòng nhập mã chuẩn năm 2026.' };
+
+    rate.count += 1;
+    try { localStorage.setItem(RATE_KEY, JSON.stringify(rate)); } catch (e) {}
+    return { success: false, message: `Mã xác thực không chính xác (Lần ${rate.count}/5).` };
   }
 
   logout() {
@@ -240,3 +260,9 @@ if (typeof window !== 'undefined') {
 }
 
 export { AuthEngine };
+
+if (typeof window !== 'undefined') {
+  window.ROLES = ROLES;
+  window.PERMISSIONS = PERMISSIONS;
+  window.AuthEngine = AuthEngine;
+}
