@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Thông Tin Và Điều Hành Số Lương Hậu — Phường Hương Thủy, TP. Huế</title>
+  <meta name="description" content="Cổng thông tin điện tử và điều hành số Tổ dân phố Lương Hậu, phường Hương Thủy, thành phố Huế. Đoàn kết - Dân chủ - Kỷ cương - Phát triển.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B91C1C'/><polygon points='50,15 61,40 88,40 66,56 75,81 50,65 25,81 34,56 12,40 39,40' fill='%23FDE047'/></svg>">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#B91C1C">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Cổng Thông Tin Và Điều Hành Số Lương Hậu">
+  <meta property="og:description" content="Hệ thống điều hành số, cung cấp thông tin, tài liệu, biểu mẫu và dịch vụ số cho nhân dân TDP Lương Hậu.">
+  <meta property="og:type" content="website">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/src/css/style.css">
+</head>
+<body>
+
+  <!-- 1. GOV TOPBAR -->
+  <div class="gov-topbar">
+    <div class="container">
+      <div class="topbar-contact">
+        <span><i class="fa-solid fa-location-dot"></i> TDP Lương Hậu, P. Hương Thủy, TP. Huế</span>
+        <span><i class="fa-solid fa-phone"></i> Hotline: <a href="tel:0965712812">0965.712.812</a> (Tổ trưởng) • <a href="tel:0962481112">0962.481.112</a> (Bí thư)</span>
+        <span><i class="fa-solid fa-shield-halved"></i> CA Phường: <a href="tel:023443852870">0234.43852870</a></span>
+      </div>
+      <div class="topbar-links">
+        <span class="topbar-badge"><i class="fa-solid fa-signal"></i> Trực ban PCTT 24/24</span>
+        <a href="/dang-vien" class="topbar-badge" style="background:#B91C1C;color:#FEF08A;text-decoration:none;"><i class="fa-solid fa-key"></i> Khu Vực Nội Bộ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MAIN HEADER WITH NATIONAL EMBLEMS -->
+  <header class="main-header">
+    <div class="container">
+      <div class="brand-wrapper">
+        <div class="brand-left">
+          <div class="emblem-group">
+            <!-- Cờ Tổ Quốc / Quốc Huy -->
+            <div class="emblem-icon" title="Quốc kỳ Việt Nam">
+              <span style="color:#FDE047;font-size:28px;">★</span>
+            </div>
+            <!-- Cờ Đảng -->
+            <div class="emblem-icon" style="background: radial-gradient(circle, #DC2626 0%, #7F1D1D 100%);" title="Đảng kỳ Cộng sản Việt Nam">
+              <i class="fa-solid fa-hammer" style="color:#FDE047;font-size:22px;transform:rotate(-45deg);"></i>
+            </div>
+          </div>
+          <div class="brand-titles">
+            <h2>UBND PHƯỜNG HƯƠNG THỦY • THÀNH PHỐ HUẾ</h2>
+            <h1>CỔNG THÔNG TIN VÀ ĐIỀU HÀNH SỐ LƯƠNG HẬU</h1>
+            <p class="brand-slogan">"Đoàn kết - Dân chủ - Kỷ cương - Phát triển"</p>
+          </div>
+        </div>
+        <div class="brand-right">
+          <a href="/dang-vien" class="header-action-btn btn-dang-vien">
+            <i class="fa-solid fa-book-open-reader"></i> Cổng Đảng Viên
+          </a>
+          <a href="/admin" class="header-action-btn btn-admin">
+            <i class="fa-solid fa-sliders"></i> Quản Trị CMS
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. NAVIGATION MENU -->
+  <nav class="gov-nav">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <ul class="nav-list" id="mainNav">
+        <li class="nav-item active"><a href="#trang-chu"><i class="fa-solid fa-house"></i> Trang Chủ</a></li>
+        <li class="nav-item"><a href="#tin-tuc"><i class="fa-solid fa-newspaper"></i> Tin Tức</a></li>
+        <li class="nav-item"><a href="#thong-bao"><i class="fa-solid fa-bullhorn"></i> Thông Báo</a></li>
+        <li class="nav-item"><a href="#thong-tin-tdp"><i class="fa-solid fa-landmark"></i> Thông Tin TDP</a></li>
+        <li class="nav-item"><a href="#can-bo-doan-the"><i class="fa-solid fa-users"></i> Cán Bộ & Đoàn Thể</a></li>
+        <li class="nav-item"><a href="#lich-hoat-dong"><i class="fa-solid fa-calendar-days"></i> Lịch Hoạt Động</a></li>
+        <li class="nav-item"><a href="#kho-van-ban"><i class="fa-solid fa-file-invoice"></i> Văn Bản - Biểu Mẫu</a></li>
+        <li class="nav-item"><a href="#chuyen-doi-so"><i class="fa-solid fa-qrcode"></i> Chuyển Đổi Số</a></li>
+        <li class="nav-item"><a href="#phan-anh"><i class="fa-solid fa-comments"></i> Hỏi Đáp - Phản Ánh</a></li>
+        <li class="nav-item"><a href="#lien-he"><i class="fa-solid fa-phone"></i> Liên Hệ</a></li>
+      </ul>
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <!-- 4. TICKER / ANNOUNCEMENT MARQUEE -->
+  <div class="ticker-bar">
+    <div class="container">
+      <span class="ticker-badge"><i class="fa-solid fa-bell"></i> Tin Khẩn</span>
+      <div class="ticker-content" id="tickerText">
+        Ban Điều hành TDP Lương Hậu tiếp nhận phản ánh, kiến nghị của nhân dân • Hotline: 0965.712.812 • Trực ban phòng chống bão lũ 24/24.
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. BANNER & HERO SECTION -->
+  <div style="background: linear-gradient(180deg, #FEF2F2 0%, #FFFFFF 100%); padding: 24px 0 16px; border-bottom: 1px solid var(--border-red);">
+    <div class="container">
+      <div class="grid-2" style="align-items:center;">
+        <div>
+          <span class="badge badge-danger" style="margin-bottom:8px;font-size:0.8rem;"><i class="fa-solid fa-star"></i> Cơ quan Đảng & Chính quyền Cơ sở</span>
+          <h2 style="font-size:1.8rem;font-weight:800;color:var(--primary-red-dark);line-height:1.3;margin-bottom:12px;">
+            Xây dựng Chi bộ vững mạnh, Tổ dân phố Lương Hậu văn minh, chuyển đổi số toàn diện
+          </h2>
+          <p style="color:#475569;font-size:0.95rem;margin-bottom:18px;">
+            Hệ thống Cổng thông tin và điều hành số kết nối Chi bộ, Ban cán sự TDP và toàn thể nhân dân 4 Đội (8, 9, 10, 11). Cung cấp 100% biểu mẫu hành chính, hỗ trợ dịch vụ công trực tuyến và tiếp nhận phản ánh 24/7.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <a href="#kho-van-ban" class="btn btn-primary"><i class="fa-solid fa-file-arrow-down"></i> Tải Biểu Mẫu Miễn Phí</a>
+            <a href="#phan-anh" class="btn btn-secondary"><i class="fa-solid fa-paper-plane"></i> Gửi Phản Ánh Công Dân</a>
+            <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="btn btn-warning">
+              <i class="fa-brands fa-google-drive"></i> Kho Tài Liệu Drive ↗
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="padding:18px;border-top:4px solid var(--primary-red);background:#FFF;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <h3 style="font-size:1.1rem;font-weight:700;color:var(--primary-red-dark);">
+                <i class="fa-solid fa-circle-exclamation" style="color:var(--primary-red);"></i> Thông Báo Quan Trọng Mới Nhất
+              </h3>
+              <span class="badge badge-success">Cập nhật hôm nay</span>
+            </div>
+            <div id="heroNoticesList">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. STATS STRIP -->
+  <section class="stats-strip">
+    <div class="container">
+      <div class="grid-4">
+        <div class="stat-item">
+          <div class="stat-number">469</div>
+          <div class="stat-label">Hộ Gia Đình (4 Đội)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">1.947</div>
+          <div class="stat-label">Nhân Khẩu Thực Tế</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">22</div>
+          <div class="stat-label">Đảng Viên Chi Bộ</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">&gt;98%</div>
+          <div class="stat-label">Tỷ Lệ BHYT & VNeID</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. QUICK ACCESS CARDS -->
+  <section class="section" id="chuyen-doi-so">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-bolt" style="color:#D97706;"></i> Tiện Ích & Truy Cập Nhanh</h2>
+          <p class="section-subtitle">Các cổng thông tin, ứng dụng dịch vụ số thiết yếu cho người dân TDP Lương Hậu</p>
+        </div>
+      </div>
+      <div class="grid-6">
+        <a href="https://hues.vn" target="_blank" rel="noopener noreferrer" class="quick-access-card">
+          <div class="qa-icon-wrap qa-hues"><i class="fa-solid fa-mobile-screen"></i></div>
+          <h3>Hue-S</h3>
+          <p>Đô thị thông minh Thừa Thiên Huế</p>
+        </a>
+        <a href="https://vneid.gov.vn" target="_blank" rel="noopener noreferrer" class="quick-access-card">
+          <div class="qa-icon-wrap qa-vneid"><i class="fa-solid fa-id-card"></i></div>
+          <h3>VNeID</h3>
+          <p>Định danh điện tử Quốc gia</p>
+        </a>
+        <a href="https://dichvucong.gov.vn" target="_blank" rel="noopener noreferrer" class="quick-access-card">
+          <div class="qa-icon-wrap qa-dvc"><i class="fa-solid fa-landmark-dome"></i></div>
+          <h3>Dịch Vụ Công</h3>
+          <p>Nộp hồ sơ trực tuyến quốc gia</p>
+        </a>
+        <a href="#phan-anh" class="quick-access-card">
+          <div class="qa-icon-wrap qa-pa"><i class="fa-solid fa-bullhorn"></i></div>
+          <h3>Phản Ánh TDP</h3>
+          <p>Gửi kiến nghị trực tiếp Ban cán sự</p>
+        </a>
+        <a href="https://cskh.cpc.vn" target="_blank" rel="noopener noreferrer" class="quick-access-card">
+          <div class="qa-icon-wrap qa-dien"><i class="fa-solid fa-bolt-lightning"></i></div>
+          <h3>Điện Lực CPC</h3>
+          <p>Tra cứu tiền điện & sự cố lưới điện</p>
+        </a>
+        <a href="https://huewaco.com.vn" target="_blank" rel="noopener noreferrer" class="quick-access-card">
+          <div class="qa-icon-wrap qa-nuoc"><i class="fa-solid fa-droplet"></i></div>
+          <h3>Nước HueWACO</h3>
+          <p>Tra cứu tiền nước & bảo trì mạng lưới</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. NEWS SECTION (7 CATEGORIES & CMS APPROVED ONLY) -->
+  <section class="section" id="tin-tuc" style="background:#FFFFFF; border-top:1px solid #E2E8F0; border-bottom:1px solid #E2E8F0;">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-newspaper" style="color:var(--primary-red);"></i> Tin Tức & Hoạt Động Cơ Sở</h2>
+          <p class="section-subtitle">Thông tin chính xác, kịp thời đã qua quy trình kiểm duyệt của Bí thư Chi bộ</p>
+        </div>
+        <div style="display:flex;gap:8px;overflow-x:auto;" id="newsCategoriesTabs">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+      <div class="grid-3" id="newsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. NOTICES SECTION -->
+  <section class="section" id="thong-bao">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-bullhorn" style="color:#DC2626;"></i> Thông Báo Của Ban Điều Hành</h2>
+          <p class="section-subtitle">Chỉ đạo, kế hoạch, lịch tiêm chủng và các văn bản chỉ đạo mới nhất</p>
+        </div>
+      </div>
+      <div id="noticesFullList">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. ACTIVITY SCHEDULE & CALENDAR -->
+  <section class="section" id="lich-hoat-dong" style="background:#FFF;">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-calendar-check" style="color:#D97706;"></i> Lịch Hoạt Động TDP & Chi Bộ</h2>
+          <p class="section-subtitle">Kế hoạch sinh hoạt, ra quân môi trường và các sự kiện cộng đồng sắp tới</p>
+        </div>
+      </div>
+      <div class="gov-table-container">
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th>Thời Gian</th>
+              <th>Sự Kiện / Hoạt Động</th>
+              <th>Địa Điểm</th>
+              <th>Đơn Vị Chủ Trì</th>
+              <th>Trạng Thái</th>
+            </tr>
+          </thead>
+          <tbody id="eventsTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. DOCUMENT REPOSITORY & 11 FORMS -->
+  <section class="section" id="kho-van-ban">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-folder-open" style="color:var(--primary-red);"></i> Kho Văn Bản & Biểu Mẫu Điện Tử</h2>
+          <p class="section-subtitle">Tra cứu, xem trực tuyến và tải về miễn phí các biểu mẫu hành chính chuẩn</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <input type="text" id="docSearchInput" class="form-input" placeholder="🔍 Tìm kiếm biểu mẫu, số hiệu..." style="width:240px;">
+          <select id="docCategoryFilter" class="form-select" style="width:160px;">
+            <option value="ALL">Tất cả cấp</option>
+            <option value="Trung ương">Trung ương</option>
+            <option value="Thành phố Huế">Thành phố Huế</option>
+            <option value="Phường Hương Thủy">Phường Hương Thủy</option>
+            <option value="TDP Lương Hậu">TDP Lương Hậu</option>
+          </select>
+        </div>
+      </div>
+      <div class="gov-table-container">
+        <table class="gov-table">
+          <thead>
+            <tr>
+              <th>Mã / Số Hiệu</th>
+              <th>Tên Biểu Mẫu / Văn Bản</th>
+              <th>Cấp Ban Hành</th>
+              <th>Ngày Ban Hành</th>
+              <th>Tải Về / Xem File</th>
+            </tr>
+          </thead>
+          <tbody id="documentsTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:14px;text-align:right;">
+        <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" style="color:var(--primary-red);font-weight:700;">
+          <i class="fa-brands fa-google-drive"></i> Mở Thư Mục Kho Biểu Mẫu Trung Tâm Trên Google Drive ↗
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. CADRE & COMMUNITY BOARD (10 KEY CADRES) -->
+  <section class="section" id="can-bo-doan-the" style="background:#FFF;">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-users" style="color:var(--primary-red);"></i> Danh Bạ 10 Cán Bộ Chủ Chốt</h2>
+          <p class="section-subtitle">Ban Cán sự TDP, Chi ủy Chi bộ và Trưởng các ban ngành đoàn thể Lương Hậu</p>
+        </div>
+      </div>
+      <div class="grid-2" id="cadreGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. CITIZEN FEEDBACK & INQUIRIES -->
+  <section class="section" id="phan-anh">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title"><i class="fa-solid fa-comments" style="color:#2563EB;"></i> Tiếp Nhận & Xử Lý Phản Ánh Công Dân</h2>
+          <p class="section-subtitle">Minh bạch tiến độ xử lý ý kiến của nhân dân 24/7</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <!-- Form -->
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:1.15rem;font-weight:700;color:var(--primary-red-dark);margin-bottom:16px;">
+            <i class="fa-solid fa-pen-to-square"></i> Gửi Ý Kiến / Phản Ánh Mới
+          </h3>
+          <form id="feedbackForm">
+            <div class="form-group">
+              <label class="form-label">Họ và tên công dân (*)</label>
+              <input type="text" id="fbName" class="form-input" required placeholder="Ví dụ: Nguyễn Văn A">
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Số điện thoại liên hệ (*)</label>
+                <input type="tel" id="fbPhone" class="form-input" required placeholder="09xxxxxxxx">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Địa chỉ cư trú (Đội/Kiệt/Ngõ) (*)</label>
+                <input type="text" id="fbAddress" class="form-input" required placeholder="Ví dụ: Đội 8, Kiệt 4 Sóng Hồng">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nội dung phản ánh, kiến nghị (*)</label>
+              <textarea id="fbContent" class="form-textarea" rows="4" required placeholder="Mô tả cụ thể sự việc, địa điểm, đề xuất giải quyết..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">
+              <i class="fa-solid fa-paper-plane"></i> Gửi Phản Ánh Đến Ban Điều Hành TDP
+            </button>
+          </form>
+        </div>
+
+        <!-- History / Status -->
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:1.15rem;font-weight:700;color:#1E3A8A;margin-bottom:16px;">
+            <i class="fa-solid fa-list-check"></i> Tình Trạng Phản Ánh Đang Xử Lý
+          </h3>
+          <div id="feedbackHistoryList">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. FOOTER -->
+  <footer class="gov-footer" id="lien-he">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>CỔNG THÔNG TIN VÀ ĐIỀU HÀNH SỐ LƯƠNG HẬU</h3>
+          <p style="margin-bottom:8px;">Cơ quan quản lý: UBND PHƯỜNG HƯƠNG THỦY • THÀNH PHỐ HUẾ</p>
+          <p style="margin-bottom:8px;"><i class="fa-solid fa-location-dot"></i> Trụ sở: Số 83 Thái Thuận, TDP Lương Hậu, Phường Hương Thủy, TP. Huế</p>
+          <p style="margin-bottom:8px;"><i class="fa-solid fa-phone"></i> Đường dây nóng: 0965.712.812 (Tổ trưởng) • 0962.481.112 (Bí thư)</p>
+          <p><i class="fa-solid fa-shield"></i> Công an Phường: 0234.43852870</p>
+        </div>
+        <div class="footer-links">
+          <h4>Liên Kết Cơ Quan</h4>
+          <ul>
+            <li><a href="https://vbpl.vn" target="_blank" rel="noopener noreferrer">CSDL Quốc gia về Pháp luật</a></li>
+            <li><a href="https://vanban.chinhphu.vn" target="_blank" rel="noopener noreferrer">Văn bản Chính phủ</a></li>
+            <li><a href="https://tulieuvankien.dangcongsan.vn" target="_blank" rel="noopener noreferrer">Tư liệu Văn kiện Đảng</a></li>
+            <li><a href="https://hue.gov.vn" target="_blank" rel="noopener noreferrer">Cổng TTĐT TP. Huế</a></li>
+            <li><a href="https://huongthuy.hue.gov.vn" target="_blank" rel="noopener noreferrer">Cổng TTĐT P. Hương Thủy</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Phân Hệ Quản Trị</h4>
+          <ul>
+            <li><a href="/dang-vien"><i class="fa-solid fa-key"></i> Cổng Đảng Viên</a></li>
+            <li><a href="/bi-thu"><i class="fa-solid fa-gauge-high"></i> Dashboard Bí Thư</a></li>
+            <li><a href="/admin"><i class="fa-solid fa-sliders"></i> CMS Quản Trị Hệ Thống</a></li>
+            <li><a href="https://sotaydangvien.hue.gov.vn" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-book"></i> Sổ Tay ĐVĐT Huế ↗</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Bản quyền thuộc về Chi bộ & Ban cán sự Tổ dân phố Lương Hậu — phường Hương Thủy, thành phố Huế.</p>
+        <p style="margin-top:4px;color:#64748B;">Hệ thống phát triển theo kiến trúc mới Antigravity Clean Architecture • Phiên bản Master Build 2026</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- News Detail Modal -->
+  <div class="modal-backdrop" id="newsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="newsModalTitle">Chi Tiết Tin Tức</h3>
+        <button class="modal-close" onclick="closeNewsModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:12px;" id="newsModalMeta"></div>
+        <img id="newsModalImg" src="" alt="" style="width:100%;max-height:300px;object-fit:cover;border-radius:var(--radius-sm);margin-bottom:14px;display:none;">
+        <div style="font-weight:700;color:var(--primary-red-dark);margin-bottom:10px;font-size:1rem;" id="newsModalSummary"></div>
+        <div style="line-height:1.7;color:#334155;white-space:pre-line;" id="newsModalContent"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeNewsModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Scripts -->
+  <script type="module">
+    import { LuongHauDatabase } from '/src/lib/db.js';
+    import { AuthEngine } from '/src/lib/auth.js';
+
+    const db = new LuongHauDatabase();
+    const auth = new AuthEngine(db);
+
+    // Make available globally
+    window.db = db;
+    window.auth = auth;
+
+    // 1. Render Hero Notices
+    function renderHeroNotices() {
+      const notices = db.getAll('notices').filter(n => n.status === 'ACTIVE');
+      const container = document.getElementById('heroNoticesList');
+      if (!container) return;
+
+      container.innerHTML = notices.slice(0, 3).map(n => `
+        <div class="notice-box">
+          <div>
+            ${n.is_pinned ? '<span class="notice-pinned-badge"><i class="fa-solid fa-thumbtack"></i> Đã Ghim</span>' : ''}
+            <div class="notice-title" style="margin-top:4px;">${n.title}</div>
+            <div class="notice-content">${n.content.substring(0, 140)}...</div>
+            <div class="notice-meta">
+              <i class="fa-regular fa-clock"></i> Ngày đăng: ${n.publish_date} 
+              ${n.attachment_url ? `• <a href="${n.attachment_url}" target="_blank" rel="noopener noreferrer" style="color:var(--primary-red);font-weight:600;"><i class="fa-solid fa-paperclip"></i> Tệp đính kèm</a>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 2. Render Full Notices
+    function renderFullNotices() {
+      const notices = db.getAll('notices');
+      const container = document.getElementById('noticesFullList');
+      if (!container) return;
+
+      container.innerHTML = notices.map(n => `
+        <div class="notice-box" style="margin-bottom:14px;">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              ${n.is_pinned ? '<span class="notice-pinned-badge"><i class="fa-solid fa-thumbtack"></i> Ghim Quan Trọng</span>' : ''}
+              <span class="badge badge-success">Đang hiệu lực</span>
+            </div>
+            <h3 class="notice-title" style="margin-top:6px;font-size:1.05rem;">${n.title}</h3>
+            <p class="notice-content" style="margin-top:4px;">${n.content}</p>
+            <div class="notice-meta" style="margin-top:8px;">
+              <i class="fa-regular fa-calendar-check"></i> Hiệu lực từ: <strong>${n.publish_date}</strong> đến <strong>${n.expiry_date}</strong>
+            </div>
+          </div>
+          ${n.attachment_url ? `
+            <a href="${n.attachment_url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;white-space:nowrap;">
+              <i class="fa-brands fa-google-drive"></i> Mở Drive
+            </a>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    // 3. Render News Categories & News Grid
+    let currentCategory = 'ALL';
+
+    function renderNewsTabs() {
+      const categories = db.getAll('categories');
+      const tabs = document.getElementById('newsCategoriesTabs');
+      if (!tabs) return;
+
+      tabs.innerHTML = `
+        <button class="btn btn-secondary" style="padding:6px 12px;font-size:0.82rem;${currentCategory === 'ALL' ? 'background:var(--primary-red);color:white;' : ''}" onclick="window.filterNews('ALL')">Tất cả</button>
+        ${categories.map(c => `
+          <button class="btn btn-secondary" style="padding:6px 12px;font-size:0.82rem;${currentCategory === c.id ? 'background:var(--primary-red);color:white;' : ''}" onclick="window.filterNews('${c.id}')">${c.name}</button>
+        `).join('')}
+      `;
+    }
+
+    function renderNewsGrid() {
+      const news = db.getAll('news').filter(n => n.status === 'PUBLISHED');
+      const filtered = currentCategory === 'ALL' ? news : news.filter(n => n.category_id === currentCategory);
+      const container = document.getElementById('newsGrid');
+      if (!container) return;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:30px; color:#64748B;">Chưa có bài viết nào trong danh mục này.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="card" onclick="window.viewNewsDetail('${item.id}')" style="cursor:pointer;">
+          <img src="${item.thumbnail || 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=600&q=80'}" alt="" style="width:100%;height:180px;object-fit:cover;">
+          <div style="padding:16px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.75rem;">
+              <span class="badge badge-info">${item.category_name || 'Hoạt động TDP'}</span>
+              <span style="color:#64748B;"><i class="fa-regular fa-clock"></i> ${item.published_at.substring(0, 10)}</span>
+            </div>
+            <h3 style="font-size:1rem;font-weight:700;color:var(--text-dark);line-height:1.4;margin-bottom:8px;">${item.title}</h3>
+            <p style="font-size:0.84rem;color:#475569;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${item.summary}</p>
+            <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #F1F5F9;padding-top:10px;">
+              <span style="font-size:0.78rem;color:#64748B;"><i class="fa-solid fa-user-pen"></i> ${item.author || 'Tổ TT'}</span>
+              <span style="font-size:0.8rem;color:var(--primary-red);font-weight:700;">Xem chi tiết →</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.filterNews = function(catId) {
+      currentCategory = catId;
+      renderNewsTabs();
+      renderNewsGrid();
+    };
+
+    window.viewNewsDetail = function(newsId) {
+      const item = db.getById('news', newsId);
+      if (!item) return;
+
+      document.getElementById('newsModalTitle').innerText = item.title;
+      document.getElementById('newsModalMeta').innerHTML = `
+        <i class="fa-solid fa-folder"></i> ${item.category_name || 'Tin tức'} • 
+        <i class="fa-regular fa-clock"></i> ${item.published_at ? item.published_at.substring(0, 10) : ''} • 
+        <i class="fa-solid fa-user-pen"></i> ${item.author || 'Ban biên tập'}
+      `;
+      if (item.thumbnail) {
+        const img = document.getElementById('newsModalImg');
+        img.src = item.thumbnail;
+        img.style.display = 'block';
+      } else {
+        document.getElementById('newsModalImg').style.display = 'none';
+      }
+      document.getElementById('newsModalSummary').innerText = item.summary;
+      document.getElementById('newsModalContent').innerText = item.content;
+      document.getElementById('newsModal').classList.add('active');
+    };
+
+    window.closeNewsModal = function() {
+      document.getElementById('newsModal').classList.remove('active');
+    };
+
+    // 4. Render Events Calendar
+    function renderEvents() {
+      const events = db.getAll('events');
+      const tbody = document.getElementById('eventsTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = events.map(e => `
+        <tr>
+          <td><strong style="color:var(--primary-red);">${e.date}</strong> (${e.time})</td>
+          <td><strong>${e.title}</strong><div style="font-size:0.8rem;color:#64748B;">${e.description}</div></td>
+          <td><i class="fa-solid fa-location-dot" style="color:var(--primary-red);"></i> ${e.location}</td>
+          <td>${e.organizer}</td>
+          <td><span class="badge badge-warning">${e.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // 5. Render Documents & Forms (Filtered & Searched)
+    function renderDocuments() {
+      const docs = db.getAll('documents');
+      const search = (document.getElementById('docSearchInput').value || '').toLowerCase();
+      const cat = document.getElementById('docCategoryFilter').value;
+
+      const filtered = docs.filter(d => {
+        const matchSearch = d.title.toLowerCase().includes(search) || d.code.toLowerCase().includes(search);
+        const matchCat = (cat === 'ALL') || (d.category === cat);
+        return matchSearch && matchCat;
+      });
+
+      const tbody = document.getElementById('documentsTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = filtered.map(d => `
+        <tr>
+          <td><span class="badge badge-info">${d.code}</span></td>
+          <td>
+            <strong>${d.title}</strong>
+            <div style="font-size:0.8rem;color:#64748B;">${d.description || ''} • Cơ quan: ${d.issuer}</div>
+          </td>
+          <td><span class="badge badge-success">${d.category}</span></td>
+          <td>${d.issue_date}</td>
+          <td>
+            <div style="display:flex;gap:6px;">
+              <a href="${d.file_url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.75rem;padding:4px 8px;">
+                <i class="fa-solid fa-download"></i> Tải Về
+              </a>
+              ${d.source_url ? `
+                <a href="${d.source_url}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size:0.75rem;padding:4px 8px;">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> Nguồn
+                </a>
+              ` : ''}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('docSearchInput')?.addEventListener('input', renderDocuments);
+    document.getElementById('docCategoryFilter')?.addEventListener('change', renderDocuments);
+
+    // 6. Render Cadres (10 Key Cadres)
+    function renderCadres() {
+      const cadres = [
+        { name: "Hồ Văn Mão", birth: 1989, role: "Bí thư Chi bộ", phone: "0962.481.112", area: "Phụ trách Đội 11", desc: "Lãnh đạo chung, xây dựng Đảng, kiểm tra giám sát, bồi dưỡng tạo nguồn" },
+        { name: "Nguyễn Trọng Nghĩa", birth: 1980, role: "Phó Bí thư, Tổ trưởng TDP", phone: "0965.712.812", area: "Phụ trách Đội 8", desc: "Quản lý chính quyền, KT-XH, trật tự đô thị, thu quỹ TDP, chỉ huy PCTT" },
+        { name: "Hoàng Hữu Rớt", birth: 1978, role: "Chi ủy viên, Trưởng ban CT Mặt trận", phone: "0965.943.303", area: "Phụ trách Đội 9", desc: "Khối đại đoàn kết toàn dân, hòa giải cơ sở, dư luận nhân dân, gia đình văn hóa" },
+        { name: "Nguyễn Thị Mừng", birth: 1979, role: "Chi ủy viên, Chi hội trưởng Phụ nữ", phone: "0377.412.815", area: "Phụ trách Đội 9", desc: "Phong trào phụ nữ, gia đình 5 không 3 sạch, phân loại rác, đôn đốc đảng phí" },
+        { name: "Nguyễn Thúc Thành", birth: 1970, role: "Chi hội trưởng Nông dân, Tổ trưởng ANTT", phone: "0975.175.361", area: "Toàn địa bàn", desc: "Hỗ trợ nông nghiệp, tuần tra ANTT đêm Thứ 3 & Thứ 7, an toàn PCCC" },
+        { name: "Nguyễn Cưỡng", birth: 1964, role: "Chi hội trưởng Cựu chiến binh", phone: "0981.710.242", area: "Toàn địa bàn", desc: "Giáo dục truyền thống cách mạng, hội viên gương mẫu, phối hợp tuần tra" },
+        { name: "Phan Đăng Chiến", birth: 1951, role: "Chi hội trưởng Người cao tuổi", phone: "0913.469.434", area: "Toàn địa bàn", desc: "Phong trào Tuổi cao - Gương sáng, mừng thọ, khuyến học, nếp sống văn minh" },
+        { name: "Nguyễn Thị Ngọc Tú", birth: 2003, role: "Bí thư Chi đoàn Thanh niên", phone: "0386.003.175", area: "Toàn địa bàn", desc: "Phong trào thanh thiếu nhi, xung kích Ngày Chủ nhật xanh, Tổ CNSCĐ" },
+        { name: "Nguyễn Như Khải", birth: 1993, role: "Tổ đội trưởng Quân sự", phone: "0388.886.876", area: "Phụ trách Đội 10", desc: "Quốc phòng địa phương, quản lý 74 nguồn NVQS 2027, trực ban PCTT" },
+        { name: "Phạm Thị Thu Thanh", birth: 1987, role: "CTV Dân số & Y tế cơ sở", phone: "0332.886.309", area: "4 Đội TDP", desc: "Cập nhật sổ A0, tiêm chủng mở rộng, giám sát phòng dịch theo mùa, BHYT >98%" }
+      ];
+
+      const container = document.getElementById('cadreGrid');
+      if (!container) return;
+
+      container.innerHTML = cadres.map(c => `
+        <div class="cadre-card">
+          <div class="cadre-avatar"><i class="fa-solid fa-user-tie"></i></div>
+          <div class="cadre-info">
+            <h4>${c.name} (${c.birth})</h4>
+            <div class="cadre-role"><i class="fa-solid fa-medal"></i> ${c.role}</div>
+            <div class="cadre-desc"><strong>Địa bàn:</strong> ${c.area}</div>
+            <div class="cadre-desc">${c.desc}</div>
+            <a href="tel:${c.phone.replace(/\\./g, '')}" class="cadre-phone">
+              <i class="fa-solid fa-phone"></i> ${c.phone} (Gọi ngay)
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 7. Render Feedback History & Form Submission
+    function renderFeedbackHistory() {
+      const fbs = db.getAll('feedback');
+      const container = document.getElementById('feedbackHistoryList');
+      if (!container) return;
+
+      container.innerHTML = fbs.map(fb => `
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:var(--radius-sm); padding:12px; margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="badge badge-info">${fb.code}</span>
+            <span class="badge ${fb.status === 'ĐÃ_XỬ_LÝ' ? 'badge-success' : 'badge-warning'}">${fb.status}</span>
+          </div>
+          <div style="font-weight:700; color:#1E293B; font-size:0.92rem;">${fb.content}</div>
+          <div style="font-size:0.8rem; color:#64748B; margin-top:4px;">
+            <i class="fa-solid fa-user"></i> ${fb.sender_name} • <i class="fa-solid fa-location-dot"></i> ${fb.address} • ${fb.created_at.substring(0, 10)}
+          </div>
+          ${fb.response ? `
+            <div style="margin-top:8px; background:#EFF6FF; border-left:3px solid #2563EB; padding:8px; border-radius:4px; font-size:0.84rem; color:#1E40AF;">
+              <strong>Ban cán sự trả lời:</strong> ${fb.response}
+              <div style="font-size:0.75rem; color:#3B82F6; margin-top:2px;">Người xử lý: ${fb.handled_by || 'Ban Điều Hành'}</div>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('feedbackForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('fbName').value.trim();
+      const phone = document.getElementById('fbPhone').value.trim();
+      const address = document.getElementById('fbAddress').value.trim();
+      const content = document.getElementById('fbContent').value.trim();
+
+      const newFb = db.insert('feedback', {
+        code: 'PA-2026-' + Math.floor(100 + Math.random() * 900),
+        sender_name: name,
+        sender_phone: phone,
+        address: address,
+        content: content,
+        status: 'CHỜ_XỬ_LÝ',
+        response: '',
+        handled_by: ''
+      });
+
+      alert(`Cảm ơn bạn! Phản ánh mã ${newFb.code} đã được gửi thành công đến Ban Điều hành TDP.`);
+      document.getElementById('feedbackForm').reset();
+      renderFeedbackHistory();
+    });
+
+    // Mobile nav toggle
+    document.getElementById('mobileNavToggle')?.addEventListener('click', () => {
+      const nav = document.getElementById('mainNav');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+    });
+
+    // Initial Load
+    renderHeroNotices();
+    renderFullNotices();
+    renderNewsTabs();
+    renderNewsGrid();
+    renderEvents();
+    renderDocuments();
+    renderCadres();
+    renderFeedbackHistory();
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+          console.log('SW registration error:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

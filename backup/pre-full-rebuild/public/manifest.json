@@ -1,0 +1,23 @@
+{
+  "name": "Cổng Thông Tin Và Điều Hành Số Lương Hậu",
+  "short_name": "TDP Lương Hậu",
+  "description": "Cổng thông tin và điều hành số Tổ dân phố Lương Hậu, phường Hương Thủy, thành phố Huế",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#B91C1C",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

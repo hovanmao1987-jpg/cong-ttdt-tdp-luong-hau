@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/quan-tri", "destination": "/quan-tri/index.html" },
+    { "source": "/quan-tri/:match*", "destination": "/quan-tri/index.html" },
+    { "source": "/cms", "destination": "/cms.html" },
+    { "source": "/noi-bo", "destination": "/noi_bo.html" },
+    { "source": "/noi_bo", "destination": "/noi_bo.html" }
+  ]
+}

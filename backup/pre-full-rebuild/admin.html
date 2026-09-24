@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS Quản Trị Hệ Thống — Cổng Thông Tin & Điều Hành Số Lương Hậu</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#B91C1C">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B91C1C'/><polygon points='50,15 61,40 88,40 66,56 75,81 50,65 25,81 34,56 12,40 39,40' fill='%23FDE047'/></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/src/css/style.css">
+
+  <style>
+    .cms-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .cms-sidebar {
+      width: 260px;
+      background: #0F172A;
+      color: #E2E8F0;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .cms-brand {
+      padding: 20px;
+      background: #1E293B;
+      border-bottom: 2px solid var(--primary-red);
+    }
+    .cms-menu {
+      list-style: none;
+      padding: 12px 0;
+      flex: 1;
+    }
+    .cms-menu li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: #94A3B8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .cms-menu li a:hover, .cms-menu li.active a {
+      background: #1E293B;
+      color: #FFFFFF;
+      border-left: 4px solid var(--primary-red);
+    }
+    .cms-content {
+      flex: 1;
+      background: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    .cms-topbar {
+      background: white;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cms-tab {
+      display: none;
+      padding: 24px;
+    }
+    .cms-tab.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth Gate -->
+  <div id="cmsAuthGate" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.85);backdrop-filter:blur(6px);z-index:9999;align-items:center;justify-content:center;">
+    <div style="background:white;padding:32px;border-radius:var(--radius-lg);max-width:400px;text-align:center;">
+      <i class="fa-solid fa-lock" style="font-size:48px;color:#DC2626;margin-bottom:12px;"></i>
+      <h3 style="color:#0F172A;font-weight:800;margin-bottom:8px;">YÊU CẦU ĐĂNG NHẬP CMS</h3>
+      <p style="font-size:0.88rem;color:#64748B;margin-bottom:20px;">Vui lòng đăng nhập với tài khoản có quyền Quản trị, Bí thư hoặc Biên tập viên.</p>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <a href="/dang-vien" class="btn btn-primary">Đăng Nhập Ngay</a>
+        <a href="/" class="btn btn-secondary">Trang Chủ</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cms-layout" id="cmsMain">
+    <!-- SIDEBAR -->
+    <aside class="cms-sidebar">
+      <div class="cms-brand">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="emblem-icon" style="width:36px;height:36px;font-size:18px;">★</div>
+          <div>
+            <h2 style="font-size:0.72rem;color:#94A3B8;letter-spacing:0.05em;">TDP LƯƠNG HẬU</h2>
+            <h1 style="font-size:1.05rem;font-weight:800;color:white;">HỆ THỐNG CMS</h1>
+          </div>
+        </div>
+      </div>
+      <ul class="cms-menu">
+        <li class="active" onclick="window.switchCmsTab('dashboard', this)"><a><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+        <li onclick="window.switchCmsTab('tin-tuc', this)"><a><i class="fa-solid fa-newspaper"></i> Tin Tức</a></li>
+        <li onclick="window.switchCmsTab('thong-bao', this)"><a><i class="fa-solid fa-bullhorn"></i> Thông Báo</a></li>
+        <li onclick="window.switchCmsTab('van-ban', this)"><a><i class="fa-solid fa-file-invoice"></i> Văn Bản & Biểu Mẫu</a></li>
+        <li onclick="window.switchCmsTab('lich', this)"><a><i class="fa-solid fa-calendar-days"></i> Lịch Hoạt Động</a></li>
+        <li onclick="window.switchCmsTab('phan-anh', this)"><a><i class="fa-solid fa-comments"></i> Phản Ánh Dân Cư</a></li>
+        <li onclick="window.switchCmsTab('nguoi-dung', this)"><a><i class="fa-solid fa-users-gear"></i> Người Dùng & RBAC</a></li>
+        <li onclick="window.switchCmsTab('nhat-ky', this)"><a><i class="fa-solid fa-clock-rotate-left"></i> Nhật Ký Audit Log</a></li>
+        <li onclick="window.switchCmsTab('cai-dat', this)"><a><i class="fa-solid fa-gear"></i> Cài Đặt & Sao Lưu</a></li>
+      </ul>
+      <div style="padding:16px;background:#090D16;border-top:1px solid rgba(255,255,255,0.1);">
+        <a href="/bi-thu" style="display:flex;align-items:center;gap:8px;color:#FEF08A;font-size:0.85rem;font-weight:700;"><i class="fa-solid fa-gauge-high"></i> Dashboard Bí Thư</a>
+        <a href="/" style="display:flex;align-items:center;gap:8px;color:#94A3B8;font-size:0.82rem;margin-top:8px;"><i class="fa-solid fa-globe"></i> Cổng Công Khai</a>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="cms-content">
+      <div class="cms-topbar">
+        <div>
+          <span style="font-size:0.8rem;color:#64748B;">Trung Tâm Quản Trị Nội Dung • </span>
+          <strong id="cmsPageTitle" style="color:#0F172A;">Bảng Điều Khiển</strong>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="badge badge-info" id="cmsUserBadge">Admin</span>
+          <button onclick="window.logoutCms()" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">
+            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. DASHBOARD -->
+      <div class="cms-tab active" id="tab-dashboard">
+        <div class="grid-4" style="margin-bottom:24px;">
+          <div class="card" style="padding:18px;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Tin Tức Đã Xuất Bản</div>
+            <div id="statNewsCount" style="font-size:2rem;font-weight:800;color:#0F172A;margin:6px 0;">0</div>
+            <div style="font-size:0.75rem;color:#16A34A;">● Hiển thị công khai</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Thông Báo Đang Chạy</div>
+            <div id="statNoticeCount" style="font-size:2rem;font-weight:800;color:#0F172A;margin:6px 0;">0</div>
+            <div style="font-size:0.75rem;color:#D97706;">● Có ghim trang chủ</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Biểu Mẫu & Văn Bản</div>
+            <div id="statDocCount" style="font-size:2rem;font-weight:800;color:#0F172A;margin:6px 0;">0</div>
+            <div style="font-size:0.75rem;color:#2563EB;">● 11 biểu mẫu điện tử</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Phản Ánh Chờ Xử Lý</div>
+            <div id="statFeedbackPending" style="font-size:2rem;font-weight:800;color:#DC2626;margin:6px 0;">0</div>
+            <div style="font-size:0.75rem;color:#64748B;">● Cần điều phối cán bộ</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:12px;">Quy Trình Xuất Bản Nội Dung & Phân Quyền (RBAC)</h3>
+          <p style="font-size:0.88rem;color:#475569;line-height:1.6;">
+            CMS Tổ dân phố Lương Hậu tuân thủ quy trình kiểm duyệt chặt chẽ: <strong>Biên tập viên (EDITOR)</strong> tạo bài viết ở dạng Nháp (DRAFT) hoặc gửi duyệt (PENDING). <strong>Bí thư Chi bộ (BI_THU)</strong> trực tiếp xem xét nội dung và phê duyệt (APPROVED) trước khi bài viết được công khai (PUBLISHED) lên Cổng thông tin cho nhân dân.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. TIN TỨC -->
+      <div class="cms-tab" id="tab-tin-tuc">
+        <div class="card" style="padding:20px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3 style="font-size:1.15rem;font-weight:800;color:var(--primary-red-dark);">Soạn Thảo & Đăng Bài Viết Mới</h3>
+            <span class="badge badge-warning">Quy trình duyệt Bí thư</span>
+          </div>
+          <form id="cmsNewsForm">
+            <div class="form-group">
+              <label class="form-label">Tiêu đề bài viết (*)</label>
+              <input type="text" id="newsTitle" class="form-input" required placeholder="Nhập tiêu đề tin tức...">
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Danh mục (*)</label>
+                <select id="newsCategory" class="form-select" required>
+                  <option value="cat_xaydungdang">Xây dựng Đảng</option>
+                  <option value="cat_cns">Chuyển đổi số</option>
+                  <option value="cat_hoatdongtdp">Hoạt động TDP</option>
+                  <option value="cat_phongtrao">Phong trào</option>
+                  <option value="cat_khuyenhoc">Khuyến học</option>
+                  <option value="cat_antt">An ninh trật tự</option>
+                  <option value="cat_vhxh">Văn hóa - Xã hội</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tác giả / Đơn vị thực hiện</label>
+                <input type="text" id="newsAuthor" class="form-input" placeholder="Ví dụ: Ban biên tập TDP Lương Hậu">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">URL Ảnh đại diện (Thumbnail)</label>
+              <input type="url" id="newsThumbnail" class="form-input" placeholder="https://images.unsplash.com/...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tóm tắt ngắn (Summary) (*)</label>
+              <textarea id="newsSummary" class="form-textarea" rows="2" required placeholder="Tóm tắt ngắn gọn hiển thị ở trang chủ..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nội dung chi tiết bài viết (*)</label>
+              <textarea id="newsContent" class="form-textarea" rows="6" required placeholder="Nội dung đầy đủ bài viết..."></textarea>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button type="button" onclick="window.saveNews('DRAFT')" class="btn btn-secondary">
+                <i class="fa-solid fa-floppy-disk"></i> Lưu Nháp
+              </button>
+              <button type="button" onclick="window.saveNews('PENDING')" class="btn btn-warning">
+                <i class="fa-solid fa-paper-plane"></i> Gửi Bí Thư Duyệt (Pending)
+              </button>
+              <button type="button" onclick="window.saveNews('PUBLISHED')" id="btnDirectPublish" class="btn btn-primary">
+                <i class="fa-solid fa-upload"></i> Xuất Bản Trực Tiếp (Admin/Bí thư)
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- News Table -->
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Tiêu Đề</th>
+                <th>Danh Mục</th>
+                <th>Tác Giả</th>
+                <th>Trạng Thái</th>
+                <th>Hành Động</th>
+              </tr>
+            </thead>
+            <tbody id="cmsNewsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. THÔNG BÁO -->
+      <div class="cms-tab" id="tab-thong-bao">
+        <div class="card" style="padding:20px;margin-bottom:20px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:var(--primary-red-dark);margin-bottom:14px;">Thêm Thông Báo Mới</h3>
+          <form id="cmsNoticeForm">
+            <div class="form-group">
+              <label class="form-label">Tiêu đề thông báo (*)</label>
+              <input type="text" id="notTitle" class="form-input" required placeholder="Ví dụ: Thông báo số 16/TB-TDP...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nội dung chi tiết (*)</label>
+              <textarea id="notContent" class="form-textarea" rows="3" required></textarea>
+            </div>
+            <div class="grid-3">
+              <div class="form-group">
+                <label class="form-label">Ngày ban hành (*)</label>
+                <input type="date" id="notPubDate" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ngày hết hạn</label>
+                <input type="date" id="notExpDate" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">URL Tệp đính kèm (Drive/PDF)</label>
+                <input type="url" id="notFileUrl" class="form-input" placeholder="https://drive.google.com/...">
+              </div>
+            </div>
+            <div class="form-group" style="display:flex;align-items:center;gap:8px;">
+              <input type="checkbox" id="notPinned" style="width:18px;height:18px;">
+              <label for="notPinned" style="font-size:0.9rem;font-weight:700;">Ghim nổi bật lên đầu trang chủ</label>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-bullhorn"></i> Đăng Thông Báo</button>
+          </form>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Tiêu Đề</th>
+                <th>Ngày Đăng</th>
+                <th>Hết Hạn</th>
+                <th>Ghim</th>
+                <th>Hành Động</th>
+              </tr>
+            </thead>
+            <tbody id="cmsNoticeTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. VĂN BẢN & BIỂU MẪU -->
+      <div class="cms-tab" id="tab-van-ban">
+        <div class="card" style="padding:20px;margin-bottom:20px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:var(--primary-red-dark);margin-bottom:14px;">Thêm Biểu Mẫu / Văn Bản Mới</h3>
+          <form id="cmsDocForm">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Mã / Số hiệu (*)</label>
+                <input type="text" id="docCode" class="form-input" required placeholder="Ví dụ: BM-TDP-12">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cấp ban hành (*)</label>
+                <select id="docCategory" class="form-select" required>
+                  <option value="TDP Lương Hậu">TDP Lương Hậu</option>
+                  <option value="Phường Hương Thủy">Phường Hương Thủy</option>
+                  <option value="Thành phố Huế">Thành phố Huế</option>
+                  <option value="Trung ương">Trung ương</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tên văn bản / biểu mẫu (*)</label>
+              <input type="text" id="docTitle" class="form-input" required placeholder="Ví dụ: Giấy đề nghị xác nhận cư trú...">
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Cơ quan ban hành</label>
+                <input type="text" id="docIssuer" class="form-input" placeholder="Ví dụ: Ban Điều hành TDP Lương Hậu">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ngày ban hành (*)</label>
+                <input type="date" id="docDate" class="form-input" required>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">URL Tải về (Google Drive / PDF) (*)</label>
+                <input type="url" id="docFileUrl" class="form-input" required placeholder="https://drive.google.com/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">URL Cổng nguồn (vbpl.vn, hue.gov.vn...)</label>
+                <input type="url" id="docSourceUrl" class="form-input" placeholder="https://...">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm Vào Kho Văn Bản</button>
+          </form>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Số Hiệu</th>
+                <th>Tên Biểu Mẫu</th>
+                <th>Cấp</th>
+                <th>Ngày</th>
+                <th>Hành Động</th>
+              </tr>
+            </thead>
+            <tbody id="cmsDocTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5. LỊCH HOẠT ĐỘNG -->
+      <div class="cms-tab" id="tab-lich">
+        <div class="card" style="padding:20px;margin-bottom:20px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:var(--primary-red-dark);margin-bottom:14px;">Thêm Sự Kiện / Lịch Mới</h3>
+          <form id="cmsEventForm">
+            <div class="grid-3">
+              <div class="form-group">
+                <label class="form-label">Ngày diễn ra (*)</label>
+                <input type="date" id="evDate" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Giờ bắt đầu (*)</label>
+                <input type="text" id="evTime" class="form-input" placeholder="07h30" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Địa điểm (*)</label>
+                <input type="text" id="evLocation" class="form-input" placeholder="Nhà SHCĐ 83 Thái Thuận" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tên sự kiện / hoạt động (*)</label>
+              <input type="text" id="evTitle" class="form-input" required>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Đơn vị chủ trì</label>
+                <input type="text" id="evOrganizer" class="form-input" placeholder="Ban Cán sự TDP">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mô tả tóm tắt</label>
+                <input type="text" id="evDesc" class="form-input" placeholder="Nội dung chính...">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-calendar-plus"></i> Thêm Lịch Hoạt Động</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- 6. PHẢN ÁNH DÂN CƯ -->
+      <div class="cms-tab" id="tab-phan-anh">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#2563EB;">Xử Lý & Trả Lời Phản Ánh Công Dân</h3>
+          <p style="font-size:0.85rem;color:#64748B;">Cán bộ TDP cập nhật tiến độ xử lý và phản hồi cho bà con nhân dân</p>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Mã</th>
+                <th>Người Gửi & SĐT</th>
+                <th>Địa Chỉ</th>
+                <th>Nội Dung</th>
+                <th>Trạng Thái</th>
+                <th>Phản Hồi & Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody id="cmsFeedbackTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 7. NGƯỜI DÙNG & RBAC -->
+      <div class="cms-tab" id="tab-nguoi-dung">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#0F172A;">Danh Sách Tài Khoản & Phân Quyền (RBAC)</h3>
+          <p style="font-size:0.85rem;color:#64748B;">Hệ thống xác thực mã hóa an toàn, không lưu mật khẩu dạng plain text.</p>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Họ Và Tên</th>
+                <th>Email</th>
+                <th>Số Điện Thoại</th>
+                <th>Vai Trò (Role)</th>
+                <th>Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody id="cmsUsersTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 8. NHẬT KÝ AUDIT LOGS -->
+      <div class="cms-tab" id="tab-nhat-ky">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#0F172A;">Nhật Ký Hệ Thống Bất Biến (Audit Logs)</h3>
+          <p style="font-size:0.85rem;color:#64748B;">Ghi nhận mọi hành động: LOGIN, LOGOUT, CREATE, UPDATE, DELETE, APPROVE, PUBLISH. Không cho phép xóa nhật ký.</p>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Thời Gian</th>
+                <th>Người Thực Hiện</th>
+                <th>Vai Trò</th>
+                <th>Hành Động</th>
+                <th>Tài Nguyên</th>
+                <th>Chi Tiết</th>
+              </tr>
+            </thead>
+            <tbody id="cmsAuditTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 9. CÀI ĐẶT & SAO LƯU -->
+      <div class="cms-tab" id="tab-cai-dat">
+        <div class="card" style="padding:24px;margin-bottom:20px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#0F172A;margin-bottom:14px;">Sao Lưu & Khôi Phục Dữ Liệu (Backup & Restore)</h3>
+          <p style="font-size:0.88rem;color:#475569;margin-bottom:16px;">
+            Xuất toàn bộ 17 bảng cơ sở dữ liệu ra tệp JSON hoặc khôi phục dữ liệu từ tệp sao lưu.
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button onclick="window.exportDatabaseJson()" class="btn btn-primary">
+              <i class="fa-solid fa-download"></i> Tải Về File Sao Lưu (.JSON)
+            </button>
+            <button onclick="document.getElementById('importFileInput').click()" class="btn btn-secondary">
+              <i class="fa-solid fa-upload"></i> Khôi Phục Từ File JSON
+            </button>
+            <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="window.importDatabaseJson(event)">
+            <button onclick="window.resetDatabase()" class="btn btn-danger" style="background:#DC2626;color:white;">
+              <i class="fa-solid fa-rotate-left"></i> Khởi Tạo Lại Về Seed Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Google Drive Central Check -->
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#0F172A;margin-bottom:8px;">Liên Kết Google Drive Trung Tâm</h3>
+          <p style="font-size:0.85rem;color:#64748B;margin-bottom:12px;">Đảm bảo link Google Drive <code>1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo</code> luôn được duy trì bảo toàn.</p>
+          <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="btn btn-warning">
+            <i class="fa-brands fa-google-drive"></i> Kiểm Tra Thư Mục Drive ↗
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { LuongHauDatabase } from '/src/lib/db.js';
+    import { AuthEngine } from '/src/lib/auth.js';
+
+    const db = new LuongHauDatabase();
+    const auth = new AuthEngine(db);
+
+    window.db = db;
+    window.auth = auth;
+
+    function checkCmsPermission() {
+      const user = auth.getCurrentUser();
+      const gate = document.getElementById('cmsAuthGate');
+      if (!user) {
+        gate.style.display = 'flex';
+        return false;
+      }
+      gate.style.display = 'none';
+      document.getElementById('cmsUserBadge').innerHTML = `<i class="fa-solid fa-user-check"></i> ${user.full_name} (${user.role})`;
+
+      // Hide direct publish if not BI_THU or ADMIN
+      const btnDirect = document.getElementById('btnDirectPublish');
+      if (btnDirect && user.role !== 'BI_THU' && user.role !== 'ADMIN') {
+        btnDirect.style.display = 'none';
+      }
+      return true;
+    }
+
+    window.logoutCms = function() {
+      auth.logout();
+      window.location.href = '/dang-vien';
+    };
+
+    window.switchCmsTab = function(tabName, el) {
+      document.querySelectorAll('.cms-menu li').forEach(li => li.classList.remove('active'));
+      document.querySelectorAll('.cms-tab').forEach(t => t.classList.remove('active'));
+
+      if (el) el.classList.add('active');
+      const target = document.getElementById(`tab-${tabName}`);
+      if (target) target.classList.add('active');
+
+      const titles = {
+        'dashboard': 'Bảng Điều Khiển',
+        'tin-tuc': 'Quản Trị Tin Tức',
+        'thong-bao': 'Quản Trị Thông Báo',
+        'van-ban': 'Kho Văn Bản & Biểu Mẫu',
+        'lich': 'Quản Lý Lịch Hoạt Động',
+        'phan-anh': 'Xử Lý Phản Ánh',
+        'nguoi-dung': 'Người Dùng & RBAC',
+        'nhat-ky': 'Nhật Ký Audit Log',
+        'cai-dat': 'Cài Đặt & Sao Lưu'
+      };
+      document.getElementById('cmsPageTitle').innerText = titles[tabName] || 'Quản Trị CMS';
+    };
+
+    // 1. Dashboard Stats
+    function updateStats() {
+      const news = db.getAll('news').filter(n => n.status === 'PUBLISHED');
+      const notices = db.getAll('notices');
+      const docs = db.getAll('documents');
+      const fbs = db.getAll('feedback').filter(f => f.status !== 'ĐÃ_XỬ_LÝ');
+
+      document.getElementById('statNewsCount').innerText = news.length;
+      document.getElementById('statNoticeCount').innerText = notices.length;
+      document.getElementById('statDocCount').innerText = docs.length;
+      document.getElementById('statFeedbackPending').innerText = fbs.length;
+    }
+
+    // 2. News Management
+    window.saveNews = function(status) {
+      const title = document.getElementById('newsTitle').value.trim();
+      const cat = document.getElementById('newsCategory').value;
+      const catName = document.getElementById('newsCategory').selectedOptions[0].text;
+      const author = document.getElementById('newsAuthor').value.trim() || 'Ban biên tập TDP';
+      const thumb = document.getElementById('newsThumbnail').value.trim();
+      const summary = document.getElementById('newsSummary').value.trim();
+      const content = document.getElementById('newsContent').value.trim();
+
+      if (!title || !summary || !content) {
+        alert('Vui lòng điền đầy đủ tiêu đề, tóm tắt và nội dung bài viết.');
+        return;
+      }
+
+      const item = db.insert('news', {
+        title: title,
+        slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        category_id: cat,
+        category_name: catName,
+        author: author,
+        thumbnail: thumb || 'https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=600&q=80',
+        summary: summary,
+        content: content,
+        status: status,
+        is_featured: false,
+        published_at: status === 'PUBLISHED' ? new Date().toISOString() : ''
+      }, auth.getCurrentUser());
+
+      alert(`Đã lưu bài viết thành công với trạng thái: ${status}`);
+      document.getElementById('cmsNewsForm').reset();
+      renderNewsTable();
+      updateStats();
+    };
+
+    function renderNewsTable() {
+      const news = db.getAll('news');
+      const tbody = document.getElementById('cmsNewsTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = news.map(n => `
+        <tr>
+          <td><strong>${n.title}</strong></td>
+          <td><span class="badge badge-info">${n.category_name}</span></td>
+          <td>${n.author}</td>
+          <td>
+            <span class="badge ${n.status === 'PUBLISHED' ? 'badge-success' : n.status === 'PENDING' ? 'badge-warning' : 'badge-danger'}">
+              ${n.status}
+            </span>
+          </td>
+          <td>
+            <button onclick="window.deleteItem('news', '${n.id}')" class="btn btn-secondary" style="font-size:0.75rem;padding:4px 8px;color:#DC2626;">
+              <i class="fa-solid fa-trash"></i> Xóa
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // 3. Notices Management
+    document.getElementById('cmsNoticeForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('notTitle').value.trim();
+      const content = document.getElementById('notContent').value.trim();
+      const pub = document.getElementById('notPubDate').value;
+      const exp = document.getElementById('notExpDate').value;
+      const file = document.getElementById('notFileUrl').value.trim();
+      const pinned = document.getElementById('notPinned').checked;
+
+      db.insert('notices', {
+        title: title,
+        content: content,
+        publish_date: pub,
+        expiry_date: exp,
+        attachment_url: file || 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo',
+        is_pinned: pinned,
+        status: 'ACTIVE'
+      }, auth.getCurrentUser());
+
+      alert('Đã đăng thông báo mới thành công!');
+      document.getElementById('cmsNoticeForm').reset();
+      renderNoticesTable();
+      updateStats();
+    });
+
+    function renderNoticesTable() {
+      const notices = db.getAll('notices');
+      const tbody = document.getElementById('cmsNoticeTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = notices.map(n => `
+        <tr>
+          <td><strong>${n.title}</strong></td>
+          <td>${n.publish_date}</td>
+          <td>${n.expiry_date || 'Vô thời hạn'}</td>
+          <td>${n.is_pinned ? '✅ Ghim' : 'Không'}</td>
+          <td>
+            <button onclick="window.deleteItem('notices', '${n.id}')" class="btn btn-secondary" style="font-size:0.75rem;padding:4px 8px;color:#DC2626;">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // 4. Documents Management
+    document.getElementById('cmsDocForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = document.getElementById('docCode').value.trim();
+      const cat = document.getElementById('docCategory').value;
+      const title = document.getElementById('docTitle').value.trim();
+      const issuer = document.getElementById('docIssuer').value.trim() || 'Tổ dân phố Lương Hậu';
+      const date = document.getElementById('docDate').value;
+      const file = document.getElementById('docFileUrl').value.trim();
+      const src = document.getElementById('docSourceUrl').value.trim();
+
+      db.insert('documents', {
+        code: code,
+        category: cat,
+        title: title,
+        issuer: issuer,
+        issue_date: date,
+        file_url: file,
+        source_url: src,
+        description: 'Văn bản / biểu mẫu cập nhật từ CMS',
+        is_public: true
+      }, auth.getCurrentUser());
+
+      alert('Đã thêm biểu mẫu / văn bản mới vào kho!');
+      document.getElementById('cmsDocForm').reset();
+      renderDocsTable();
+      updateStats();
+    });
+
+    function renderDocsTable() {
+      const docs = db.getAll('documents');
+      const tbody = document.getElementById('cmsDocTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = docs.map(d => `
+        <tr>
+          <td><span class="badge badge-info">${d.code}</span></td>
+          <td><strong>${d.title}</strong></td>
+          <td>${d.category}</td>
+          <td>${d.issue_date}</td>
+          <td>
+            <button onclick="window.deleteItem('documents', '${d.id}')" class="btn btn-secondary" style="font-size:0.75rem;padding:4px 8px;color:#DC2626;">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // 5. Feedback Management
+    function renderFeedbackTable() {
+      const fbs = db.getAll('feedback');
+      const tbody = document.getElementById('cmsFeedbackTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = fbs.map(fb => `
+        <tr>
+          <td><span class="badge badge-info">${fb.code}</span></td>
+          <td><strong>${fb.sender_name}</strong><br><small>${fb.sender_phone}</small></td>
+          <td>${fb.address}</td>
+          <td style="max-width:280px;">${fb.content}</td>
+          <td>
+            <select onchange="window.updateFbStatus('${fb.id}', this.value)" class="form-select" style="font-size:0.8rem;padding:3px 6px;">
+              <option value="CHỜ_XỬ_LÝ" ${fb.status === 'CHỜ_XỬ_LÝ' ? 'selected' : ''}>CHỜ XỬ LÝ</option>
+              <option value="ĐANG_XỬ_LÝ" ${fb.status === 'ĐANG_XỬ_LÝ' ? 'selected' : ''}>ĐANG XỬ LÝ</option>
+              <option value="ĐÃ_XỬ_LÝ" ${fb.status === 'ĐÃ_XỬ_LÝ' ? 'selected' : ''}>ĐÃ XỬ LÝ</option>
+            </select>
+          </td>
+          <td>
+            <button onclick="window.respondFeedback('${fb.id}')" class="btn btn-secondary" style="font-size:0.75rem;padding:4px 8px;">
+              <i class="fa-solid fa-reply"></i> Trả Lời
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    window.updateFbStatus = function(id, val) {
+      db.update('feedback', id, { status: val }, auth.getCurrentUser());
+      renderFeedbackTable();
+      updateStats();
+    };
+
+    window.respondFeedback = function(id) {
+      const fb = db.getById('feedback', id);
+      const res = prompt('Nhập nội dung phản hồi cho công dân:', fb.response || '');
+      if (res !== null) {
+        db.update('feedback', id, {
+          response: res,
+          status: 'ĐÃ_XỬ_LÝ',
+          handled_by: auth.getCurrentUser()?.full_name || 'Ban Điều Hành'
+        }, auth.getCurrentUser());
+        renderFeedbackTable();
+        updateStats();
+      }
+    };
+
+    // 6. Users & RBAC
+    function renderUsersTable() {
+      const users = db.getAll('users');
+      const tbody = document.getElementById('cmsUsersTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = users.map(u => `
+        <tr>
+          <td><strong>${u.username}</strong></td>
+          <td>${u.full_name}</td>
+          <td>${u.email}</td>
+          <td>${u.phone}</td>
+          <td><span class="badge badge-info">${u.role}</span></td>
+          <td><span class="badge badge-success">${u.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // 7. Audit Logs (Immutable)
+    function renderAuditTable() {
+      const logs = db.getAll('audit_logs');
+      const tbody = document.getElementById('cmsAuditTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = logs.map(l => `
+        <tr>
+          <td><small>${l.timestamp}</small></td>
+          <td><strong>${l.username}</strong></td>
+          <td><span class="badge badge-info">${l.role}</span></td>
+          <td><strong>${l.action}</strong></td>
+          <td>${l.resource}</td>
+          <td>${l.details}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Generic Delete
+    window.deleteItem = function(table, id) {
+      if (confirm(`Bạn có chắc muốn xoá bản ghi này khỏi ${table}?`)) {
+        db.delete(table, id, auth.getCurrentUser());
+        if (table === 'news') renderNewsTable();
+        if (table === 'notices') renderNoticesTable();
+        if (table === 'documents') renderDocsTable();
+        updateStats();
+      }
+    };
+
+    // Backup & Restore
+    window.exportDatabaseJson = function() {
+      const json = db.exportJson();
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup_luong_hau_${new Date().toISOString().substring(0,10)}.json`;
+      a.click();
+    };
+
+    window.importDatabaseJson = function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const res = db.importJson(event.target.result, auth.getCurrentUser());
+        if (res.success) {
+          alert('Khôi phục toàn bộ cơ sở dữ liệu thành công!');
+          location.reload();
+        } else {
+          alert('Lỗi khôi phục: ' + res.error);
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    window.resetDatabase = function() {
+      if (confirm('Khôi phục toàn bộ dữ liệu về trạng thái Seed Data chuẩn ban đầu?')) {
+        db.resetToSeed(auth.getCurrentUser());
+        alert('Đã khởi tạo lại dữ liệu thành công!');
+        location.reload();
+      }
+    };
+
+    if (checkCmsPermission()) {
+      updateStats();
+      renderNewsTable();
+      renderNoticesTable();
+      renderDocsTable();
+      renderFeedbackTable();
+      renderUsersTable();
+      renderAuditTable();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/dang-vien", "destination": "/dang-vien.html" },
+    { "source": "/bi-thu", "destination": "/bi-thu.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/noi-bo", "destination": "/dang-vien.html" },
+    { "source": "/noi_bo", "destination": "/dang-vien.html" },
+    { "source": "/cms", "destination": "/admin.html" },
+    { "source": "/quan-tri", "destination": "/admin.html" },
+    { "source": "/quan-tri/:match*", "destination": "/admin.html" }
+  ]
+}

@@ -1,12 +1,27 @@
 {
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/tin-tuc", "destination": "/index.html" },
+    { "source": "/thong-bao", "destination": "/index.html" },
+    { "source": "/thong-tin", "destination": "/index.html" },
+    { "source": "/can-bo", "destination": "/index.html" },
+    { "source": "/lich", "destination": "/index.html" },
+    { "source": "/van-ban", "destination": "/index.html" },
+    { "source": "/chuyen-doi-so", "destination": "/index.html" },
+    { "source": "/phan-anh", "destination": "/index.html" },
+    { "source": "/lien-he", "destination": "/index.html" },
+
     { "source": "/dang-vien", "destination": "/dang-vien.html" },
+    { "source": "/dang-vien/:path*", "destination": "/dang-vien.html" },
     { "source": "/bi-thu", "destination": "/bi-thu.html" },
     { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/admin/:path*", "destination": "/admin.html" },
+
     { "source": "/noi-bo", "destination": "/dang-vien.html" },
     { "source": "/noi_bo", "destination": "/dang-vien.html" },
+    { "source": "/noi-bo/:path*", "destination": "/dang-vien.html" },
     { "source": "/cms", "destination": "/admin.html" },
+    { "source": "/cms/:path*", "destination": "/admin.html" },
     { "source": "/quan-tri", "destination": "/admin.html" },
     { "source": "/quan-tri/:match*", "destination": "/admin.html" }
   ]

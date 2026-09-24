@@ -1,0 +1,205 @@
+{
+  "nhanSuCanBo": {
+    "cap1": {
+      "chucDanh": "Bí thư Chi bộ",
+      "hoTen": "Đ/c Hồ Văn Mão",
+      "dienThoai": "0962 481 112"
+    },
+    "cap2": [
+      {
+        "chucDanh": "Tổ trưởng Dân phố (kiêm Phó Bí thư)",
+        "hoTen": "Đ/c Nguyễn Trọng Nghĩa",
+        "dienThoai": "0965 712 812"
+      },
+      {
+        "chucDanh": "Trưởng Ban Công tác Mặt trận",
+        "hoTen": "Đ/c Hoàng Hữu Rớt",
+        "dienThoai": "0965 943 303"
+      }
+    ],
+    "doanThe": [
+      {
+        "chucDanh": "Chủ tịch Hội Cựu chiến binh",
+        "hoTen": "Đ/c Nguyễn Cưỡng",
+        "dienThoai": "0981 710 242"
+      },
+      {
+        "chucDanh": "Chi hội trưởng Nông dân",
+        "hoTen": "Đ/c Nguyễn Thúc Thành",
+        "dienThoai": "0975 175 361"
+      },
+      {
+        "chucDanh": "Chi hội trưởng Người cao tuổi",
+        "hoTen": "Đ/c Phan Đăng Chiến",
+        "dienThoai": "0913 469 434"
+      },
+      {
+        "chucDanh": "Bí thư Chi đoàn Thanh niên",
+        "hoTen": "Đ/c Nguyễn Thị Ngọc Tú",
+        "dienThoai": "0386 005 175"
+      },
+      {
+        "chucDanh": "Chi hội trưởng Phụ nữ",
+        "hoTen": "Đ/c Nguyễn Thị Mừng",
+        "dienThoai": "0377 412 815"
+      }
+    ],
+    "chuyenMonAnNinh": [
+      {
+        "chucDanh": "Tổ trưởng Tổ An ninh",
+        "hoTen": "Đ/c Nguyễn Thúc Thành",
+        "dienThoai": "0975 175 361"
+      },
+      {
+        "chucDanh": "Tổ đội trưởng Dân quân tự vệ",
+        "hoTen": "Đ/c Nguyễn Như Khải",
+        "dienThoai": "0388 886 876"
+      },
+      {
+        "chucDanh": "Cộng tác viên Dân số",
+        "hoTen": "Đ/c Phạm Thị Thu Thanh",
+        "dienThoai": "0332 886 309"
+      }
+    ]
+  },
+  "vanBan3Cap": {
+    "trungUong": [
+      {
+        "soHieu": "KL 83-KL/TW",
+        "ngay": "08/08/2026",
+        "coQuan": "Bộ Chính trị",
+        "trichYeu": "Phát triển công nghiệp vật liệu Việt Nam."
+      },
+      {
+        "soHieu": "KL 56-KL/TW",
+        "ngay": "2026",
+        "coQuan": "Bộ Chính trị",
+        "trichYeu": "Tăng cường sự lãnh đạo của Đảng đối với công tác phòng, chống tội phạm trong tình hình mới."
+      },
+      {
+        "soHieu": "NQ 23-NQ/TW",
+        "ngay": "02/08/2026",
+        "coQuan": "Bộ Chính trị",
+        "trichYeu": "Công tác người Việt Nam ở nước ngoài trong tình hình mới."
+      },
+      {
+        "soHieu": "CT 09-CT/TW",
+        "ngay": "20/07/2026",
+        "coQuan": "Bộ Chính trị",
+        "trichYeu": "Tăng cường sự lãnh đạo của Đảng đối với việc thực hiện dân chủ ở cơ sở trong giai đoạn mới."
+      },
+      {
+        "soHieu": "2959/KH-BNNMT-BCA",
+        "ngay": "29/03/2026",
+        "coQuan": "Bộ NN&MT - Bộ Công an",
+        "trichYeu": "Đẩy mạnh đăng ký, cấp GCN đất đai và hoàn thiện cơ sở dữ liệu đất đai kết nối CSDL dân cư."
+      }
+    ],
+    "thanhPho": [
+      {
+        "id": "333-kh-ubnd",
+        "soHieu": "333/KH-UBND",
+        "ngayBanHanh": "12/06/2026",
+        "coQuan": "UBND thành phố Huế",
+        "nguoiKy": "Hà Văn Tuấn (Phó Chủ tịch)",
+        "linhVuc": "Đất đai - Nhà ở - Đô thị",
+        "trichYeu": "Giao chỉ tiêu thực hiện kê khai đăng ký đất đai, hoàn thiện hồ sơ địa chính và xây dựng, hoàn thiện cơ sở dữ liệu đất đai trên địa bàn thành phố Huế năm 2026 theo Kế hoạch 2959/KH-BNNMT-BCA.",
+        "linkNguonChinhThong": "https://hue.gov.vn/Trang-chu/He-thong-van-ban-phap-luat/doc/all/vb/59799",
+        "tepDinhKem": [
+          {
+            "tenTep": "Phụ lục 3: Chỉ tiêu kê khai đất đai",
+            "duongDanXem": "https://drive.google.com/file/d/ID_FILE_PL3/view",
+            "duongDanTai": "/documents/ke-hoach-333-phu-luc-3.pdf"
+          },
+          {
+            "tenTep": "Phụ lục 4: Tiến độ và biểu mẫu địa chính",
+            "duongDanXem": "https://drive.google.com/file/d/ID_FILE_PL4/view",
+            "duongDanTai": "/documents/ke-hoach-333-phu-luc-4.pdf"
+          },
+          {
+            "tenTep": "Phụ lục 5: Cơ chế phối hợp Công an & Địa chính",
+            "duongDanXem": "https://drive.google.com/file/d/ID_FILE_PL5/view",
+            "duongDanTai": "/documents/ke-hoach-333-phu-luc-5.pdf"
+          }
+        ]
+      }
+    ],
+    "phuongHuongThuy": [
+      {
+        "soHieu": "02-CT/ĐU",
+        "ngay": "14/09/2026",
+        "trichYeu": "Tăng cường sự lãnh đạo của Đảng đối với công tác phát triển người tham gia BHXH tự nguyện, BHYT.",
+        "nguoiKy": "Dương Thị Kim Tú"
+      },
+      {
+        "soHieu": "32-HD/ĐU",
+        "ngay": "14/09/2026",
+        "trichYeu": "Quán triệt Kết luận 56-KL/TW về công tác phòng, chống tội phạm (Hạn: 21/09/2026).",
+        "nguoiKy": "Dương Thị Kim Tú"
+      },
+      {
+        "soHieu": "33-HD/ĐU",
+        "ngay": "14/09/2026",
+        "trichYeu": "Quán triệt Kết luận 83-KL/TW về phát triển công nghiệp vật liệu (Hạn: Tháng 9/2026).",
+        "nguoiKy": "Dương Thị Kim Tú"
+      },
+      {
+        "soHieu": "72-KH/ĐU",
+        "ngay": "14/09/2026",
+        "trichYeu": "Thực hiện Nghị quyết 23-NQ/TW về người Việt Nam ở nước ngoài (Hạn: 30/09/2026).",
+        "nguoiKy": "Dương Thị Kim Tú"
+      },
+      {
+        "soHieu": "71-KH/ĐU",
+        "ngay": "04/09/2026",
+        "trichYeu": "Phong trào thi đua 'Dân vận khéo' giai đoạn 2026 - 2030 theo nguyên tắc 6 rõ.",
+        "nguoiKy": "Dương Thị Kim Tú"
+      },
+      {
+        "soHieu": "70-KH/ĐU",
+        "ngay": "04/08/2026",
+        "trichYeu": "Thực hiện Chỉ thị 09-CT/TW về dân chủ ở cơ sở (Bộ tiêu chí 3 công khai - 3 giám sát).",
+        "nguoiKy": "Dương Thị Kim Tú"
+      }
+    ]
+  },
+  "chuNhatXanh": [
+    {
+      "id": "cnx-16-08-2026",
+      "tieuDe": "Ra quân Chủ nhật xanh đợt 1: Dọn dẹp vệ sinh tuyến đường Thái Thuận",
+      "thoiGian": "16/08/2026",
+      "diaDiem": "Tuyến đường Thái Thuận, kiệt xóm và khu vực tâm linh cộng đồng",
+      "noiDung": "Ban cán sự và nhân dân ra quân phát quang cỏ dại, quét dọn rác thải dọc tuyến đường Thái Thuận, cắt tỉa nhánh cây che khuất đường dây điện và khu vực am thờ cộng đồng.",
+      "hinhAnh": [
+        "3884.jpg",
+        "3885.jpg"
+      ]
+    },
+    {
+      "id": "cnx-23-08-2026",
+      "tieuDe": "Ra quân Chủ nhật xanh đợt 2: Tổng vệ sinh tuyến đường Thái Vĩnh Chinh",
+      "thoiGian": "23/08/2026",
+      "diaDiem": "Tuyến đường Thái Vĩnh Chinh và các ngõ liên gia",
+      "noiDung": "Huy động máy cắt cỏ cầm tay, nhân dân tích cực thu gom rác thải, làm sạch mương rãnh thoát nước trên tuyến Thái Vĩnh Chinh nhằm chuẩn bị thoát lũ mùa mưa bão.",
+      "hinhAnh": [
+        "4579.jpg",
+        "4580.jpg"
+      ]
+    },
+    {
+      "id": "cnx-chinh-trang-2-9",
+      "tieuDe": "Chỉnh trang 14 cổng chào và treo cờ Tổ quốc chào mừng Quốc khánh 2/9",
+      "thoiGian": "26/08 - 30/08/2026",
+      "diaDiem": "Cổng chào Lương Hậu và các trục đường chính",
+      "noiDung": "Lắp đặt cờ Tổ quốc đồng bộ tại 14 cổng chào, thay mới cờ phao, cờ phướn, vận động 100% hộ dân treo cờ trang trọng trước cổng nhà.",
+      "hinhAnh": [
+        "4336.jpg",
+        "4338.jpg",
+        "4585.jpg",
+        "4586.jpg",
+        "4589.jpg",
+        "4591.jpg"
+      ]
+    }
+  ]
+}

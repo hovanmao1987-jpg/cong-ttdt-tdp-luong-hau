@@ -1,0 +1,87 @@
+---
+/**
+ * src/components/DriveAttachmentList.astro
+ * Component hiển thị danh sách tệp đính kèm kết nối Google Drive API v3 cho bản Astro SSG
+ * Tự động vẽ danh sách file với 2 nút: "Xem trực tuyến" và "Tải về"
+ */
+import { getGoogleDriveFiles, type DriveFile } from "../lib/googleDrive";
+
+interface Props {
+  folderId?: string;
+  apiKey?: string;
+  title?: string;
+}
+
+const {
+  folderId,
+  apiKey,
+  title = "Phụ lục & Tệp đính kèm Kế hoạch 333 (Google Drive)",
+} = Astro.props;
+
+const files: DriveFile[] = await getGoogleDriveFiles(folderId, apiKey);
+
+function getFileIcon(mimeType: string, name: string) {
+  const lower = (name + " " + mimeType).toLowerCase();
+  if (lower.includes("pdf")) return "📕";
+  if (lower.includes("sheet") || lower.includes("excel") || lower.includes("xls")) return "📊";
+  if (lower.includes("doc") || lower.includes("word")) return "📝";
+  if (lower.includes("image") || lower.includes("png") || lower.includes("jpg")) return "🖼️";
+  if (lower.includes("zip") || lower.includes("rar")) return "📦";
+  return "📄";
+}
+---
+
+<div class="drive-attachment-list" style="background: #fff; border-radius: 12px; border: 1px solid #fed7aa; padding: 14px; margin-top: 12px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ffedd5; padding-bottom: 8px; margin-bottom: 12px;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 18px;">📁</span>
+      <h4 style="margin: 0; font-size: 13.5px; font-weight: 700; color: #7c2d12;">
+        {title}
+      </h4>
+    </div>
+    <span style="background: #ffedd5; color: #9a3412; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 9999px;">
+      {files.length} tệp
+    </span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px;">
+    {files.map((file) => (
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 220px;">
+          <span style="font-size: 20px;">{getFileIcon(file.mimeType, file.name)}</span>
+          <div>
+            <div style="font-size: 12.5px; font-weight: 600; color: #1e293b;">
+              {file.name}
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+              {file.size && <span>Dung lượng: {file.size} · </span>}
+              <span style="color: #047857; font-weight: 500;">Google Drive API v3</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <a
+            href={file.duongDanXem || file.webViewLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            style="background: #0284c7; color: #fff; font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;"
+            title="Mở xem trực tiếp trên Google Drive"
+          >
+            <span>👁️</span> Xem trực tuyến
+          </a>
+          <a
+            href={file.duongDanTai || file.webContentLink || file.webViewLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            style="background: #059669; color: #fff; font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;"
+            title="Tải tệp tin về máy"
+          >
+            <span>📥</span> Tải về
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

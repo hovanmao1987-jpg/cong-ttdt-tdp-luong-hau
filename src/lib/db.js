@@ -787,7 +787,12 @@ const SEED_DATA = {
     { key: 'TOTAL_HOUSEHOLDS', value: '469', description: 'Tổng số hộ gia đình', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
     { key: 'TOTAL_POPULATION', value: '1947', description: 'Tổng nhân khẩu', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
     { key: 'TOTAL_PARTY_MEMBERS', value: '22', description: 'Tổng số đảng viên Chi bộ', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
-    { key: 'GDRIVE_CENTRAL_URL', value: 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo', description: 'Google Drive trung tâm bảo toàn', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' }
+    { key: 'GDRIVE_CENTRAL_URL', value: 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo', description: 'Google Drive trung tâm bảo toàn', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
+    { key: 'APP_SOTAY_DANGVIEN_URL', value: 'https://sotaydangvien.hue.gov.vn/', description: 'Cổng Sổ tay Đảng viên Điện tử', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
+    { key: 'HUES_WEB_URL', value: 'https://hue.gov.vn/', description: 'Cổng Thông tin Điện tử TP. Huế', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
+    { key: 'HUES_FEEDBACK_URL', value: 'https://tuongtac.hue.gov.vn/', description: 'Hệ thống Phản ánh Tương tác Hue-S', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
+    { key: 'HUES_DOTHIXANH_URL', value: 'https://tuongtac.hue.gov.vn/dothixanh', description: 'Phản ánh Hiện trường Đô thị Xanh', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' },
+    { key: 'HUES_PLAY_STORE_URL', value: 'https://play.google.com/store/apps/details?id=vn.stttt.hues', description: 'Ứng dụng Hue-S chính thức trên Google Play (Android: vn.stttt.hues)', updated_at: '2026-09-24T00:00:00Z', updated_by: 'admin' }
   ]
 };
 
@@ -932,6 +937,38 @@ class LuongHauDatabase {
   }
 
   // Backup & Restore
+  getSetting(key, defaultValue = '') {
+    if (!this.data.settings) return defaultValue;
+    const item = this.data.settings.find(s => s.key === key);
+    return item ? item.value : defaultValue;
+  }
+
+  setSetting(key, value, user = null) {
+    if (!this.data.settings) this.data.settings = [];
+    const idx = this.data.settings.findIndex(s => s.key === key);
+    if (idx !== -1) {
+      this.data.settings[idx].value = value;
+      this.data.settings[idx].updated_at = new Date().toISOString();
+      this.data.settings[idx].updated_by = user ? user.username : 'system';
+    } else {
+      this.data.settings.push({
+        key: key,
+        value: value,
+        description: 'Custom Setting',
+        updated_at: new Date().toISOString(),
+        updated_by: user ? user.username : 'system'
+      });
+    }
+    this.save();
+    this.addAuditLog({
+      action: 'UPDATE_SETTING',
+      resource: 'SETTINGS',
+      details: `Cập nhật cấu hình ${key} = ${value}`,
+      user: user
+    });
+    return true;
+  }
+
   exportJson() {
     return JSON.stringify(this.data, null, 2);
   }

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Đảng Viên — Chi Bộ Tổ Dân Phố Lương Hậu</title>
+  <meta name="description" content="Khu vực quản trị nội bộ Chi bộ Tổ dân phố Lương Hậu. Sinh hoạt chi bộ, điểm danh, nghị quyết, phân công 6 rõ.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B91C1C'/><polygon points='50,15 61,40 88,40 66,56 75,81 50,65 25,81 34,56 12,40 39,40' fill='%23FDE047'/></svg>">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#991B1B">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/src/css/style.css">
+
+  <style>
+    .party-header {
+      background: radial-gradient(circle at top, #B91C1C 0%, #7F1D1D 100%);
+      color: #FFFFFF;
+      border-bottom: 3px solid #F59E0B;
+      padding: 16px 0;
+    }
+    .party-nav {
+      background: #450A0A;
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 6px 16px;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.4);
+    }
+    .party-tab-btn {
+      color: #FEE2E2;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    .party-tab-btn:hover, .party-tab-btn.active {
+      background: #B91C1C;
+      color: #FEF08A;
+      border-color: #FDE047;
+    }
+    .party-module {
+      display: none;
+    }
+    .party-module.active {
+      display: block;
+    }
+  </style>
+</head>
+<body style="background:#FDF2F2;">
+
+  <!-- LOGIN LOCK SCREEN (If not authenticated) -->
+  <div id="loginScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle, #991B1B 0%, #450A0A 100%);">
+    <div style="background:white;border-radius:var(--radius-lg);padding:32px;max-width:440px;width:100%;box-shadow:0 20px 25px -5px rgba(0,0,0,0.5);border-top:6px solid #DC2626;text-align:center;">
+      <div style="display:flex;justify-content:center;gap:12px;margin-bottom:14px;">
+        <div class="emblem-icon" style="width:48px;height:48px;font-size:24px;">★</div>
+        <div class="emblem-icon" style="width:48px;height:48px;background:radial-gradient(circle, #DC2626 0%, #7F1D1D 100%);font-size:20px;">
+          <i class="fa-solid fa-hammer" style="transform:rotate(-45deg);"></i>
+        </div>
+      </div>
+      <h2 style="font-size:0.85rem;color:#991B1B;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;">CHI BỘ TỔ DÂN PHỐ LƯƠNG HẬU</h2>
+      <h1 style="font-size:1.35rem;font-weight:800;color:#0F172A;margin:4px 0 6px;">CỔNG ĐĂNG NHẬP ĐẢNG VIÊN</h1>
+      <p style="font-size:0.84rem;color:#64748B;margin-bottom:20px;">"Đoàn kết - Dân chủ - Kỷ cương - Phát triển"</p>
+
+      <!-- PIN Code Form -->
+      <form id="pinLoginForm" style="margin-bottom:20px;">
+        <div class="form-group" style="text-align:left;">
+          <label class="form-label"><i class="fa-solid fa-shield-halved" style="color:#B91C1C;"></i> Mã Xác Thực Bí Mật (Mặc định: 2026)</label>
+          <input type="password" id="inputPin" class="form-input" style="font-size:1.2rem;letter-spacing:0.3em;text-align:center;font-weight:700;" placeholder="••••" required autofocus>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;padding:12px;font-size:1rem;background:#B91C1C;">
+          <i class="fa-solid fa-lock-open"></i> Mở Phiên Làm Việc Chi Bộ
+        </button>
+      </form>
+
+      <div style="position:relative;margin:16px 0;border-bottom:1px solid #E2E8F0;">
+        <span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:white;padding:0 8px;font-size:0.75rem;color:#94A3B8;">Hoặc đăng nhập theo tài khoản</span>
+      </div>
+
+      <!-- Account Login Toggle -->
+      <form id="accountLoginForm" style="text-align:left;">
+        <div class="form-group" style="margin-bottom:10px;">
+          <label class="form-label" style="font-size:0.8rem;">Tên đăng nhập</label>
+          <input type="text" id="accUsername" class="form-input" placeholder="bithu / chiuy / totruong / admin">
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label class="form-label" style="font-size:0.8rem;">Mật khẩu</label>
+          <input type="password" id="accPassword" class="form-input" placeholder="Nhập mật khẩu">
+        </div>
+        <button type="submit" class="btn btn-secondary" style="width:100%;font-size:0.88rem;">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập Tài Khoản
+        </button>
+      </form>
+
+      <div style="margin-top:20px;border-top:1px solid #F1F5F9;padding-top:12px;">
+        <a href="/" style="font-size:0.84rem;color:#64748B;font-weight:600;"><i class="fa-solid fa-arrow-left"></i> Quay lại Cổng Thông Tin Công Khai</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATED PORTAL APP -->
+  <div id="portalScreen" style="display:none;min-height:100vh;flex-direction:column;">
+
+    <!-- 1. HEADER KHU VỰC CHI BỘ -->
+    <header class="party-header">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div class="emblem-group">
+              <div class="emblem-icon" style="width:44px;height:44px;font-size:22px;">★</div>
+              <div class="emblem-icon" style="width:44px;height:44px;font-size:18px;background:radial-gradient(circle, #DC2626 0%, #7F1D1D 100%);">
+                <i class="fa-solid fa-hammer" style="transform:rotate(-45deg);"></i>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:0.8rem;color:#FEF08A;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">ĐẢNG CỘNG SẢN VIỆT NAM</div>
+              <h1 style="font-size:1.3rem;font-weight:800;color:#FFFFFF;text-transform:uppercase;line-height:1.2;">CHI BỘ TỔ DÂN PHỐ LƯƠNG HẬU</h1>
+              <div style="font-size:0.8rem;color:#FDE68A;font-style:italic;">"Đoàn kết - Dân chủ - Kỷ cương - Phát triển"</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <a href="https://sotaydangvien.hue.gov.vn" target="_blank" rel="noopener noreferrer" class="btn btn-warning" style="font-size:0.82rem;padding:6px 12px;background:#FDE047;color:#991B1B;">
+              <i class="fa-solid fa-book"></i> Sổ Tay ĐVĐT ↗
+            </a>
+            <span id="userBadge" class="badge badge-success" style="padding:6px 10px;font-size:0.8rem;"></span>
+            <button onclick="window.logoutParty()" class="btn btn-danger" style="background:#7F1D1D;color:#FEF2F2;border:1px solid #EF4444;font-size:0.8rem;padding:6px 12px;" title="Khóa phiên ngay">
+              <i class="fa-solid fa-lock"></i> Khóa Phiên
+            </button>
+            <a href="/" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">
+              <i class="fa-solid fa-globe"></i> Cổng Công Khai
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. MODULE NAVIGATION TABS -->
+    <nav class="party-nav">
+      <div class="container" style="display:flex;gap:8px;overflow-x:auto;">
+        <button class="party-tab-btn active" onclick="window.switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Tổng Quan</button>
+        <button class="party-tab-btn" onclick="window.switchTab('sinh-hoat')"><i class="fa-solid fa-users-rectangle"></i> Sinh Hoạt Chi Bộ</button>
+        <button class="party-tab-btn" onclick="window.switchTab('diem-danh')"><i class="fa-solid fa-clipboard-user"></i> Điểm Danh</button>
+        <button class="party-tab-btn" onclick="window.switchTab('nghi-quyet')"><i class="fa-solid fa-stamp"></i> Nghị Quyết</button>
+        <button class="party-tab-btn" onclick="window.switchTab('phan-cong')"><i class="fa-solid fa-list-check"></i> Phân Công "6 Rõ"</button>
+        <button class="party-tab-btn" onclick="window.switchTab('tai-lieu')"><i class="fa-solid fa-folder-tree"></i> Văn Kiện & Tài Liệu</button>
+        <button class="party-tab-btn" onclick="window.switchTab('thong-bao')"><i class="fa-solid fa-bell"></i> Thông Báo Nội Bộ</button>
+      </div>
+    </nav>
+
+    <!-- 3. MAIN CONTENT CONTAINER -->
+    <main class="container" style="padding:24px 16px;flex:1;">
+
+      <!-- TAB 1: DASHBOARD -->
+      <section id="module-dashboard" class="party-module active">
+        <div class="grid-4" style="margin-bottom:24px;">
+          <div class="card" style="padding:18px;border-left:4px solid #B91C1C;">
+            <div style="font-size:0.82rem;font-weight:700;color:#64748B;text-transform:uppercase;">Tổng Số Đảng Viên</div>
+            <div style="font-size:2rem;font-weight:800;color:#B91C1C;margin:6px 0;">22</div>
+            <div style="font-size:0.78rem;color:#16A34A;">● 21 Sinh hoạt chính thức • 1 Miễn tuổi cao</div>
+          </div>
+          <div class="card" style="padding:18px;border-left:4px solid #F59E0B;">
+            <div style="font-size:0.82rem;font-weight:700;color:#64748B;text-transform:uppercase;">Tỷ Lệ Sinh Hoạt T9/2026</div>
+            <div id="statAttendanceRate" style="font-size:2rem;font-weight:800;color:#F59E0B;margin:6px 0;">95.5%</div>
+            <div style="font-size:0.78rem;color:#0284C7;">● 20/22 có mặt (Đạt chuẩn Điều lệ)</div>
+          </div>
+          <div class="card" style="padding:18px;border-left:4px solid #16A34A;">
+            <div style="font-size:0.82rem;font-weight:700;color:#64748B;text-transform:uppercase;">Tiến Độ 10 Cán Bộ (6 Rõ)</div>
+            <div style="font-size:2rem;font-weight:800;color:#16A34A;margin:6px 0;">87.0%</div>
+            <div style="font-size:0.78rem;color:#16A34A;">● Đánh giá toàn Chi bộ: Xuất sắc</div>
+          </div>
+          <div class="card" style="padding:18px;border-left:4px solid #2563EB;">
+            <div style="font-size:0.82rem;font-weight:700;color:#64748B;text-transform:uppercase;">Nghị Quyết Đang Thi Hành</div>
+            <div style="font-size:2rem;font-weight:800;color:#2563EB;margin:6px 0;">09-NQ/CB</div>
+            <div style="font-size:0.78rem;color:#64748B;">● Ban hành ngày 03/09/2026</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Chu Trình Sinh Hoạt 4 Tuần -->
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:1.05rem;font-weight:800;color:#991B1B;margin-bottom:14px;">
+              <i class="fa-solid fa-arrows-spin"></i> Chu Trình Hoạt Động 4 Tuần Hàng Tháng
+            </h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:0.88rem;">
+              <li style="padding:10px;background:#FEF2F2;border-radius:var(--radius-sm);border-left:3px solid #B91C1C;">
+                <strong>Tuần 1 (Ngày 03 hàng tháng):</strong> Sinh hoạt Chi bộ định kỳ, đánh giá công tác tháng trước, biểu quyết nghị quyết lãnh đạo.
+              </li>
+              <li style="padding:10px;background:#F0FDF4;border-radius:var(--radius-sm);border-left:3px solid #16A34A;">
+                <strong>Tuần 2:</strong> Ra quân Ngày Chủ nhật xanh, hỗ trợ kích hoạt VNeID & Hue-S cho bà con nhân dân.
+              </li>
+              <li style="padding:10px;background:#EFF6FF;border-radius:var(--radius-sm);border-left:3px solid #2563EB;">
+                <strong>Tuần 3:</strong> Rà soát nguồn NVQS 2027, tuần tra ANTT cơ sở và hòa giải các vụ việc phát sinh.
+              </li>
+              <li style="padding:10px;background:#FFFBEB;border-radius:var(--radius-sm);border-left:3px solid #D97706;">
+                <strong>Tuần 4:</strong> Đôn đốc thu 100% đảng phí, báo cáo y tế - dân số Sổ A0 và chuẩn bị nội dung sinh hoạt kỳ sau.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Văn Kiện Mới Nhất -->
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:1.05rem;font-weight:800;color:#991B1B;margin-bottom:14px;">
+              <i class="fa-solid fa-landmark"></i> Văn Bản & Chỉ Đạo Cấp Trên Mới Ban Hành
+            </h3>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:0.86rem;">
+              <div style="border-bottom:1px solid #E2E8F0;padding-bottom:8px;">
+                <span class="badge badge-danger">Trung ương</span>
+                <strong style="display:block;margin-top:2px;">556-QĐ/VPTW (06/09/2026)</strong>
+                <p style="color:#64748B;">Quy định hệ thống thông tin và cơ sở dữ liệu trong cơ quan Đảng.</p>
+              </div>
+              <div style="border-bottom:1px solid #E2E8F0;padding-bottom:8px;">
+                <span class="badge badge-info">Văn phòng TW</span>
+                <strong style="display:block;margin-top:2px;">213-KH/VPTW (05/09/2026)</strong>
+                <p style="color:#64748B;">Kế hoạch chuyển đổi số hoạt động công tác cấp uỷ giai đoạn 2026 - 2030.</p>
+              </div>
+              <div style="border-bottom:1px solid #E2E8F0;padding-bottom:8px;">
+                <span class="badge badge-warning">Đảng ủy Phường</span>
+                <strong style="display:block;margin-top:2px;">33-HD/ĐU (14/09/2026)</strong>
+                <p style="color:#64748B;">Tổ chức quán triệt thực hiện Kết luận 83-KL/TW về công nghiệp vật liệu.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SINH HOẠT CHI BỘ -->
+      <section id="module-sinh-hoat" class="party-module">
+        <div class="card" style="padding:24px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div>
+              <h2 style="font-size:1.25rem;font-weight:800;color:#991B1B;">Kỳ Sinh Hoạt Thường Kỳ Tháng 09/2026</h2>
+              <p style="color:#64748B;font-size:0.88rem;">Thời gian: 14h00 ngày 03/09/2026 tại Nhà sinh hoạt cộng đồng 83 Thái Thuận</p>
+            </div>
+            <span class="badge badge-success" style="font-size:0.85rem;padding:6px 12px;">ĐÃ HOÀN THÀNH</span>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:18px;">
+            <div style="background:#FEF2F2;padding:14px;border-radius:var(--radius-sm);border-left:3px solid #B91C1C;">
+              <h4 style="font-weight:700;color:#991B1B;margin-bottom:6px;">Chương Trình Kỳ Họp:</h4>
+              <ol style="margin-left:18px;font-size:0.88rem;color:#334155;line-height:1.6;">
+                <li>Thông tin tình hình thời sự trong nước, thành phố và phường Hương Thủy.</li>
+                <li>Đánh giá kết quả công tác lãnh đạo tháng 8/2026.</li>
+                <li>Thực hiện quy trình bầu bổ sung 02 Chi ủy viên (17/17 phiếu tán thành).</li>
+                <li>Thảo luận, tiếp thu ý kiến đóng góp của đảng viên.</li>
+                <li>Thông qua kết luận và biểu quyết Nghị quyết số 09-NQ/CB.</li>
+              </ol>
+            </div>
+            <div style="background:#FFFBEB;padding:14px;border-radius:var(--radius-sm);border-left:3px solid #D97706;">
+              <h4 style="font-weight:700;color:#B45309;margin-bottom:6px;">Hồ Sơ & Biên Bản Kèm Theo:</h4>
+              <ul style="list-style:none;font-size:0.88rem;color:#334155;display:flex;flex-direction:column;gap:8px;">
+                <li><i class="fa-solid fa-file-pdf" style="color:#B91C1C;"></i> <strong>Nghị quyết số 09-NQ/CB:</strong> Trọng tâm công tác lãnh đạo Chi bộ T9/2026.</li>
+                <li><i class="fa-solid fa-file-lines" style="color:#2563EB;"></i> <strong>Tờ trình số 11-TTr/CB:</strong> Bầu bổ sung Đ/c Nguyễn Thị Mừng & Ngô Thị Hoài Cẩm.</li>
+                <li><i class="fa-solid fa-file-signature" style="color:#16A34A;"></i> <strong>Biên bản số 08-BB/CB:</strong> Biên bản kiểm phiếu hội nghị Chi bộ mở rộng.</li>
+                <li><i class="fa-solid fa-folder" style="color:#D97706;"></i> <strong>Hồ sơ Điều 30:</strong> Giám sát Đ/c Phạm Phước Thành & Kiểm tra Đ/c Hoàng Đình Cường.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: ĐIỂM DANH -->
+      <section id="module-diem-danh" class="party-module">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+            <div>
+              <h2 style="font-size:1.2rem;font-weight:800;color:#991B1B;">Bảng Điểm Danh Đảng Viên (Kỳ Sinh Hoạt T9/2026)</h2>
+              <p style="font-size:0.85rem;color:#64748B;">Tổng số 22 Đảng viên. Hệ thống tự động tính tỷ lệ tham gia theo thời gian thực.</p>
+            </div>
+            <div id="liveAttendanceSummary" style="font-size:0.9rem;font-weight:700;color:#1E3A8A;background:#DBEAFE;padding:6px 14px;border-radius:var(--radius-sm);">
+              Có mặt: 20/22 • Tỷ lệ: 90.9%
+            </div>
+          </div>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Họ Và Tên</th>
+                <th>Năm Sinh</th>
+                <th>Số Thẻ Đảng</th>
+                <th>Địa Bàn / Tổ Đảng</th>
+                <th>Trạng Thái Điểm Danh</th>
+                <th>Ghi Chú</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 4: NGHỊ QUYẾT -->
+      <section id="module-nghi-quyet" class="party-module">
+        <div class="card" style="padding:24px;">
+          <div style="border-bottom:2px solid #E2E8F0;padding-bottom:12px;margin-bottom:16px;">
+            <span class="badge badge-danger">NGHỊ QUYẾT CHI BỘ</span>
+            <h2 style="font-size:1.3rem;font-weight:800;color:#991B1B;margin-top:6px;">
+              Số 09-NQ/CB: Nghị quyết trọng tâm công tác lãnh đạo Chi bộ tháng 09/2026
+            </h2>
+            <div style="font-size:0.85rem;color:#64748B;">Ngày ban hành: 03/09/2026 • Người ký: Đ/c Hồ Văn Mão - Bí thư Chi bộ</div>
+          </div>
+          <div style="font-size:0.95rem;line-height:1.7;color:#334155;">
+            <p><strong>I. ĐÁNH GIÁ CÔNG TÁC THÁNG 8:</strong> Chi bộ giữ vững sự đoàn kết, lãnh đạo cán bộ, hội viên và nhân dân TDP Lương Hậu hoàn thành các chỉ tiêu KT-XH, giữ vững ANTT, an toàn vệ sinh môi trường.</p>
+            <p style="margin-top:10px;"><strong>II. NHIỆM VỤ TRỌNG TÂM THÁNG 9:</strong></p>
+            <ul style="margin-left:20px;margin-top:6px;">
+              <li>Kiện toàn nhân sự Chi ủy viên, phân công nhiệm vụ cụ thể cho từng đồng chí phụ trách các Đội 8, 9, 10, 11.</li>
+              <li>Chủ động hoàn thiện phương án 4 tại chỗ trong công tác phòng chống thiên tai, mưa lũ.</li>
+              <li>Tổ chức thành công Ngày Chủ nhật xanh đợt 4 và Đêm hội Trăng rằm cho thiếu nhi.</li>
+              <li>Tăng cường công tác kiểm tra, giám sát đảng viên chấp hành Điều lệ Đảng theo Điều 30.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: PHÂN CÔNG 6 RÕ (10 CÁN BỘ CHỦ CHỐT) -->
+      <section id="module-phan-cong" class="party-module">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h2 style="font-size:1.25rem;font-weight:800;color:#991B1B;">Bảng Phân Công Nhiệm Vụ Mô Hình "6 Rõ"</h2>
+              <p style="font-size:0.85rem;color:#64748B;">Rõ người, rõ việc, rõ tiến độ, rõ kết quả, rõ trách nhiệm, rõ thẩm quyền (10 Cán bộ chủ chốt)</p>
+            </div>
+            <div style="text-align:right;">
+              <span class="badge badge-success" style="font-size:0.9rem;">Tiến độ bình quân: 87.0% (Xuất sắc)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Cán Bộ Phụ Trách</th>
+                <th>Nhiệm Vụ Phân Công Cụ Thể</th>
+                <th>Địa Bàn</th>
+                <th>Hạn Chót</th>
+                <th>Tiến Độ</th>
+                <th>Đánh Giá</th>
+              </tr>
+            </thead>
+            <tbody id="taskAssignmentTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 6: TÀI LIỆU & VĂN KIỆN ĐẢNG -->
+      <section id="module-tai-lieu" class="party-module">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <h2 style="font-size:1.25rem;font-weight:800;color:#991B1B;margin-bottom:4px;">
+            <i class="fa-solid fa-book-bookmark"></i> Kho Tư Liệu Văn Kiện Đảng & Chỉ Đạo Cấp Trên
+          </h2>
+          <p style="font-size:0.85rem;color:#64748B;">Các văn bản, chỉ thị, kết luận và hồ sơ giám sát nội bộ Chi bộ Lương Hậu</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card" style="padding:18px;">
+            <h3 style="font-size:1rem;font-weight:700;color:#991B1B;margin-bottom:10px;">Hồ Sơ Kiểm Tra Giám Sát Chi Bộ (Điều 30)</h3>
+            <ul style="list-style:none;font-size:0.88rem;display:flex;flex-direction:column;gap:10px;">
+              <li style="padding:8px;background:#F8FAFC;border-radius:4px;border-left:3px solid #B91C1C;">
+                <strong>Giám sát chuyên đề Điều 30:</strong> Đảng viên Phạm Phước Thành (Khu vực Đội 11, Tổ trưởng: Đ/c Hoàng Hữu Rớt).
+              </li>
+              <li style="padding:8px;background:#F8FAFC;border-radius:4px;border-left:3px solid #D97706;">
+                <strong>Kiểm tra chấp hành Điều 30:</strong> Đảng viên Hoàng Đình Cường (Khu vực Đội 9, Tổ trưởng: Đ/c Hoàng Hữu Rớt).
+              </li>
+            </ul>
+          </div>
+          <div class="card" style="padding:18px;">
+            <h3 style="font-size:1rem;font-weight:700;color:#991B1B;margin-bottom:10px;">Kho Tài Liệu Drive Chi Bộ</h3>
+            <p style="font-size:0.85rem;color:#64748B;margin-bottom:12px;">Toàn bộ hồ sơ số hóa, nghị quyết các năm và biên bản kiểm phiếu lưu trữ tại Google Drive.</p>
+            <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noopener noreferrer" class="btn btn-warning" style="width:100%;font-size:0.88rem;">
+              <i class="fa-brands fa-google-drive"></i> Truy Cập Thư Mục Google Drive ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: THÔNG BÁO NỘI BỘ -->
+      <section id="module-thong-bao" class="party-module">
+        <div class="card" style="padding:20px;">
+          <h2 style="font-size:1.25rem;font-weight:800;color:#991B1B;margin-bottom:12px;">Thông Báo Nội Bộ Chi Bộ Lương Hậu</h2>
+          <div class="notice-box">
+            <div>
+              <span class="badge badge-danger">Lịch Họp</span>
+              <h3 class="notice-title" style="margin-top:6px;">Kỳ họp Chi bộ thường kỳ tháng 10/2026</h3>
+              <p class="notice-content">Dự kiến tổ chức lúc 14h00 ngày 03/10/2026. Đề nghị các đồng chí Chi ủy viên và Tổ trưởng chuẩn bị báo cáo tiến độ tuần 4.</p>
+              <div class="notice-meta">Người đăng: Bí thư Chi bộ Hồ Văn Mão</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="background:#450A0A;color:#FECACA;padding:16px 0;text-align:center;font-size:0.8rem;border-top:2px solid #F59E0B;">
+      <div class="container">
+        Chi bộ Tổ dân phố Lương Hậu — Đảng bộ Phường Hương Thủy • Hệ thống Cổng Đảng viên Antigravity Master Build 2026
+      </div>
+    </footer>
+  </div>
+
+  <!-- Script Module -->
+  <script type="module">
+    import { LuongHauDatabase } from '/src/lib/db.js';
+    import { AuthEngine } from '/src/lib/auth.js';
+
+    const db = new LuongHauDatabase();
+    const auth = new AuthEngine(db);
+
+    window.db = db;
+    window.auth = auth;
+
+    // Check Auth State on Page Load
+    function checkAuth() {
+      const user = auth.getCurrentUser();
+      const loginScreen = document.getElementById('loginScreen');
+      const portalScreen = document.getElementById('portalScreen');
+
+      if (user) {
+        loginScreen.style.display = 'none';
+        portalScreen.style.display = 'flex';
+        document.getElementById('userBadge').innerHTML = `<i class="fa-solid fa-user-check"></i> ${user.full_name} (${user.role})`;
+        initData();
+      } else {
+        loginScreen.style.display = 'flex';
+        portalScreen.style.display = 'none';
+      }
+    }
+
+    // PIN Login
+    document.getElementById('pinLoginForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const pin = document.getElementById('inputPin').value.trim();
+      const res = auth.loginWithPin(pin);
+      if (res.success) {
+        checkAuth();
+      } else {
+        alert(res.message);
+      }
+    });
+
+    // Account Login
+    document.getElementById('accountLoginForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const u = document.getElementById('accUsername').value.trim();
+      const p = document.getElementById('accPassword').value.trim();
+      const res = auth.login(u, p);
+      if (res.success) {
+        checkAuth();
+      } else {
+        alert(res.message);
+      }
+    });
+
+    window.logoutParty = function() {
+      auth.logout();
+      checkAuth();
+    };
+
+    // Tab Switching
+    window.switchTab = function(tabName) {
+      document.querySelectorAll('.party-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.party-module').forEach(mod => mod.classList.remove('active'));
+
+      const activeBtn = Array.from(document.querySelectorAll('.party-tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabName));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const targetMod = document.getElementById(`module-${tabName}`);
+      if (targetMod) targetMod.classList.add('active');
+    };
+
+    // Initialize Data in Party Portal
+    function initData() {
+      renderAttendanceTable();
+      renderTasksTable();
+    }
+
+    // Render Attendance Table
+    function renderAttendanceTable() {
+      const members = db.getAll('party_members');
+      const attendance = db.getAll('attendance');
+      const tbody = document.getElementById('attendanceTableBody');
+      if (!tbody) return;
+
+      let presentCount = 0;
+
+      tbody.innerHTML = members.map((m, idx) => {
+        const att = attendance.find(a => a.party_member_id === m.id) || { status: 'PRESENT', notes: '' };
+        if (att.status === 'PRESENT') presentCount++;
+
+        return `
+          <tr>
+            <td>${m.stt || (idx + 1)}</td>
+            <td><strong>${m.full_name}</strong></td>
+            <td>${m.dob}</td>
+            <td><code>${m.party_card}</code></td>
+            <td>${m.area}</td>
+            <td>
+              <select onchange="window.updateMemberAttendance('${m.id}', this.value)" class="form-select" style="padding:4px 8px;font-size:0.82rem;font-weight:700;">
+                <option value="PRESENT" ${att.status === 'PRESENT' ? 'selected' : ''}>✅ CÓ MẶT</option>
+                <option value="EXCUSED" ${att.status === 'EXCUSED' ? 'selected' : ''}>⚠️ VẮNG CÓ LÝ DO</option>
+                <option value="UNEXCUSED" ${att.status === 'UNEXCUSED' ? 'selected' : ''}>❌ VẮNG KHÔNG LÝ DO</option>
+              </select>
+            </td>
+            <td><small style="color:#64748B;">${att.notes || m.notes || ''}</small></td>
+          </tr>
+        `;
+      }).join('');
+
+      const total = members.length;
+      const rate = total > 0 ? ((presentCount / total) * 100).toFixed(1) : 0;
+      document.getElementById('liveAttendanceSummary').innerText = `Có mặt: ${presentCount}/${total} • Tỷ lệ: ${rate}%`;
+      document.getElementById('statAttendanceRate').innerText = `${rate}%`;
+    }
+
+    window.updateMemberAttendance = function(memberId, newStatus) {
+      const attendance = db.getAll('attendance');
+      let att = attendance.find(a => a.party_member_id === memberId);
+      if (att) {
+        db.update('attendance', att.id, { status: newStatus }, auth.getCurrentUser());
+      } else {
+        db.insert('attendance', { meeting_id: 'meet_2026_09', party_member_id: memberId, status: newStatus }, auth.getCurrentUser());
+      }
+      renderAttendanceTable();
+    };
+
+    // Render 6-Rõ Tasks Table
+    function renderTasksTable() {
+      const tasks = db.getAll('tasks');
+      const tbody = document.getElementById('taskAssignmentTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = tasks.map(t => `
+        <tr>
+          <td><strong>${t.assignee}</strong></td>
+          <td>
+            <strong>${t.title}</strong>
+            <div style="font-size:0.8rem;color:#64748B;">${t.content}</div>
+          </td>
+          <td><span class="badge badge-info">${t.assignee.includes('Đội 11') ? 'Đội 11' : t.assignee.includes('Đội 8') ? 'Đội 8' : 'Toàn địa bàn'}</span></td>
+          <td>${t.deadline}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="background:#E2E8F0;border-radius:4px;height:8px;width:70px;overflow:hidden;">
+                <div style="background:#16A34A;height:100%;width:${t.progress_percent}%;"></div>
+              </div>
+              <strong>${t.progress_percent}%</strong>
+            </div>
+          </td>
+          <td><span class="badge badge-success">${t.notes || 'Tốt'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    checkAuth();
+  </script>
+</body>
+</html>

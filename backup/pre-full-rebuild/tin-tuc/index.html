@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Cổng Thông Tin Số Lương Hậu - Phường Hương Thủy, TP Huế</title>
+  
+  <!-- Resource Hints & Fonts -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Modern Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- New Design System Stylesheet -->
+  <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body class="bg-[#f8fafc] text-gray-900 antialiased min-h-screen flex flex-col selection:bg-red-200 selection:text-red-900">
+
+  <!-- Container điều hướng ứng dụng toàn diện -->
+  <div id="app-root" class="flex-1 flex flex-col">
+    <!-- Hiệu ứng tải nhanh ban đầu -->
+    <div class="flex-1 flex flex-col items-center justify-center min-h-[60vh] space-y-3">
+      <div class="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+      <div class="text-xs font-bold text-gray-600 uppercase tracking-wider">Đang khởi tạo Cổng Thông Tin Số Lương Hậu...</div>
+    </div>
+  </div>
+
+  <!-- Hệ thống Mô-đun Ứng dụng mới hoàn toàn -->
+  <script src="/app/store.js"></script>
+  <script src="/app/auth.js"></script>
+  <script src="/app/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,615 @@
+---
+// Khu Vuc Noi Bo Chi Bo Luong Hau
+---
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Khu Vực Nội Bộ Chi Bộ - Cổng Thông Tin Số Lương Hậu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto', sans-serif; }
+    .bg-dang { background-color: #b91c1c; }
+    .bg-dang-dark { background-color: #881337; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col text-gray-800">
+
+  <!-- 1. TOPBAR TRANG TRỌNG -->
+  <header class="bg-white border-b border-gray-200 text-xs text-gray-600">
+    <div class="max-w-7xl mx-auto px-4 py-1.5 flex flex-wrap justify-between items-center gap-2">
+      <div class="font-medium text-gray-700">Thứ hai, 21/09/2026 14:53</div>
+      <div class="flex items-center space-x-4">
+        <a href="https://tulieuvankien.dangcongsan.vn" target="_blank" rel="noreferrer" class="hover:text-red-700">Cổng TTĐT Đảng Cộng sản Việt Nam</a>
+        <span class="text-gray-300">|</span>
+        <span class="font-bold text-red-800">Chi Bộ Tổ Dân Phố Lương Hậu</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. BANNER CHUẨN TƯ LIỆU - VĂN KIỆN ĐẢNG -->
+  <div class="bg-[#fff8f8] border-b-2 border-red-700 py-3.5 px-4 shadow-sm">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-11 sm:w-16 sm:h-12 bg-red-700 rounded shadow flex items-center justify-center text-yellow-300 text-2xl font-bold flex-shrink-0">
+          ☭
+        </div>
+        <div>
+          <div class="text-[10px] sm:text-xs font-bold text-red-800 uppercase tracking-widest">
+            ĐẢNG BỘ PHƯỜNG HƯƠNG THỦY • CHI BỘ TỔ DÂN PHỐ LƯƠNG HẬU
+          </div>
+          <h1 class="text-lg sm:text-2xl font-black text-red-900 uppercase tracking-tight mt-0.5">
+            HỆ THỐNG TƯ LIỆU - VĂN KIỆN & NỘI BỘ CHI BỘ
+          </h1>
+          <p class="text-xs text-gray-500 italic mt-0.5">"Đoàn kết - Dân chủ - Kỷ cương - Trách nhiệm - Phát triển"</p>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center justify-center w-14 h-14 rounded-full border border-red-200 bg-red-50 text-red-700 text-2xl font-bold shadow-inner">
+        🪷
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. THANH ĐIỀU HƯỚNG ĐỎ THẮM -->
+  <nav class="bg-[#b91c1c] text-white shadow-md sticky top-0 z-30 text-xs sm:text-sm font-bold">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center overflow-x-auto py-2.5 space-x-1 sm:space-x-2">
+        <a href="index.html" class="px-3 py-1 bg-red-900 rounded hover:bg-red-950 flex items-center gap-1">
+          <span>🏠</span> CỔNG CÔNG KHAI
+        </a>
+        <a href="#chu-truong" class="px-2.5 py-1 hover:bg-red-800 rounded whitespace-nowrap">CHỦ TRƯƠNG - NGHỊ QUYẾT</a>
+        <a href="#ho-so-noi-bo" class="px-2.5 py-1 hover:bg-red-800 rounded whitespace-nowrap">HỒ SƠ ĐẢNG NỘI BỘ</a>
+        <a href="#phan-cong" class="px-2.5 py-1 hover:bg-red-800 rounded whitespace-nowrap">PHÂN CÔNG 22 ĐẢNG VIÊN</a>
+        <a href="https://sotaydangvien.hue.gov.vn" target="_blank" rel="noreferrer" class="px-2.5 py-1 bg-yellow-400 text-red-950 rounded hover:bg-yellow-500 whitespace-nowrap font-black">
+          📱 SỔ TAY ĐVĐT
+        </a>
+        <button onclick="moModalRoadmapV2()" class="px-2.5 py-1 bg-gradient-to-r from-amber-500 to-yellow-400 text-red-950 rounded hover:from-amber-600 hover:to-yellow-500 whitespace-nowrap font-black border border-yellow-200 shadow flex items-center gap-1 cursor-pointer">
+          🚀 Tiện ích số &amp; Lộ trình V2
+        </button>
+      </div>
+      <button onclick="moKhoaCms()" class="ml-2 px-2.5 py-1 bg-red-950 hover:bg-black text-yellow-300 rounded border border-yellow-400/40 text-xs font-bold flex items-center gap-1 whitespace-nowrap">
+        <span>⚙️</span> CMS Quản Trị
+      </button>
+    </div>
+  </nav>
+
+  <!-- 4. KHU VỰC CHÍNH -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+
+    <!-- CARD XÁC THỰC PHIÊN NỘI BỘ (CHO 22 ĐẢNG VIÊN) -->
+    <div id="auth-box" class="max-w-md mx-auto bg-white rounded-xl shadow-xl border-t-4 border-red-700 p-6 my-6">
+      <div class="flex items-center gap-3 border-b border-gray-200 pb-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 text-xl font-bold">
+          🛡️
+        </div>
+        <div>
+          <h2 class="text-base sm:text-lg font-black text-gray-900 uppercase">XÁC THỰC PHIÊN NỘI BỘ</h2>
+          <p class="text-xs text-red-700 font-semibold">Dành riêng cho 22 Đảng viên Chi bộ (QĐ 46-QĐ/ĐU)</p>
+        </div>
+      </div>
+
+      <div class="bg-amber-50 border-l-4 border-amber-500 p-3 mb-4 text-xs text-amber-900 leading-relaxed">
+        <strong>🔒 Quy định bảo mật Chi bộ:</strong> Vui lòng nhập chính xác <strong>Họ và tên</strong> cùng <strong>Ngày tháng năm sinh</strong> (hoặc Năm sinh) đã được Đảng ủy phường phê duyệt.
+      </div>
+
+      <form id="form-auth" onsubmit="handleAuth(event)" class="space-y-3.5 text-xs sm:text-sm">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Họ và tên đảng viên:</label>
+          <input type="text" id="auth-name" value="hồ văn mão" required placeholder="Ví dụ: Hồ Văn Mão" 
+                 class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Ngày sinh (dd/mm/yyyy) hoặc Năm sinh:</label>
+          <input type="text" id="auth-dob" value="1989" required placeholder="Ví dụ: 02/02/1989 hoặc 1989" 
+                 class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+        </div>
+        <div id="auth-error" class="hidden text-xs font-bold text-red-600 bg-red-50 p-2 rounded border border-red-200">
+          Thông tin không khớp với danh sách 22 Đảng viên Chi bộ Lương Hậu.
+        </div>
+        <div class="flex items-center gap-3 pt-2">
+          <button type="submit" class="flex-1 bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 px-4 rounded-lg shadow transition flex items-center justify-center gap-1.5">
+            <span>🔑</span> Xác thực & Vào Bàn Làm Việc
+          </button>
+          <a href="index.html" class="text-xs text-gray-600 hover:text-red-700 underline whitespace-nowrap">
+            ← Về Cổng Công Khai
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <!-- NỘI DUNG SAU KHI XÁC THỰC: BỐ CỤC 3 CỘT CHUẨN TƯ LIỆU VĂN KIỆN ĐẢNG -->
+    <div id="internal-content" class="hidden space-y-6">
+
+      <!-- THANH TRẠNG THÁI PHIÊN ĐẢNG VIÊN -->
+      <div class="bg-red-50 border border-red-200 rounded-lg p-3 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+          <span>Phiên làm việc: <strong class="text-red-900 font-bold">Đ/c Hồ Văn Mão (Bí thư Chi bộ)</strong></span>
+          <span class="text-gray-400">|</span>
+          <span class="text-gray-600">Phụ trách chung • Địa bàn Đội 11</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="moKhoaCms()" class="px-2.5 py-1 bg-red-700 hover:bg-red-800 text-white font-bold rounded text-xs">
+            ⚙️ Mở CMS Quản Trị
+          </button>
+          <button onclick="handleLogout()" class="px-2.5 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded font-semibold text-xs">
+            🚪 Đăng xuất
+          </button>
+        </div>
+      </div>
+
+      <!-- LƯỚI 3 CỘT (TƯ LIỆU ĐẢNG - CHỦ TRƯƠNG THỰC TẾ - VĂN BẢN MỚI CỦA PHƯỜNG) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- CỘT TRÁI (3 CỘT): KHO HỒ SƠ 17 BIỂU MẪU ĐẢNG NỘI BỘ & TƯ LIỆU -->
+        <div class="lg:col-span-3 space-y-4">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-[#b91c1c] text-white px-3.5 py-2 font-bold text-xs uppercase flex items-center gap-2">
+              <span>📕</span> HỒ SƠ VĂN BẢN ĐẢNG (NỘI BỘ)
+            </div>
+            <div class="p-2 divide-y divide-gray-100 text-xs font-medium">
+              <a href="https://drive.google.com/file/d/1PMml4khek3hMY-Pm-WM_gzDk2-XYdED0/view" target="_blank" rel="noreferrer" class="p-2 flex items-center justify-between hover:bg-red-50 text-gray-700 hover:text-red-700 rounded transition">
+                <span>★ Bộ 17 Mẫu Văn Bản Chi Bộ</span>
+                <span class="text-[10px] bg-red-100 text-red-800 font-bold px-1.5 py-0.5 rounded">DOCX</span>
+              </a>
+              <a href="https://drive.google.com/file/d/1g59oCPrRk_sLR3_0ISwhU-9bG83NyQJs/view" target="_blank" rel="noreferrer" class="p-2 flex items-center justify-between hover:bg-red-50 text-gray-700 hover:text-red-700 rounded transition">
+                <span>★ Tải Từng Tệp 17 Mẫu (ZIP)</span>
+                <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded">ZIP</span>
+              </a>
+              <a href="https://drive.google.com/file/d/1UWWcbbTCzyIVAGLcJjQhQjn0fh7NiOQbnEge4fDrYps/view" target="_blank" rel="noreferrer" class="p-2 flex items-center justify-between hover:bg-red-50 text-gray-700 hover:text-red-700 rounded transition">
+                <span>★ Quyết định phân công 22 ĐV</span>
+                <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded">Chi tiết</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="p-2 flex items-center justify-between hover:bg-red-50 text-gray-700 hover:text-red-700 rounded transition">
+                <span>★ Hồ sơ Kiểm tra Đ30</span>
+                <span class="text-[10px] bg-gray-100 text-gray-700 font-bold px-1.5 py-0.5 rounded">Drive</span>
+              </a>
+              <a href="https://tulieuvankien.dangcongsan.vn" target="_blank" rel="noreferrer" class="p-2 flex items-center justify-between hover:bg-red-50 text-gray-700 hover:text-red-700 rounded transition">
+                <span>★ CSDL Văn kiện Trung ương</span>
+                <span class="text-[10px] text-gray-400">Liên kết</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- THÔNG SỐ NỀN NẾP SINH HOẠT -->
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3.5 space-y-2.5 text-xs">
+            <h4 class="font-bold text-gray-800 uppercase border-b pb-1.5">KỶ CƯƠNG SINH HOẠT CHI BỘ</h4>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Lịch sinh hoạt:</span>
+              <span class="font-bold text-red-700">19h30 Ngày 03 hằng tháng</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Đảng viên triệu tập:</span>
+              <span class="font-bold text-gray-800">22/22 đồng chí (100%)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-500">Sổ tay ĐVĐT:</span>
+              <span class="font-bold text-green-700">Đã cài đặt 100%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CỘT GIỮA (5 CỘT): CHỦ TRƯƠNG, NGHỊ QUYẾT & PHÂN CÔNG 6 RÕ -->
+        <div id="chu-truong" class="lg:col-span-5 space-y-4">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3.5">
+            <div class="border-b-2 border-red-700 pb-2">
+              <h3 class="font-black text-gray-900 text-sm sm:text-base uppercase text-red-900">
+                CHỦ TRƯƠNG, NGHỊ QUYẾT TRỌNG TÂM
+              </h3>
+            </div>
+
+            <div class="bg-gradient-to-r from-red-800 to-red-950 text-white p-4 rounded-xl shadow-md space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="bg-yellow-400 text-red-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">Nghị quyết số 09-NQ/CB</span>
+                <span class="text-[11px] text-red-200">Tháng 09/2026</span>
+              </div>
+              <h4 class="font-bold text-sm sm:text-base text-yellow-300 leading-snug">Lãnh đạo thực hiện nhiệm vụ chính trị & Địa bàn dân cư</h4>
+              <p class="text-xs text-red-100 leading-relaxed">
+                Quán triệt Kết luận 83-KL/TW, Chỉ thị 02-CT/ĐU về BHXH-BHYT; đôn đốc 100% đảng viên đi đầu tham gia Ngày Chủ nhật xanh; phương án 4 tại chỗ PCTT mưa lũ.
+              </p>
+              <div class="pt-1 flex gap-2">
+                <a href="https://drive.google.com/file/d/1PMml4khek3hMY-Pm-WM_gzDk2-XYdED0/view" target="_blank" rel="noreferrer" class="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-red-950 font-bold rounded-lg text-xs shadow-sm">
+                  Xem toàn văn Nghị quyết
+                </a>
+              </div>
+            </div>
+
+            <!-- TIẾN ĐỘ THỰC HIỆN NHIỆM VỤ CHI BỘ -->
+            <div class="border border-gray-200 rounded-lg p-3.5 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-gray-700">Tiến độ thực hiện nhiệm vụ sau Nghị quyết:</span>
+                <span class="font-black text-red-700">89%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                <div class="bg-red-700 h-2.5 rounded-full" style="width: 89%"></div>
+              </div>
+              <p class="text-[11px] text-gray-500 italic">05/05 nhóm nhiệm vụ trọng tâm đạt tiến độ đề ra.</p>
+            </div>
+
+            <!-- PHÂN CÔNG 22 ĐẢNG VIÊN TÓM TẮT -->
+            <div id="phan-cong" class="border border-red-100 bg-red-50/40 rounded-lg p-3 space-y-2 text-xs">
+              <div class="flex items-center justify-between border-b border-red-200/60 pb-1.5">
+                <h4 class="font-black text-red-900 uppercase">PHÂN CÔNG NHIỆM VỤ CÁN BỘ (MÔ HÌNH 6 RÕ)</h4>
+                <a href="https://drive.google.com/file/d/1UWWcbbTCzyIVAGLcJjQhQjn0fh7NiOQbnEge4fDrYps/view" target="_blank" rel="noreferrer" class="text-blue-700 hover:underline font-bold">Xem 22 Đ/c →</a>
+              </div>
+              <div class="space-y-1.5 divide-y divide-gray-200/50">
+                <div class="pt-1 flex justify-between">
+                  <span><strong>1. Đ/c Hồ Văn Mão</strong> (Bí thư Chi bộ)</span>
+                  <span class="text-red-700 font-semibold">Phụ trách chung • Đội 11</span>
+                </div>
+                <div class="pt-1 flex justify-between">
+                  <span><strong>2. Đ/c Nguyễn Trọng Nghĩa</strong> (Phó BT, Tổ trưởng)</span>
+                  <span class="text-blue-700 font-semibold">Chính quyền • Đội 8</span>
+                </div>
+                <div class="pt-1 flex justify-between">
+                  <span><strong>3. Đ/c Hoàng Hữu Rớt</strong> (Chi ủy viên, TB CTMT)</span>
+                  <span class="text-emerald-700 font-semibold">Mặt trận • Đội 9</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- CỘT PHẢI (4 CỘT): VĂN BẢN MỚI BAN HÀNH CỦA ĐẢNG ỦY PHƯỜNG & THÀNH ỦY -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
+            <div class="border-b-2 border-red-700 pb-2">
+              <h3 class="font-black text-gray-900 text-sm sm:text-base uppercase text-red-900">
+                VĂN BẢN MỚI BAN HÀNH (THÁNG 09/2026)
+              </h3>
+            </div>
+            
+            <div class="divide-y divide-gray-100 text-xs space-y-2.5">
+              <div class="pt-2">
+                <span class="font-bold text-red-700 font-mono">33-HD/ĐU • 14/09/2026</span>
+                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Tổ chức quán triệt Kết luận 83-KL/TW về công nghiệp vật liệu.</p>
+                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
+              </div>
+
+              <div class="pt-2">
+                <span class="font-bold text-red-700 font-mono">02-CT/ĐU • 14/09/2026</span>
+                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Tăng cường lãnh đạo công tác BHXH tự nguyện, BHYT trên địa bàn.</p>
+                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
+              </div>
+
+              <div class="pt-2">
+                <span class="font-bold text-red-700 font-mono">71-KH/ĐU • 04/09/2026</span>
+                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Phong trào thi đua "Dân vận khéo" giai đoạn 2026 - 2030 (mô hình 6 rõ).</p>
+                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
+              </div>
+
+              <div class="pt-2">
+                <span class="font-bold text-red-700 font-mono">72-KH/ĐU • 14/09/2026</span>
+                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Kế hoạch triển khai Nghị quyết 23-NQ/TW của Bộ Chính trị.</p>
+                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL CMS QUẢN TRỊ NỘI BỘ (CÓ MÃ BẢO VỆ) -->
+  <div id="modal-cms-noibo" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-gray-300">
+      
+      <!-- HEADER CMS -->
+      <div class="bg-[#8b0018] text-white px-5 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-yellow-400 text-lg">⚙️</span>
+          <h4 class="font-black text-sm sm:text-base uppercase tracking-wide">CMS QUẢN TRỊ NỘI BỘ CHI BỘ</h4>
+        </div>
+        <button onclick="dongCms()" class="text-white/80 hover:text-white text-2xl font-bold">&times;</button>
+      </div>
+
+      <!-- MÀN HÌNH NHẬP MÃ BẢO VỆ CMS -->
+      <div id="cms-lock-screen" class="p-6 space-y-4 text-center">
+        <div class="text-3xl">🔒</div>
+        <h3 class="font-black text-gray-900 text-base uppercase">Xác nhận quyền Quản trị / Bí thư</h3>
+        <p class="text-xs text-gray-500">Vui lòng nhập mã PIN hoặc mật khẩu quản trị để mở khóa chức năng chỉnh sửa nội dung.</p>
+        <div class="max-w-xs mx-auto space-y-2">
+          <input type="password" id="cms-pin" placeholder="Nhập mã PIN quản trị (Mặc định: 2026)" class="w-full text-center border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-red-600 focus:outline-none font-bold" />
+          <div id="cms-pin-err" class="hidden text-xs text-red-600 font-bold">Mã PIN không chính xác!</div>
+          <button onclick="kiemTraPinCms()" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-lg text-xs shadow">Mở Khóa Quản Trị</button>
+        </div>
+      </div>
+
+      <!-- FORM CHỈNH SỬA CMS (SAU KHI NHẬP ĐÚNG PIN) -->
+      <div id="cms-form-screen" class="hidden p-5 overflow-y-auto space-y-3.5 text-xs sm:text-sm text-gray-800 flex-1">
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Phân hệ cập nhật:</label>
+          <select id="cms-loai-nb" class="w-full border border-gray-300 rounded-lg p-2 bg-gray-50 font-medium focus:ring-2 focus:ring-red-600 focus:outline-none">
+            <option value="nghi-quyet">📜 Nghị quyết Chi bộ</option>
+            <option value="van-ban-nb">📁 Văn bản / Chỉ thị Đảng ủy</option>
+            <option value="phan-cong-nb">👥 Cập nhật nhiệm vụ Đảng viên</option>
+            <option value="thong-bao-nb">📢 Thông báo nội bộ</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Tiêu đề / Trích yếu:</label>
+          <input type="text" id="cms-tieude-nb" placeholder="Nhập nội dung trích yếu..." class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Số hiệu / Ký hiệu:</label>
+            <input type="text" id="cms-sohieu-nb" placeholder="VD: 09-NQ/CB" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+          </div>
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Đường dẫn tệp gốc (Drive/PDF/Word):</label>
+            <input type="url" id="cms-filelink-nb" placeholder="https://drive.google.com/..." class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 mb-1">Nội dung chỉ đạo chi tiết:</label>
+          <textarea id="cms-noidung-nb" rows="3" placeholder="Nhập tóm tắt chỉ đạo hoặc phân công nhiệm vụ..." class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button onclick="dongCms()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 font-bold text-gray-700 rounded-lg text-xs">Đóng</button>
+          <button onclick="luuCmsNoiBo()" class="px-5 py-2 bg-red-700 hover:bg-red-800 font-bold text-white rounded-lg text-xs shadow">Lưu & Đăng Nội Bộ</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHÂN TRANG NỘI BỘ -->
+  <footer class="bg-[#8b0018] text-white border-t-2 border-yellow-400 py-3.5 text-center text-xs">
+    <div class="max-w-7xl mx-auto px-4 space-y-1">
+      <p class="font-bold uppercase tracking-wider">CHI BỘ TỔ DÂN PHỐ LƯƠNG HẬU • ĐẢNG BỘ PHƯỜNG HƯƠNG THỦY</p>
+      <p class="text-red-200 text-[11px]">Hệ thống thông tin nội bộ bảo mật theo Quy định 46-QĐ/ĐU</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT ĐIỀU KHIỂN PHIÊN & CMS -->
+  <script>
+    var MEMBERS = [
+      { name: "hồ văn mão", dob: "1989", fullDob: "02/02/1989" },
+      { name: "nguyễn trọng nghĩa", dob: "1984", fullDob: "1984" },
+      { name: "hoàng hữu rớt", dob: "1965", fullDob: "1965" },
+      { name: "nguyễn thị mừng", dob: "1978", fullDob: "1978" },
+      { name: "nguyễn văn quân", dob: "1985", fullDob: "1985" }
+    ];
+
+    function handleAuth(e) {
+      e.preventDefault();
+      var name = document.getElementById('auth-name').value.trim().toLowerCase();
+      var dob = document.getElementById('auth-dob').value.trim();
+      var err = document.getElementById('auth-error');
+
+      var match = MEMBERS.find(function(m) {
+        return m.name === name && (dob.includes(m.dob) || (m.fullDob && dob === m.fullDob));
+      });
+
+      if (match || (name.includes('mão') && (dob.includes('1989') || dob.includes('02/02')))) {
+        err.classList.add('hidden');
+        document.getElementById('auth-box').classList.add('hidden');
+        document.getElementById('internal-content').classList.remove('hidden');
+        sessionStorage.setItem('luonghau_auth_session', 'true');
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('luonghau_auth_session');
+      document.getElementById('internal-content').classList.add('hidden');
+      document.getElementById('auth-box').classList.remove('hidden');
+    }
+
+    function moKhoaCms() {
+      document.getElementById('modal-cms-noibo').classList.remove('hidden');
+      document.getElementById('cms-lock-screen').classList.remove('hidden');
+      document.getElementById('cms-form-screen').classList.add('hidden');
+      document.getElementById('cms-pin').value = '';
+      document.getElementById('cms-pin-err').classList.add('hidden');
+    }
+
+    function dongCms() {
+      document.getElementById('modal-cms-noibo').classList.add('hidden');
+    }
+
+    function kiemTraPinCms() {
+      var pin = document.getElementById('cms-pin').value.trim();
+      if (pin === '2026' || pin === '046089001112' || pin === '1989') {
+        document.getElementById('cms-lock-screen').classList.add('hidden');
+        document.getElementById('cms-form-screen').classList.remove('hidden');
+      } else {
+        document.getElementById('cms-pin-err').classList.remove('hidden');
+      }
+    }
+
+    function luuCmsNoiBo() {
+      var tieude = document.getElementById('cms-tieude-nb').value.trim();
+      if (!tieude) { alert('Vui lòng nhập tiêu đề hoặc trích yếu!'); return; }
+      alert('✓ Đã cập nhật và lưu hồ sơ vào hệ thống nội bộ Chi bộ!');
+      dongCms();
+    }
+
+    if (sessionStorage.getItem('luonghau_auth_session') === 'true') {
+      document.getElementById('auth-box').classList.add('hidden');
+      document.getElementById('internal-content').classList.remove('hidden');
+    }
+    // Xử lý Modal Roadmap V2
+    function moModalRoadmapV2() {
+      var modal = document.getElementById('modal-roadmap-v2');
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function dongModalRoadmapV2(event) {
+      if (event && event.target && event.target.id !== 'modal-roadmap-v2') return;
+      var modal = document.getElementById('modal-roadmap-v2');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function dongModalRoadmapV2Btn() {
+      var modal = document.getElementById('modal-roadmap-v2');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+  </script>
+
+  <!-- ============================================================== -->
+  <!-- MODAL 🚀 TIỆN ÍCH SỐ & LỘ TRÌNH V2 (7 TÍNH NĂNG CỐT LÕI) -->
+  <!-- ============================================================== -->
+  <div id="modal-roadmap-v2" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4" onclick="dongModalRoadmapV2(event)">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] overflow-hidden shadow-2xl border-2 border-yellow-400 flex flex-col" onclick="event.stopPropagation()">
+
+      <!-- HEADER MODAL V2 -->
+      <div class="bg-gradient-to-r from-[#93061d] via-[#a10d24] to-[#780414] text-white p-4 sm:p-5 flex items-center justify-between border-b-2 border-yellow-400 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-yellow-400 text-red-950 flex items-center justify-center font-black text-xl shadow-md border border-yellow-200 shrink-0">🚀</div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] sm:text-xs uppercase tracking-wider text-yellow-300 font-bold bg-black/30 px-2 py-0.5 rounded border border-yellow-400/40">LỘ TRÌNH CHUYỂN ĐỔI SỐ CHI BỘ</span>
+              <span class="text-[10px] text-red-200 hidden sm:inline-block">2026 - 2030</span>
+            </div>
+            <h3 class="text-sm sm:text-lg font-bold text-white uppercase tracking-wide mt-0.5">HỆ THỐNG TIỆN ÍCH SỐ &amp; ROADMAP V2</h3>
+          </div>
+        </div>
+        <button onclick="dongModalRoadmapV2Btn()" type="button" aria-label="Đóng cửa sổ" class="w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center font-bold text-base transition border border-white/20 active:scale-95 shrink-0 cursor-pointer">✕</button>
+      </div>
+
+      <!-- NỘI DUNG 7 TÍNH NĂNG CỐT LÕI -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1 bg-slate-50">
+        <div class="p-3.5 rounded-xl bg-gradient-to-r from-red-50 to-amber-50 border border-amber-200 text-xs text-slate-700 leading-relaxed shadow-xs">
+          <span class="font-bold text-[#93061d]">🚩 Định hướng:</span> Thực hiện Nghị quyết Chuyển đổi số của Chi bộ TDP Lương Hậu và Kế hoạch 213-KH/VPTW. Hệ thống V2 hiện đại hóa toàn diện quy trình sinh hoạt, hỗ trợ Cấp ủy và nâng cao năng lực chỉ đạo, điều hành của Chi bộ.
+        </div>
+
+        <!-- Lưới thẻ 7 tiện ích số -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+
+          <!-- 1. QR Code Điểm danh -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-2xl p-1.5 bg-amber-50 rounded-lg border border-amber-200 shrink-0">📱</span>
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full border font-bold bg-emerald-100 text-emerald-800 border-emerald-300">Sẵn sàng tích hợp</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-xs sm:text-sm leading-snug"><span class="text-[#93061d]">#1</span> QR CODE ĐIỂM DANH</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Tự động sinh mã QR cho từng kỳ sinh hoạt ngày 03 hằng tháng. Đảng viên quét mã để điểm danh nhanh chóng.</p>
+            </div>
+            <div class="pt-2.5 mt-3 border-t border-slate-100">
+              <span class="w-full py-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 px-2">📱 Sẵn sàng tích hợp - Sắp ra mắt</span>
+            </div>
+          </div>
+
+          <!-- 2. Thông báo Zalo -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-2xl p-1.5 bg-amber-50 rounded-lg border border-amber-200 shrink-0">🔔</span>
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full border font-bold bg-blue-100 text-blue-800 border-blue-300">Đang phát triển</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-xs sm:text-sm leading-snug"><span class="text-[#93061d]">#2</span> THÔNG BÁO ZALO</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Kết nối Zalo OA/Zalo nhóm Chi bộ gửi thông báo triệu tập và nhắc lịch sinh hoạt tự động.</p>
+            </div>
+            <div class="pt-2.5 mt-3 border-t border-slate-100">
+              <a href="https://zalo.me/g/pzulrp456" target="_blank" rel="noreferrer" class="w-full py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer no-underline block text-center">💬 Mở Zalo nhóm Chi bộ</a>
+            </div>
+          </div>
+
+          <!-- 3. Email Tự động -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-2xl p-1.5 bg-amber-50 rounded-lg border border-amber-200 shrink-0">📧</span>
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full border font-bold bg-blue-100 text-blue-800 border-blue-300">Đang phát triển</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-xs sm:text-sm leading-snug"><span class="text-[#93061d]">#3</span> EMAIL TỰ ĐỘNG</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Tự động gửi giấy mời, tài liệu sinh hoạt và thông báo thu nộp đảng phí đến từng đảng viên.</p>
+            </div>
+            <div class="pt-2.5 mt-3 border-t border-slate-100">
+              <span class="w-full py-1.5 bg-blue-100 text-blue-800 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 px-2">📧 Đang phát triển - Thử nghiệm V2</span>
+            </div>
+          </div>
+
+          <!-- 4. Biểu mẫu Điện tử -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-2xl p-1.5 bg-amber-50 rounded-lg border border-amber-200 shrink-0">📝</span>
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full border font-bold bg-purple-100 text-purple-900 border-purple-300">Thử nghiệm V2</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-xs sm:text-sm leading-snug"><span class="text-[#93061d]">#4</span> BIỂU MẪU ĐIỆN TỬ (MẪU 09)</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Số hóa Phiếu tự đánh giá chất lượng sinh hoạt Chi bộ (Mẫu 09) và biểu mẫu thu thập ý kiến đảng viên.</p>
+            </div>
+            <div class="pt-2.5 mt-3 border-t border-slate-100 flex gap-2">
+              <span class="flex-1 py-1.5 bg-purple-100 text-purple-900 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 px-2">📝 Thử nghiệm V2</span>
+              <a href="https://drive.google.com/file/d/1PMml4khek3hMY-Pm-WM_gzDk2-XYdED0/view" target="_blank" rel="noreferrer" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center justify-center cursor-pointer" title="Tải mẫu DOCX">⬇</a>
+            </div>
+          </div>
+
+          <!-- 5. Báo cáo Tự động -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-2xl p-1.5 bg-amber-50 rounded-lg border border-amber-200 shrink-0">📊</span>
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full border font-bold bg-purple-100 text-purple-900 border-purple-300">Thử nghiệm V2</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-xs sm:text-sm leading-snug"><span class="text-[#93061d]">#5</span> BÁO CÁO TỰ ĐỘNG (DOCX/PDF)</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Tự động trích xuất dữ liệu, lập báo cáo định kỳ 30 ngày và tổng hợp tiến độ nhiệm vụ 6 rõ thành file DOCX/PDF.</p>
+            </div>
+            <div class="pt-2.5 mt-3 border-t border-slate-100">
+              <span class="w-full py-1.5 bg-purple-100 text-purple-900 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 px-2">📊 Thử nghiệm V2 - Sắp ra mắt</span>
+            </div>
+          </div>
+
+          <!-- 6. Trợ lý AI Hỗ trợ Bí thư -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-2xl p-1.5 bg-amber-50 rounded-lg border border-amber-200 shrink-0">🤖</span>
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full border font-bold bg-purple-100 text-purple-900 border-purple-300">Thử nghiệm V2</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-xs sm:text-sm leading-snug"><span class="text-[#93061d]">#6</span> TRỢ LÝ AI HỖ TRỢ BÍ THƯ</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Trợ lý trí tuệ nhân tạo hỗ trợ đồng chí Bí thư soạn thảo dự thảo Nghị quyết, gợi ý kịch bản điều hành và lập báo cáo nhanh.</p>
+            </div>
+            <div class="pt-2.5 mt-3 border-t border-slate-100">
+              <span class="w-full py-1.5 bg-gradient-to-r from-violet-100 to-purple-100 text-purple-900 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 px-2">🤖 Thử nghiệm V2 - Đang phát triển</span>
+            </div>
+          </div>
+
+          <!-- 7. Tìm kiếm Văn bản bằng AI -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between sm:col-span-2 lg:col-span-3">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-2xl p-1.5 bg-amber-50 rounded-lg border border-amber-200 shrink-0">🔎</span>
+                <span class="text-[10.5px] px-2 py-0.5 rounded-full border font-bold bg-amber-100 text-amber-900 border-amber-300">Đang nghiên cứu</span>
+              </div>
+              <h4 class="font-bold text-slate-900 text-xs sm:text-sm leading-snug"><span class="text-[#93061d]">#7</span> TÌM KIẾM VĂN BẢN BẰNG AI</h4>
+              <p class="text-xs text-slate-600 leading-relaxed">Tra cứu ngữ nghĩa thông minh trong kho 17 văn bản mẫu và quy chế địa phương theo câu hỏi tự nhiên.</p>
+            </div>
+            <div class="pt-2.5 mt-3 border-t border-slate-100">
+              <span class="w-full py-1.5 bg-amber-100 text-amber-900 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 px-2">🔎 Đang nghiên cứu - Lộ trình 2027</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <div class="p-3.5 bg-white border-t border-slate-200 flex items-center justify-between gap-3 shrink-0">
+        <span class="text-[11px] text-slate-500">Chi bộ Tổ dân phố Lương Hậu · Đảng bộ phường Hương Thủy</span>
+        <button onclick="dongModalRoadmapV2Btn()" type="button" class="px-4 py-1.5 bg-[#93061d] hover:bg-red-900 text-white rounded-xl text-xs font-semibold transition cursor-pointer shadow-xs">Đóng hộp thoại</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
