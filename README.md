@@ -1,38 +1,78 @@
-# CỔNG THÔNG TIN SỐ LƯƠNG HẬU
+# 🏛️ CỔNG THÔNG TIN VÀ ĐIỀU HÀNH SỐ LƯƠNG HẬU
+> **Slogan:** "Đoàn kết - Dân chủ - Kỷ cương - Phát triển"  
+> **Cơ quan quản lý:** UBND Phường Hương Thủy • Thành phố Huế  
+> **Trụ sở Nhà SHCĐ:** Số 83 Thái Thuận, TDP Lương Hậu, Phường Hương Thủy, TP. Huế  
+> **Quy mô:** 469 Hộ gia đình • 1.947 Nhân khẩu • 22 Đảng viên Chi bộ  
+> **Kiến trúc:** Antigravity Autonomous Clean Architecture (Master Build 2026)
 
-Cổng Thông tin Số Tổ dân phố Lương Hậu (Phường Hương Thủy, TP. Huế) là nền tảng số phục vụ hai phân hệ: **Khu vực Công khai cho Nhân dân** và **Khu vực Nội bộ Chi bộ / Quản trị**.
+---
 
-## 1. Kiến trúc hệ thống
+## 📌 1. Giới Thiệu Dự Án
 
-- **Frontend & App Engine**: Tĩnh + Single Page Application Router, tương thích hoàn toàn máy chủ tĩnh và Vercel Edge.
-- **Khu vực Công khai (`index.html`)**:
-  - Bản tin thời sự 3 cấp (TP. Huế, Phường Hương Thủy, TDP Lương Hậu).
-  - Hệ thống chỉ đạo ANTT và Phương án Phòng chống thiên tai "4 tại chỗ".
-  - Danh bạ công khai 10 Cán bộ chủ chốt (theo file `Ds_Can_bộ_Luong_Hau_V2.xlsx`).
-  - Kho 11 biểu mẫu hành chính trực tuyến tải miễn phí qua Google Drive.
-  - Form tiếp nhận phản ánh kiến nghị công dân 24/7 có mã tra cứu và che số điện thoại bảo mật.
-  - Lộ trình 6 Tiện ích số V2 Quý IV/2026.
-- **Khu vực Nội bộ Chi bộ (`noi_bo.html`)**:
-  - Lớp bảo mật xác thực Đảng viên chuẩn chỉ danh sách 22 đồng chí Chi bộ Lương Hậu (QĐ 46-QĐ/ĐU).
-  - Rate Limiting khóa 5 phút khi sai liên tiếp 5 lần.
-  - Văn bản chỉ đạo Chi bộ (Nghị quyết 09-NQ/CB, Tờ trình 11, v.v.).
-  - Dashboard phân công nhiệm vụ "6 Rõ" (10 cán bộ, KPI đạt 87.0% Xuất sắc).
-  - Liên kết Sổ tay Đảng viên điện tử Thừa Thiên Huế và Tư liệu Văn kiện Đảng.
-- **Dữ liệu Store & Auth Engine (`app/store.js`, `app/auth.js`, `app/app.js`)**:
-  - Quản lý toàn diện dữ liệu thật 100%, bảo lưu lịch sử phản ánh, điểm danh và văn bản.
+Hệ thống **Cổng Thông Tin Và Điều Hành Số Lương Hậu** là nền tảng quản trị và điều hành số toàn diện cấp cơ sở, phục vụ song song:
+1. **🌐 Cổng Thông Tin Công Khai (Public Portal):** Cung cấp tin tức, thông báo, lịch hoạt động, dịch vụ công trực tuyến, tra cứu kho biểu mẫu điện tử miễn phí, tiếp nhận và minh bạch kết quả xử lý phản ánh của nhân dân 24/7.
+2. **🔐 Cổng Đảng Viên (Internal Party Portal):** Khu vực bảo mật dành cho 22 Đảng viên Chi bộ Lương Hậu, tích hợp Sổ tay Đảng viên Điện tử Thừa Thiên Huế, điều hành sinh hoạt chi bộ, điểm danh tính tỷ lệ tự động, ban hành nghị quyết và phân công "6 Rõ".
+3. **📊 Dashboard Bí Thư (Bí Thư / Chi Ủy):** Bảng chỉ huy điều hành tối cao, theo dõi tiến độ công việc, cảnh báo nhiệm vụ quá hạn, phê duyệt nội dung CMS theo quy trình nghiêm ngặt và xuất báo cáo công tác Đảng.
+4. **⚙️ CMS Quản Trị Trung Tâm (Admin CMS):** Quản trị toàn diện tin tức 7 danh mục, thông báo khẩn, kho văn bản 4 cấp, tiếp nhận phản ánh, quản trị tài khoản phân quyền RBAC và hệ thống Audit Logs bất biến.
 
-## 2. Kiểm thử tự động (Quality Assurance)
+---
 
-Chạy kiểm thử toàn diện:
-```bash
-npm test
+## 🏗️ 2. Ba Lớp Kiến Trúc Hệ Thống (3-Tier Clean Architecture)
+
+```text
+┌────────────────────────────────────────────────────────┐
+│                   PUBLIC PORTAL (/)                    │
+│ Header (Cờ Tổ Quốc/Đảng) • Banner • Tin Tức • Thông Báo│
+│ Truy Cập Nhanh • Biểu Mẫu • Lịch • Phản Ánh • Danh Bạ  │
+└───────────────────────────┬────────────────────────────┘
+                            │
+┌───────────────────────────▼────────────────────────────┐
+│              CỔNG ĐẢNG VIÊN (/dang-vien)               │
+│ Khóa phiên PIN/Tài khoản • Sổ tay ĐVĐT • Sinh Hoạt     │
+│ Điểm Danh (Auto %) • Nghị Quyết • Phân Công 6 Rõ       │
+└───────────────────────────┬────────────────────────────┘
+                            │
+┌───────────────────────────▼────────────────────────────┐
+│      DASHBOARD BÍ THƯ & CMS (/bi-thu & /admin)         │
+│ Điều hành tối cao • RBAC • Workflow Duyệt Pending      │
+│ Quản trị 17 Bảng • Cảnh báo Quá hạn • Audit Logs Bất Biến│
+└────────────────────────────────────────────────────────┘
 ```
-Bộ kiểm thử `tests/test.cjs` bao gồm 45 bài test kiểm tra runtime JS, thông tin cán bộ, liên kết Drive, các modals điều hành, form validation và cơ chế bảo mật nội bộ.
 
-## 3. Triển khai Vercel Production
+---
 
-- **Domain chính thức**: [https://luong-hau.vercel.app](https://luong-hau.vercel.app)
-- Triển khai trực tiếp qua script:
+## 🔑 3. Tài Khoản & Phân Quyền (RBAC)
+
+| Tên Đăng Nhập | Mật Khẩu / PIN | Vai Trò (Role) | Chức Năng Chính |
+|---|---|---|---|
+| **bithu** | `bithu2026` / `2026` | `BI_THU` | Phê duyệt CMS, Dashboard điều hành, Nghị quyết, Điểm danh |
+| **totruong** | `totruong2026` | `CAN_BO_TDP` | Quản lý điều hành TDP, văn bản, thông báo, xử lý phản ánh |
+| **chiuy** | `chiuy2026` / `2026` | `CHI_UY` | Quản lý sinh hoạt Chi bộ, kiểm tra giám sát Điều 30 |
+| **editor** | `editor2026` | `EDITOR` | Soạn thảo tin tức, lưu nháp, gửi Bí thư phê duyệt |
+| **admin** | `admin2026!` | `ADMIN` | Quản trị toàn diện hệ thống, phân quyền, sao lưu, audit logs |
+
+---
+
+## 🚀 4. Hướng Dẫn Vận Hành & Khởi Chạy
+
 ```bash
-python deploy_current_to_vercel.py
+# 1. Build dữ liệu và đóng gói dist/
+python build_clean_app.py
+
+# 2. Chạy bộ kiểm thử Master Test Suite
+python test_master_suite.py
+
+# 3. Deploy lên môi trường Production Vercel
+python deploy_new_version.py
 ```
+
+---
+
+## 📁 5. Danh Mục Tài Liệu Kèm Theo
+- [ARCHITECTURE.md](file:///c:/Users/Admin/.gemini/antigravity-ide/scratch/cong-ttdt-tdp-luong-hau/docs/ARCHITECTURE.md): Kiến trúc hệ thống và quy trình nghiệp vụ
+- [DATABASE.md](file:///c:/Users/Admin/.gemini/antigravity-ide/scratch/cong-ttdt-tdp-luong-hau/docs/DATABASE.md): Chi tiết cấu trúc 17 bảng cơ sở dữ liệu
+- [SECURITY.md](file:///c:/Users/Admin/.gemini/antigravity-ide/scratch/cong-ttdt-tdp-luong-hau/docs/SECURITY.md): Chính sách an toàn thông tin & bảo mật RBAC
+- [DEPLOYMENT.md](file:///c:/Users/Admin/.gemini/antigravity-ide/scratch/cong-ttdt-tdp-luong-hau/docs/DEPLOYMENT.md): Quy trình build và triển khai Production Vercel
+- [ADMIN_GUIDE.md](file:///c:/Users/Admin/.gemini/antigravity-ide/scratch/cong-ttdt-tdp-luong-hau/docs/ADMIN_GUIDE.md): Sổ tay hướng dẫn quản trị dành cho Cán bộ & Bí thư
+- [LEGACY_INVENTORY.md](file:///c:/Users/Admin/.gemini/antigravity-ide/scratch/cong-ttdt-tdp-luong-hau/docs/LEGACY_INVENTORY.md): Bảng kiểm kê toàn bộ dữ liệu & tài sản cũ
+- [LINK_INVENTORY.md](file:///c:/Users/Admin/.gemini/antigravity-ide/scratch/cong-ttdt-tdp-luong-hau/docs/LINK_INVENTORY.md): Bảng kiểm kê đường dẫn & bảo toàn Google Drive

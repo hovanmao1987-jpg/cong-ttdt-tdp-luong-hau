@@ -1,10 +1,13 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/quan-tri", "destination": "/quan-tri/index.html" },
-    { "source": "/quan-tri/:match*", "destination": "/quan-tri/index.html" },
-    { "source": "/cms", "destination": "/cms.html" },
-    { "source": "/noi-bo", "destination": "/noi_bo.html" },
-    { "source": "/noi_bo", "destination": "/noi_bo.html" }
+    { "source": "/dang-vien", "destination": "/dang-vien.html" },
+    { "source": "/bi-thu", "destination": "/bi-thu.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/noi-bo", "destination": "/dang-vien.html" },
+    { "source": "/noi_bo", "destination": "/dang-vien.html" },
+    { "source": "/cms", "destination": "/admin.html" },
+    { "source": "/quan-tri", "destination": "/admin.html" },
+    { "source": "/quan-tri/:match*", "destination": "/admin.html" }
   ]
 }

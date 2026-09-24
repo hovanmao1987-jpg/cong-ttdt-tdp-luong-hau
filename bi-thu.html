@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Điều Hành Bí Thư — Chi Bộ Tổ Dân Phố Lương Hậu</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#B91C1C">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B91C1C'/><polygon points='50,15 61,40 88,40 66,56 75,81 50,65 25,81 34,56 12,40 39,40' fill='%23FDE047'/></svg>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/src/css/style.css">
+
+  <style>
+    .bithu-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .bithu-sidebar {
+      width: 260px;
+      background: #7F1D1D;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .bithu-brand {
+      padding: 20px;
+      background: #5A1313;
+      border-bottom: 2px solid #F59E0B;
+    }
+    .bithu-menu {
+      list-style: none;
+      padding: 12px 0;
+      flex: 1;
+    }
+    .bithu-menu li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: #FEE2E2;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .bithu-menu li a:hover, .bithu-menu li.active a {
+      background: #991B1B;
+      color: #FEF08A;
+      border-left: 4px solid #FDE047;
+    }
+    .bithu-content {
+      flex: 1;
+      background: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    .bithu-topbar {
+      background: white;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bithu-tab {
+      display: none;
+      padding: 24px;
+    }
+    .bithu-tab.active {
+      display: block;
+    }
+    .overdue-alert {
+      background: #FEF2F2;
+      border: 1px solid #F87171;
+      color: #991B1B;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Access Control Check -->
+  <div id="authGate" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.85);backdrop-filter:blur(6px);z-index:9999;align-items:center;justify-content:center;">
+    <div style="background:white;padding:32px;border-radius:var(--radius-lg);max-width:400px;text-align:center;">
+      <i class="fa-solid fa-triangle-exclamation" style="font-size:48px;color:#DC2626;margin-bottom:12px;"></i>
+      <h3 style="color:#991B1B;font-weight:800;margin-bottom:8px;">YÊU CẦU QUYỀN BÍ THƯ / ADMIN</h3>
+      <p style="font-size:0.88rem;color:#64748B;margin-bottom:20px;">Phân hệ Dashboard Bí thư chỉ dành riêng cho Bí thư Chi bộ và Quản trị viên hệ thống.</p>
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <a href="/dang-vien" class="btn btn-primary" style="background:#B91C1C;">Đăng Nhập Cổng Đảng Viên</a>
+        <a href="/" class="btn btn-secondary">Trang Chủ</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="bithu-layout" id="bithuMain">
+    <!-- SIDEBAR -->
+    <aside class="bithu-sidebar">
+      <div class="bithu-brand">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="emblem-icon" style="width:36px;height:36px;font-size:18px;">★</div>
+          <div>
+            <h2 style="font-size:0.75rem;color:#FDE047;letter-spacing:0.05em;">CHI BỘ LƯƠNG HẬU</h2>
+            <h1 style="font-size:1rem;font-weight:800;color:white;">DASHBOARD BÍ THƯ</h1>
+          </div>
+        </div>
+      </div>
+      <ul class="bithu-menu">
+        <li class="active" onclick="window.switchBithuTab('tong-quan', this)"><a><i class="fa-solid fa-chart-line"></i> Tổng Quan</a></li>
+        <li onclick="window.switchBithuTab('dang-vien', this)"><a><i class="fa-solid fa-users"></i> Quản Lý Đảng Viên</a></li>
+        <li onclick="window.switchBithuTab('sinh-hoat', this)"><a><i class="fa-solid fa-calendar-check"></i> Sinh Hoạt & Điểm Danh</a></li>
+        <li onclick="window.switchBithuTab('nghi-quyet', this)"><a><i class="fa-solid fa-stamp"></i> Nghị Quyết Chi Bộ</a></li>
+        <li onclick="window.switchBithuTab('nhiem-vu', this)"><a><i class="fa-solid fa-list-check"></i> Nhiệm Vụ & Cảnh Báo</a></li>
+        <li onclick="window.switchBithuTab('cho-duyet', this)"><a><i class="fa-solid fa-circle-check"></i> Duyệt Bài Viết CMS <span id="pendingBadge" class="badge badge-warning" style="margin-left:auto;">0</span></a></li>
+        <li onclick="window.switchBithuTab('bao-cao', this)"><a><i class="fa-solid fa-file-contract"></i> Báo Cáo & Thống Kê</a></li>
+      </ul>
+      <div style="padding:16px;background:#5A1313;border-top:1px solid rgba(255,255,255,0.1);">
+        <a href="/admin" style="display:flex;align-items:center;gap:8px;color:#FEF08A;font-size:0.85rem;font-weight:700;"><i class="fa-solid fa-sliders"></i> Chuyển Sang CMS Quản Trị</a>
+        <a href="/dang-vien" style="display:flex;align-items:center;gap:8px;color:#FEE2E2;font-size:0.82rem;margin-top:8px;"><i class="fa-solid fa-arrow-left"></i> Về Cổng Đảng Viên</a>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="bithu-content">
+      <div class="bithu-topbar">
+        <div>
+          <span style="font-size:0.8rem;color:#64748B;">Hệ thống Điều hành số Đảng viên • </span>
+          <strong id="bithuPageTitle" style="color:#991B1B;">Tổng Quan Lãnh Đạo</strong>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="badge badge-success" id="bithuUserBadge"><i class="fa-solid fa-user-shield"></i> Bí thư Chi bộ</span>
+          <button onclick="window.logoutBithu()" class="btn btn-secondary" style="font-size:0.8rem;padding:6px 12px;">
+            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. TỔNG QUAN -->
+      <div class="bithu-tab active" id="tab-tong-quan">
+        <div class="grid-4" style="margin-bottom:24px;">
+          <div class="card" style="padding:18px;border-left:4px solid #B91C1C;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Tổng Đảng Viên</div>
+            <div style="font-size:2rem;font-weight:800;color:#B91C1C;margin:6px 0;">22</div>
+            <div style="font-size:0.75rem;color:#16A34A;">● 100% đầy đủ hồ sơ và phân công</div>
+          </div>
+          <div class="card" style="padding:18px;border-left:4px solid #16A34A;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Điểm Danh T9/2026</div>
+            <div style="font-size:2rem;font-weight:800;color:#16A34A;margin:6px 0;">20 / 22</div>
+            <div style="font-size:0.75rem;color:#0284C7;">● 90.9% Có mặt • 2 Vắng có lý do</div>
+          </div>
+          <div class="card" style="padding:18px;border-left:4px solid #F59E0B;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Nhiệm Vụ Đang Thực Hiện</div>
+            <div style="font-size:2rem;font-weight:800;color:#F59E0B;margin:6px 0;">10</div>
+            <div style="font-size:0.75rem;color:#16A34A;">● Bình quân đạt 87% tiến độ</div>
+          </div>
+          <div class="card" style="padding:18px;border-left:4px solid #DC2626;">
+            <div style="font-size:0.8rem;color:#64748B;font-weight:700;text-transform:uppercase;">Bài Viết Chờ Bí Thư Duyệt</div>
+            <div style="font-size:2rem;font-weight:800;color:#DC2626;margin:6px 0;" id="kpiPendingCount">0</div>
+            <div style="font-size:0.75rem;color:#64748B;">● Quy trình duyệt CMS nghiêm ngặt</div>
+          </div>
+        </div>
+
+        <!-- Cảnh Báo Quá Hạn & Nhiệm Vụ Nóng -->
+        <div class="card" style="padding:20px;margin-bottom:24px;">
+          <h3 style="font-size:1.05rem;font-weight:800;color:#991B1B;margin-bottom:12px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Cảnh Báo Điều Hành Nóng
+          </h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="overdue-alert">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span><strong>Trực ban mưa lũ 24/24:</strong> Đ/c Nguyễn Trọng Nghĩa (Tổ trưởng) phụ trách Đội 8 & Đ/c Nguyễn Như Khải phụ trách Đội 10 duy trì kiểm tra cống thoát nước và điểm sạt lở.</span>
+            </div>
+            <div style="background:#FFFBEB;border:1px solid #FCD34D;color:#92400E;padding:8px 12px;border-radius:var(--radius-sm);font-size:0.85rem;font-weight:700;display:flex;align-items:center;gap:8px;">
+              <i class="fa-solid fa-clock"></i>
+              <span><strong>Hạn nộp đảng phí quý III:</strong> Hạn chót ngày 30/09/2026. Giao Đ/c Nguyễn Thị Mừng đôn đốc 100% đảng viên nộp đủ.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. QUẢN LÝ ĐẢNG VIÊN -->
+      <div class="bithu-tab" id="tab-dang-vien">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h3 style="font-size:1.15rem;font-weight:800;color:#991B1B;">Danh Sách 22 Đảng Viên Chi Bộ Lương Hậu</h3>
+              <p style="font-size:0.85rem;color:#64748B;">Dữ liệu chuẩn hóa từ file Excel chính thức</p>
+            </div>
+            <button onclick="window.showAddMemberModal()" class="btn btn-primary" style="font-size:0.82rem;">
+              <i class="fa-solid fa-user-plus"></i> Thêm Đảng Viên
+            </button>
+          </div>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Họ Và Tên</th>
+                <th>Ngày Sinh</th>
+                <th>Ngày Kết Nạp</th>
+                <th>Số Thẻ Đảng</th>
+                <th>Số Điện Thoại</th>
+                <th>Tổ Đảng / Khu Vực</th>
+                <th>Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody id="bithuMembersTable">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. SINH HOẠT & ĐIỂM DANH -->
+      <div class="bithu-tab" id="tab-sinh-hoat">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#991B1B;margin-bottom:10px;">Điều Hành Điểm Danh & Chốt Kỳ Sinh Hoạt</h3>
+          <p style="font-size:0.85rem;color:#64748B;margin-bottom:14px;">Bí thư có quyền cập nhật nhanh trạng thái có mặt/vắng của từng đồng chí.</p>
+          <div class="gov-table-container">
+            <table class="gov-table">
+              <thead>
+                <tr>
+                  <th>Họ Tên</th>
+                  <th>Địa Bàn</th>
+                  <th>Trạng Thái</th>
+                  <th>Hành Động Chốt</th>
+                </tr>
+              </thead>
+              <tbody id="bithuAttendanceTable">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. NGHỊ QUYẾT -->
+      <div class="bithu-tab" id="tab-nghi-quyet">
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#991B1B;margin-bottom:12px;">Ban Hành Nghị Quyết Chi Bộ Mới</h3>
+          <form id="newResolutionForm">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Số hiệu nghị quyết (*)</label>
+                <input type="text" id="resCode" class="form-input" placeholder="Ví dụ: 10-NQ/CB" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ngày ban hành (*)</label>
+                <input type="date" id="resDate" class="form-input" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tiêu đề nghị quyết (*)</label>
+              <input type="text" id="resTitle" class="form-input" placeholder="Nghị quyết lãnh đạo..." required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nội dung chỉ đạo toàn diện (*)</label>
+              <textarea id="resContent" class="form-textarea" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-stamp"></i> Ký Ban Hành Nghị Quyết</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- 5. NHIỆM VỤ & CẢNH BÁO -->
+      <div class="bithu-tab" id="tab-nhiem-vu">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <h3 style="font-size:1.15rem;font-weight:800;color:#991B1B;">Quản Lý Nhiệm Vụ 10 Cán Bộ Chủ Chốt</h3>
+              <p style="font-size:0.85rem;color:#64748B;">Hệ thống tự động gắn nhãn Quá Hạn nếu ngày hiện tại vượt quá hạn hoàn thành</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gov-table-container">
+          <table class="gov-table">
+            <thead>
+              <tr>
+                <th>Người Phụ Trách</th>
+                <th>Nội Dung Nhiệm Vụ</th>
+                <th>Mức Ưu Tiên</th>
+                <th>Hạn Chót</th>
+                <th>Tiến Độ (%)</th>
+                <th>Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody id="bithuTasksTable">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 6. DUYỆT BÀI VIẾT CMS (QUY TRÌNH DUYỆT BÍ THƯ) -->
+      <div class="bithu-tab" id="tab-cho-duyet">
+        <div class="card" style="padding:20px;margin-bottom:16px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#991B1B;margin-bottom:6px;">
+            <i class="fa-solid fa-clipboard-check"></i> Phê Duyệt Nội Dung Xuất Bản CMS
+          </h3>
+          <p style="font-size:0.85rem;color:#64748B;">Quy trình duyệt: <strong>FORM &rarr; CMS &rarr; PENDING &rarr; BÍ THƯ DUYỆT &rarr; APPROVED &rarr; PUBLISHED</strong>. Không tự động công khai nội dung chưa duyệt.</p>
+        </div>
+
+        <div id="pendingNewsList">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- 7. BÁO CÁO & THỐNG KÊ -->
+      <div class="bithu-tab" id="tab-bao-cao">
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:1.15rem;font-weight:800;color:#991B1B;margin-bottom:12px;">Xuất Báo Cáo Công Tác Lãnh Đạo Chi Bộ</h3>
+          <p style="font-size:0.88rem;color:#334155;margin-bottom:16px;">Tổng hợp số liệu đảng viên, tỷ lệ sinh hoạt, kết quả thực hiện mô hình 6 rõ phục vụ báo cáo Đảng ủy Phường Hương Thủy.</p>
+          <button onclick="window.printReport()" class="btn btn-primary"><i class="fa-solid fa-print"></i> In / Xuất Báo Cáo Tổng Hợp</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { LuongHauDatabase } from '/src/lib/db.js';
+    import { AuthEngine } from '/src/lib/auth.js';
+
+    const db = new LuongHauDatabase();
+    const auth = new AuthEngine(db);
+
+    window.db = db;
+    window.auth = auth;
+
+    // Check RBAC permission: Must be BI_THU or ADMIN
+    function checkBithuPermission() {
+      const user = auth.getCurrentUser();
+      const authGate = document.getElementById('authGate');
+      if (!user || (user.role !== 'BI_THU' && user.role !== 'ADMIN')) {
+        authGate.style.display = 'flex';
+        return false;
+      }
+      authGate.style.display = 'none';
+      document.getElementById('bithuUserBadge').innerHTML = `<i class="fa-solid fa-user-check"></i> ${user.full_name} (${user.role})`;
+      return true;
+    }
+
+    window.logoutBithu = function() {
+      auth.logout();
+      window.location.href = '/dang-vien';
+    };
+
+    // Tab Switching
+    window.switchBithuTab = function(tabName, el) {
+      document.querySelectorAll('.bithu-menu li').forEach(li => li.classList.remove('active'));
+      document.querySelectorAll('.bithu-tab').forEach(t => t.classList.remove('active'));
+
+      if (el) el.classList.add('active');
+      const target = document.getElementById(`tab-${tabName}`);
+      if (target) target.classList.add('active');
+
+      const titles = {
+        'tong-quan': 'Tổng Quan Lãnh Đạo',
+        'dang-vien': 'Quản Lý Đảng Viên',
+        'sinh-hoat': 'Sinh Hoạt & Điểm Danh',
+        'nghi-quyet': 'Nghị Quyết Chi Bộ',
+        'nhiem-vu': 'Nhiệm Vụ & Cảnh Báo Quá Hạn',
+        'cho-duyet': 'Phê Duyệt Nội Dung CMS',
+        'bao-cao': 'Báo Cáo & Thống Kê'
+      };
+      document.getElementById('bithuPageTitle').innerText = titles[tabName] || 'Dashboard Bí Thư';
+    };
+
+    // 1. Render Members Table
+    function renderMembers() {
+      const members = db.getAll('party_members');
+      const tbody = document.getElementById('bithuMembersTable');
+      if (!tbody) return;
+
+      tbody.innerHTML = members.map((m, idx) => `
+        <tr>
+          <td>${m.stt || (idx + 1)}</td>
+          <td><strong>${m.full_name}</strong></td>
+          <td>${m.dob}</td>
+          <td>${m.join_date}</td>
+          <td><code>${m.party_card}</code></td>
+          <td>${m.phone}</td>
+          <td>${m.area}</td>
+          <td><span class="badge badge-success">${m.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // 2. Render Attendance Controls
+    function renderAttendance() {
+      const members = db.getAll('party_members');
+      const attendance = db.getAll('attendance');
+      const tbody = document.getElementById('bithuAttendanceTable');
+      if (!tbody) return;
+
+      tbody.innerHTML = members.map(m => {
+        const att = attendance.find(a => a.party_member_id === m.id) || { status: 'PRESENT' };
+        return `
+          <tr>
+            <td><strong>${m.full_name}</strong></td>
+            <td>${m.area}</td>
+            <td>
+              <span class="badge ${att.status === 'PRESENT' ? 'badge-success' : 'badge-danger'}">
+                ${att.status === 'PRESENT' ? 'CÓ MẶT' : att.status === 'EXCUSED' ? 'VẮNG CÓ LÝ DO' : 'VẮNG KHÔNG LÝ DO'}
+              </span>
+            </td>
+            <td>
+              <div style="display:flex;gap:4px;">
+                <button onclick="window.setMemberAtt('${m.id}', 'PRESENT')" class="btn btn-secondary" style="font-size:0.75rem;padding:3px 6px;">Có Mặt</button>
+                <button onclick="window.setMemberAtt('${m.id}', 'EXCUSED')" class="btn btn-secondary" style="font-size:0.75rem;padding:3px 6px;">Có Lý Do</button>
+                <button onclick="window.setMemberAtt('${m.id}', 'UNEXCUSED')" class="btn btn-secondary" style="font-size:0.75rem;padding:3px 6px;">Không Lý Do</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.setMemberAtt = function(memberId, status) {
+      const attendance = db.getAll('attendance');
+      let att = attendance.find(a => a.party_member_id === memberId);
+      if (att) {
+        db.update('attendance', att.id, { status: status }, auth.getCurrentUser());
+      } else {
+        db.insert('attendance', { meeting_id: 'meet_2026_09', party_member_id: memberId, status: status }, auth.getCurrentUser());
+      }
+      renderAttendance();
+    };
+
+    // 3. Render Tasks with Overdue Alerts
+    function renderTasks() {
+      const tasks = db.getAll('tasks');
+      const tbody = document.getElementById('bithuTasksTable');
+      if (!tbody) return;
+
+      const now = new Date();
+
+      tbody.innerHTML = tasks.map(t => {
+        const dline = new Date(t.deadline);
+        const isOverdue = dline < now && t.status !== 'HOÀN_THÀNH';
+
+        return `
+          <tr>
+            <td><strong>${t.assignee}</strong></td>
+            <td>
+              <strong>${t.title}</strong>
+              <div style="font-size:0.8rem;color:#64748B;">${t.content}</div>
+            </td>
+            <td><span class="badge ${t.priority === 'CAO' ? 'badge-danger' : 'badge-warning'}">${t.priority}</span></td>
+            <td>
+              ${t.deadline}
+              ${isOverdue ? '<span class="badge badge-danger" style="margin-left:6px;"><i class="fa-solid fa-clock"></i> QUÁ HẠN</span>' : ''}
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div style="background:#E2E8F0;height:6px;width:60px;border-radius:3px;">
+                  <div style="background:#16A34A;height:100%;width:${t.progress_percent}%;"></div>
+                </div>
+                <span>${t.progress_percent}%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-info">${t.status}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 4. Render Pending News (Approval Workflow)
+    function renderPendingNews() {
+      const allNews = db.getAll('news');
+      const pending = allNews.filter(n => n.status === 'PENDING');
+      const container = document.getElementById('pendingNewsList');
+      const badge = document.getElementById('pendingBadge');
+      const kpiBadge = document.getElementById('kpiPendingCount');
+
+      if (badge) badge.innerText = pending.length;
+      if (kpiBadge) kpiBadge.innerText = pending.length;
+
+      if (!container) return;
+
+      if (pending.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="padding:30px;text-align:center;color:#64748B;">
+            <i class="fa-solid fa-check-double" style="font-size:36px;color:#16A34A;margin-bottom:10px;"></i>
+            <h4>Không có bài viết nào đang chờ duyệt</h4>
+            <p style="font-size:0.85rem;">Mọi nội dung gửi từ CMS đã được xử lý đầy đủ.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = pending.map(n => `
+        <div class="card" style="padding:20px;margin-bottom:14px;border-left:4px solid #F59E0B;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <span class="badge badge-warning">ĐANG CHỜ DUYỆT (PENDING)</span>
+              <h3 style="font-size:1.1rem;font-weight:700;margin:6px 0;">${n.title}</h3>
+              <p style="font-size:0.88rem;color:#475569;">${n.summary}</p>
+              <div style="font-size:0.8rem;color:#64748B;margin-top:8px;">
+                Tác giả: <strong>${n.author}</strong> • Danh mục: <strong>${n.category_name}</strong> • Ngày tạo: ${n.created_at.substring(0, 10)}
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button onclick="window.approveNews('${n.id}')" class="btn btn-success" style="font-size:0.8rem;padding:6px 14px;">
+                <i class="fa-solid fa-check"></i> Phê Duyệt & Xuất Bản
+              </button>
+              <button onclick="window.rejectNews('${n.id}')" class="btn btn-danger" style="font-size:0.8rem;padding:6px 14px;background:#DC2626;color:white;">
+                <i class="fa-solid fa-xmark"></i> Từ Chối
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.approveNews = function(id) {
+      if (confirm('Bí thư đồng ý phê duyệt và xuất bản bài viết này lên Cổng Thông Tin Công Khai?')) {
+        db.update('news', id, { status: 'PUBLISHED', published_at: new Date().toISOString() }, auth.getCurrentUser());
+        db.addAuditLog({
+          action: 'APPROVE',
+          resource: 'NEWS',
+          details: `Bí thư Chi bộ phê duyệt xuất bản bài viết ID: ${id}`,
+          user: auth.getCurrentUser()
+        });
+        alert('Đã phê duyệt và xuất bản bài viết thành công!');
+        renderPendingNews();
+      }
+    };
+
+    window.rejectNews = function(id) {
+      const reason = prompt('Nhập lý do yêu cầu chỉnh sửa / từ chối:');
+      if (reason) {
+        db.update('news', id, { status: 'DRAFT', summary: `[Yêu cầu sửa: ${reason}] ` + db.getById('news', id).summary }, auth.getCurrentUser());
+        alert('Đã chuyển bài viết về trạng thái Nháp để biên tập viên chỉnh sửa.');
+        renderPendingNews();
+      }
+    };
+
+    // 5. New Resolution Submit
+    document.getElementById('newResolutionForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = document.getElementById('resCode').value.trim();
+      const date = document.getElementById('resDate').value;
+      const title = document.getElementById('resTitle').value.trim();
+      const content = document.getElementById('resContent').value.trim();
+
+      db.insert('resolutions', {
+        code: code,
+        date: date,
+        title: title,
+        content: content,
+        key_tasks: 'Triển khai toàn Chi bộ',
+        assigned_to: 'Toàn Chi bộ',
+        deadline: '',
+        status: 'ĐANG_THỰC_HIỆN'
+      }, auth.getCurrentUser());
+
+      alert(`Đã ban hành thành công Nghị quyết số ${code}!`);
+      document.getElementById('newResolutionForm').reset();
+    });
+
+    window.printReport = function() {
+      window.print();
+    };
+
+    if (checkBithuPermission()) {
+      renderMembers();
+      renderAttendance();
+      renderTasks();
+      renderPendingNews();
+    }
+  </script>
+</body>
+</html>
