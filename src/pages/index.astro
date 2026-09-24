@@ -2252,80 +2252,90 @@ II. TIẾN ĐỘ THỰC HIỆN:
       return v;
     }
 
-    function loadDynamicPublicNews() {
-      const sheetUrl = "https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/gviz/tq?tqx=out:json";
-      const container = document.getElementById("dynamic-public-news");
-      if (!container) return;
+    function fetchGoogleSheetNews() {
+      if (!document.getElementById("lh-sheet-news-styles")) {
+        const style = document.createElement("style");
+        style.id = "lh-sheet-news-styles";
+        style.textContent = `
+          #dynamic-public-news li, #news-list li { display: flex !important; gap: 10px !important; padding: 10px !important; background: #ffffff !important; border-radius: 8px !important; border: 1px solid #e5e7eb !important; list-style: none !important; align-items: flex-start !important; margin-bottom: 8px !important; }
+          #dynamic-public-news .txt, #news-list .txt { flex: 1 !important; min-width: 0 !important; }
+          #dynamic-public-news h3, #news-list h3 { font-size: 13.5px !important; font-weight: 700 !important; margin: 0 0 4px 0 !important; line-height: 1.4 !important; }
+          #dynamic-public-news h3 a, #news-list h3 a { color: #111827 !important; text-decoration: none !important; }
+          #dynamic-public-news h3 a:hover, #news-list h3 a:hover { color: #b91c1c !important; }
+          #dynamic-public-news .mt, #news-list .mt { display: flex !important; align-items: center !important; gap: 6px !important; flex-wrap: wrap !important; font-size: 11px !important; color: #6b7280 !important; margin-top: 4px !important; }
+          .pill.org { background: #e7f6ee !important; color: #0b6b3d !important; font-size: 10px !important; font-weight: 700 !important; padding: 1.5px 7px !important; border-radius: 4px !important; }
+        `;
+        document.head.appendChild(style);
+      }
 
+      const sheetUrl = "https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/gviz/tq?tqx=out:json";
       fetch(sheetUrl)
         .then(res => res.text())
         .then(text => {
-          const match = text.match(/setResponse\(([\s\S]*)\);?/);
+          const match = text.match(/setResponse\((.*)\);/s) || text.match(/setResponse\((.*)\)/s);
           if (!match) return;
-          const jsonStr = match[1].endsWith(";") ? match[1].slice(0, -1) : match[1];
-          const data = JSON.parse(jsonStr);
-          const rows = data.table && data.table.rows;
+          const data = JSON.parse(match[1]);
+          const rows = data.table.rows;
           if (!rows || rows.length === 0) return;
+          const newsList = document.getElementById("news-list") || document.getElementById("dynamic-public-news");
+          if (!newsList) return;
 
-          const reversedRows = [...rows].reverse();
-          let html = "";
-          reversedRows.forEach(row => {
-            const c = row.c || [];
-            const timeStamp = formatGvizDate(c[0]);
-            const eventDate = formatGvizDate(c[1]) || timeStamp;
-            const category = (c[2] && (c[2].v || c[2].f) || "").trim() || "Tin Lương Hậu";
-            const title = (c[3] && (c[3].v || c[3].f) || "").trim();
-            const content = (c[4] && (c[4].v || c[4].f) || "").trim();
-            const location = (c[5] && (c[5].v || c[5].f) || "").trim();
-            const author = (c[6] && (c[6].v || c[6].f) || "").trim();
+          let newItemsHtml = "";
+          [...rows].reverse().forEach(r => {
+            const c = r.c || [];
+            const date = c[1] ? (c[1].f || c[1].v || "") : (c[0] ? (c[0].f || c[0].v || "") : "");
+            const category = (c[2] ? (c[2].v || "") : "").trim() || "LƯƠNG HẬU";
+            const title = (c[3] ? (c[3].v || "") : "").trim();
+            const content = (c[4] ? (c[4].v || "") : "").trim();
+            
+            // TRÍCH XUẤT HÌNH ẢNH: Cột 7 (Tải file từ Form) hoặc Cột 8 (Dán link ảnh)
+            const rawUpload = c[7] ? String(c[7].v || "") : "";
+            const rawLink = c[8] ? String(c[8].v || "") : "";
+            const imgTarget = rawUpload || rawLink;
 
-            if (!title && !content) return;
-
-            let rawImg = (c[7] && (c[7].v || c[7].f) || c[8] && (c[8].v || c[8].f) || "").trim();
-            if (!rawImg) {
-              for (let i = 5; i < c.length; i++) {
-                const val = String(c[i] && (c[i].v || c[i].f) || "");
-                if (val.includes("drive.google.com") || val.includes("http")) {
-                  rawImg = val.trim();
-                  break;
-                }
+            let imgSrc = "";
+            if (imgTarget) {
+              // Nếu là link Google Drive tải lên từ Form
+              const driveMatch = imgTarget.match(/id=([a-zA-Z0-9_-]+)/) || imgTarget.match(/\/d\/([a-zA-Z0-9_-]+)/);
+              if (driveMatch) {
+                imgSrc = "https://drive.google.com/thumbnail?id=" + driveMatch[1] + "&sz=w800";
+              } else if (imgTarget.startsWith("http")) {
+                imgSrc = imgTarget;
               }
             }
 
-            let fileId = "";
-            if (rawImg) {
-              const m = rawImg.match(/id=([a-zA-Z0-9_-]+)/) || rawImg.match(/\/d\/([a-zA-Z0-9_-]+)/);
-              if (m) fileId = m[1];
-            }
+            if (!title) return;
 
-            let imgHtml = "";
-            if (fileId) {
-              const imgThumbUrl = "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w1200";
-              imgHtml = '<div class="w-full bg-slate-900/5 rounded-xl overflow-hidden border border-red-100 my-2.5 flex items-center justify-center p-1"><img src="' + imgThumbUrl + '" alt="' + title + '" class="w-full h-auto max-h-[520px] object-contain rounded-lg shadow-sm" loading="lazy" onerror="this.src=\'https://lh3.googleusercontent.com/d/' + fileId + '\'"></div>';
-            }
+            // Khung ảnh đại diện (Nếu có ảnh thì hiện ảnh thật, không có ảnh thì hiện khung màu nhận diện TDP)
+            const thumbHtml = imgSrc 
+          ? `<img src="${imgSrc}" alt="${title}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;" onerror="this.style.display='none';">`
+          : `<div style="background:#8b0018;color:#fef08a;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:11px;border-radius:6px;">TIN MỚI</div>`;
 
-            html += '<article class="bg-white p-3 sm:p-3.5 rounded-xl border border-red-200 shadow-sm space-y-2 transition active:bg-gray-50">' +
-              '<div class="flex items-center justify-between gap-2">' +
-              '<span class="bg-red-700 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">' + category + '</span>' +
-              '<span class="text-[10.5px] text-[#2563eb] font-semibold flex items-center gap-1"><i class="fa-regular fa-calendar-days text-[10px]"></i> ' + eventDate + '</span>' +
-              '</div>' +
-              imgHtml +
-              '<h4 class="text-xs sm:text-sm font-bold text-gray-900 leading-snug hover:text-red-700">' + title + '</h4>' +
-              '<p class="text-xs text-gray-600 leading-relaxed whitespace-pre-line text-justify">' + content + '</p>' +
-              '</article>';
+            newItemsHtml += `<li>
+              <div class="th" style="width:110px;height:75px;flex-shrink:0;overflow:hidden;border-radius:6px;background:#f3f4f6;">
+                ${thumbHtml}
+              </div>
+              <div class="txt">
+                <h3><a href="javascript:void(0)" onclick="alert('${title.replace(/'/g, "\\'")}\\n\\n${content.replace(/'/g, "\\'")}')">${title}</a></h3>
+                <div class="mt">
+                  <span class="pill org">${category}</span>
+                  <span><i class="fa-regular fa-calendar-days"></i> ${date}</span>
+                  <span style="color:#16a34a;"><i class="fa-solid fa-cloud-arrow-up"></i> Bản tin TDP</span>
+                </div>
+              </div>
+            </li>`;
           });
 
-          if (html) {
-            container.innerHTML = '<div class="flex items-center gap-1.5 text-xs font-bold text-red-800 border-b border-red-200 pb-1 mt-2">' +
-              '<i class="fa-solid fa-clock-rotate-left"></i>' +
-              '<span>Tin mới đăng từ Ban điều hành:</span>' +
-              '</div>' + html;
+          if (newItemsHtml) {
+            newsList.insertAdjacentHTML("afterbegin", newItemsHtml);
           }
         })
-        .catch(err => console.error("Lỗi nạp tin công khai:", err));
+        .catch(err => console.log("Bỏ qua lỗi fetch bảng tính:", err));
     }
 
-    window.addEventListener("DOMContentLoaded", loadDynamicPublicNews);
+    window.fetchGoogleSheetNews = fetchGoogleSheetNews;
+    window.loadDynamicPublicNews = fetchGoogleSheetNews;
+    window.addEventListener("DOMContentLoaded", fetchGoogleSheetNews);
   </script>
   <!-- ==================== POPUP MODAL ĐỌC TOÀN VĂN BÀI VIẾT & VĂN BẢN (ID: modal-bai-viet) ==================== -->
   <div id="modal-bai-viet"

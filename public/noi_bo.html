@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Khu Vực Nội Bộ Chi Bộ - Cổng Thông Tin Số Lương Hậu</title>
+  <title>Khu Vực Nội Bộ Chi Bộ & CMS Quản Trị - Cổng Thông Tin Số Lương Hậu</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,10 +16,10 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col text-gray-800">
 
-  <!-- 1. TOPBAR TRANG TRỌNG -->
+  <!-- TOPBAR -->
   <header class="bg-white border-b border-gray-200 text-xs text-gray-600">
     <div class="max-w-7xl mx-auto px-4 py-1.5 flex flex-wrap justify-between items-center gap-2">
-      <div class="font-medium text-gray-700">Thứ hai, 21/09/2026 14:53</div>
+      <div class="font-medium text-gray-700">Thứ hai, 21/09/2026 15:30</div>
       <div class="flex items-center space-x-4">
         <a href="https://tulieuvankien.dangcongsan.vn" target="_blank" rel="noreferrer" class="hover:text-red-700">Cổng TTĐT Đảng Cộng sản Việt Nam</a>
         <span class="text-gray-300">|</span>
@@ -28,7 +28,7 @@
     </div>
   </header>
 
-  <!-- 2. BANNER CHUẨN TƯ LIỆU - VĂN KIỆN ĐẢNG -->
+  <!-- BANNER TƯ LIỆU VĂN KIỆN ĐẢNG -->
   <div class="bg-[#fff8f8] border-b-2 border-red-700 py-3.5 px-4 shadow-sm">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-4">
@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <!-- 3. THANH ĐIỀU HƯỚNG ĐỎ THẮM -->
+  <!-- MENU ĐIỀU HƯỚNG -->
   <nav class="bg-[#b91c1c] text-white shadow-md sticky top-0 z-30 text-xs sm:text-sm font-bold">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
       <div class="flex items-center overflow-x-auto py-2.5 space-x-1 sm:space-x-2">
@@ -65,16 +65,16 @@
           📱 SỔ TAY ĐVĐT
         </a>
       </div>
-      <button onclick="moKhoaCms()" class="ml-2 px-2.5 py-1 bg-red-950 hover:bg-black text-yellow-300 rounded border border-yellow-400/40 text-xs font-bold flex items-center gap-1 whitespace-nowrap">
-        <span>⚙️</span> CMS Quản Trị
+      <button onclick="moKhoaCms()" class="ml-2 px-3 py-1 bg-red-950 hover:bg-black text-yellow-300 rounded border border-yellow-400/50 text-xs font-black flex items-center gap-1.5 whitespace-nowrap shadow">
+        <span>⚙️</span> CMS QUẢN TRỊ
       </button>
     </div>
   </nav>
 
-  <!-- 4. KHU VỰC CHÍNH -->
+  <!-- NỘI DUNG CHÍNH -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
 
-    <!-- CARD XÁC THỰC PHIÊN NỘI BỘ (CHO 22 ĐẢNG VIÊN) -->
+    <!-- CARD XÁC THỰC PHIÊN NỘI BỘ -->
     <div id="auth-box" class="max-w-md mx-auto bg-white rounded-xl shadow-xl border-t-4 border-red-700 p-6 my-6">
       <div class="flex items-center gap-3 border-b border-gray-200 pb-3 mb-4">
         <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 text-xl font-bold">
@@ -115,19 +115,19 @@
       </form>
     </div>
 
-    <!-- NỘI DUNG SAU KHI XÁC THỰC: BỐ CỤC 3 CỘT CHUẨN TƯ LIỆU VĂN KIỆN ĐẢNG -->
+    <!-- KHU VỰC HIỂN THỊ NỘI BỘ (3 CỘT CHUẨN VĂN KIỆN ĐẢNG) -->
     <div id="internal-content" class="hidden space-y-6">
 
-      <!-- THANH TRẠNG THÁI PHIÊN ĐẢNG VIÊN -->
+      <!-- THANH TRẠNG THÁI -->
       <div class="bg-red-50 border border-red-200 rounded-lg p-3 flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
           <span>Phiên làm việc: <strong class="text-red-900 font-bold">Đ/c Hồ Văn Mão (Bí thư Chi bộ)</strong></span>
           <span class="text-gray-400">|</span>
-          <span class="text-gray-600">Phụ trách chung • Địa bàn Đội 11</span>
+          <span class="text-gray-600">Phụ trách chung • Phụ trách Đội 11</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="moKhoaCms()" class="px-2.5 py-1 bg-red-700 hover:bg-red-800 text-white font-bold rounded text-xs">
+          <button onclick="moKhoaCms()" class="px-2.5 py-1 bg-red-700 hover:bg-red-800 text-white font-bold rounded text-xs shadow-sm">
             ⚙️ Mở CMS Quản Trị
           </button>
           <button onclick="handleLogout()" class="px-2.5 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded font-semibold text-xs">
@@ -136,10 +136,10 @@
         </div>
       </div>
 
-      <!-- LƯỚI 3 CỘT (TƯ LIỆU ĐẢNG - CHỦ TRƯƠNG THỰC TẾ - VĂN BẢN MỚI CỦA PHƯỜNG) -->
+      <!-- BỐ CỤC 3 CỘT NỘI BỘ -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        <!-- CỘT TRÁI (3 CỘT): KHO HỒ SƠ 17 BIỂU MẪU ĐẢNG NỘI BỘ & TƯ LIỆU -->
+        <!-- CỘT TRÁI: KHO HỒ SƠ 17 BIỂU MẪU ĐẢNG -->
         <div class="lg:col-span-3 space-y-4">
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             <div class="bg-[#b91c1c] text-white px-3.5 py-2 font-bold text-xs uppercase flex items-center gap-2">
@@ -169,7 +169,6 @@
             </div>
           </div>
 
-          <!-- THÔNG SỐ NỀN NẾP SINH HOẠT -->
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-3.5 space-y-2.5 text-xs">
             <h4 class="font-bold text-gray-800 uppercase border-b pb-1.5">KỶ CƯƠNG SINH HOẠT CHI BỘ</h4>
             <div class="flex justify-between">
@@ -187,7 +186,7 @@
           </div>
         </div>
 
-        <!-- CỘT GIỮA (5 CỘT): CHỦ TRƯƠNG, NGHỊ QUYẾT & PHÂN CÔNG 6 RÕ -->
+        <!-- CỘT GIỮA: NGHỊ QUYẾT & PHÂN CÔNG 6 RÕ -->
         <div id="chu-truong" class="lg:col-span-5 space-y-4">
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3.5">
             <div class="border-b-2 border-red-700 pb-2">
@@ -196,26 +195,14 @@
               </h3>
             </div>
 
-            <div class="bg-gradient-to-r from-red-800 to-red-950 text-white p-4 rounded-xl shadow-md space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="bg-yellow-400 text-red-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">Nghị quyết số 09-NQ/CB</span>
-                <span class="text-[11px] text-red-200">Tháng 09/2026</span>
-              </div>
-              <h4 class="font-bold text-sm sm:text-base text-yellow-300 leading-snug">Lãnh đạo thực hiện nhiệm vụ chính trị & Địa bàn dân cư</h4>
-              <p class="text-xs text-red-100 leading-relaxed">
-                Quán triệt Kết luận 83-KL/TW, Chỉ thị 02-CT/ĐU về BHXH-BHYT; đôn đốc 100% đảng viên đi đầu tham gia Ngày Chủ nhật xanh; phương án 4 tại chỗ PCTT mưa lũ.
-              </p>
-              <div class="pt-1 flex gap-2">
-                <a href="https://drive.google.com/file/d/1PMml4khek3hMY-Pm-WM_gzDk2-XYdED0/view" target="_blank" rel="noreferrer" class="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-red-950 font-bold rounded-lg text-xs shadow-sm">
-                  Xem toàn văn Nghị quyết
-                </a>
-              </div>
+            <div id="display-nghi-quyet-list" class="space-y-3">
+              <!-- Render động từ CMS -->
             </div>
 
             <!-- TIẾN ĐỘ THỰC HIỆN NHIỆM VỤ CHI BỘ -->
             <div class="border border-gray-200 rounded-lg p-3.5 space-y-2">
               <div class="flex justify-between items-center text-xs">
-                <span class="font-bold text-gray-700">Tiến độ thực hiện nhiệm vụ sau Nghị quyết:</span>
+                <span class="font-bold text-gray-700">Tiến độ nhiệm vụ sau Nghị quyết:</span>
                 <span class="font-black text-red-700">89%</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
@@ -224,32 +211,21 @@
               <p class="text-[11px] text-gray-500 italic">05/05 nhóm nhiệm vụ trọng tâm đạt tiến độ đề ra.</p>
             </div>
 
-            <!-- PHÂN CÔNG 22 ĐẢNG VIÊN TÓM TẮT -->
+            <!-- DANH SÁCH NHIỆM VỤ 6 RÕ (RENDER TỪ CMS) -->
             <div id="phan-cong" class="border border-red-100 bg-red-50/40 rounded-lg p-3 space-y-2 text-xs">
               <div class="flex items-center justify-between border-b border-red-200/60 pb-1.5">
                 <h4 class="font-black text-red-900 uppercase">PHÂN CÔNG NHIỆM VỤ CÁN BỘ (MÔ HÌNH 6 RÕ)</h4>
-                <a href="https://drive.google.com/file/d/1UWWcbbTCzyIVAGLcJjQhQjn0fh7NiOQbnEge4fDrYps/view" target="_blank" rel="noreferrer" class="text-blue-700 hover:underline font-bold">Xem 22 Đ/c →</a>
+                <a href="https://drive.google.com/file/d/1UWWcbbTCzyIVAGLcJjQhQjn0fh7NiOQbnEge4fDrYps/view" target="_blank" rel="noreferrer" class="text-blue-700 hover:underline font-bold">Xem tệp gốc 22 Đ/c →</a>
               </div>
-              <div class="space-y-1.5 divide-y divide-gray-200/50">
-                <div class="pt-1 flex justify-between">
-                  <span><strong>1. Đ/c Hồ Văn Mão</strong> (Bí thư Chi bộ)</span>
-                  <span class="text-red-700 font-semibold">Phụ trách chung • Đội 11</span>
-                </div>
-                <div class="pt-1 flex justify-between">
-                  <span><strong>2. Đ/c Nguyễn Trọng Nghĩa</strong> (Phó BT, Tổ trưởng)</span>
-                  <span class="text-blue-700 font-semibold">Chính quyền • Đội 8</span>
-                </div>
-                <div class="pt-1 flex justify-between">
-                  <span><strong>3. Đ/c Hoàng Hữu Rớt</strong> (Chi ủy viên, TB CTMT)</span>
-                  <span class="text-emerald-700 font-semibold">Mặt trận • Đội 9</span>
-                </div>
+              <div id="display-nhiem-vu-list" class="space-y-2">
+                <!-- Render động từ CMS -->
               </div>
             </div>
 
           </div>
         </div>
 
-        <!-- CỘT PHẢI (4 CỘT): VĂN BẢN MỚI BAN HÀNH CỦA ĐẢNG ỦY PHƯỜNG & THÀNH ỦY -->
+        <!-- CỘT PHẢI: VĂN BẢN MỚI CỦA ĐẢNG ỦY PHƯỜNG & THÀNH ỦY -->
         <div class="lg:col-span-4 space-y-4">
           <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
             <div class="border-b-2 border-red-700 pb-2">
@@ -257,31 +233,8 @@
                 VĂN BẢN MỚI BAN HÀNH (THÁNG 09/2026)
               </h3>
             </div>
-            
-            <div class="divide-y divide-gray-100 text-xs space-y-2.5">
-              <div class="pt-2">
-                <span class="font-bold text-red-700 font-mono">33-HD/ĐU • 14/09/2026</span>
-                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Tổ chức quán triệt Kết luận 83-KL/TW về công nghiệp vật liệu.</p>
-                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
-              </div>
-
-              <div class="pt-2">
-                <span class="font-bold text-red-700 font-mono">02-CT/ĐU • 14/09/2026</span>
-                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Tăng cường lãnh đạo công tác BHXH tự nguyện, BHYT trên địa bàn.</p>
-                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
-              </div>
-
-              <div class="pt-2">
-                <span class="font-bold text-red-700 font-mono">71-KH/ĐU • 04/09/2026</span>
-                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Phong trào thi đua "Dân vận khéo" giai đoạn 2026 - 2030 (mô hình 6 rõ).</p>
-                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
-              </div>
-
-              <div class="pt-2">
-                <span class="font-bold text-red-700 font-mono">72-KH/ĐU • 14/09/2026</span>
-                <p class="font-bold text-gray-900 mt-0.5 leading-snug">Đảng ủy P. Hương Thủy: Kế hoạch triển khai Nghị quyết 23-NQ/TW của Bộ Chính trị.</p>
-                <a href="https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>
-              </div>
+            <div id="display-van-ban-list" class="divide-y divide-gray-100 text-xs space-y-2.5">
+              <!-- Render động từ CMS -->
             </div>
           </div>
         </div>
@@ -291,64 +244,133 @@
 
   </main>
 
-  <!-- MODAL CMS QUẢN TRỊ NỘI BỘ (CÓ MÃ BẢO VỆ) -->
-  <div id="modal-cms-noibo" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-gray-300">
+  <!-- ============================================================== -->
+  <!-- MODAL CMS QUẢN TRỊ TOÀN DIỆN (THEO DÀN Ý CHUẨN HÓA) -->
+  <!-- ============================================================== -->
+  <div id="modal-cms-noibo" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[94vh] flex flex-col overflow-hidden border border-gray-300">
       
       <!-- HEADER CMS -->
       <div class="bg-[#8b0018] text-white px-5 py-3.5 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <span class="text-yellow-400 text-lg">⚙️</span>
-          <h4 class="font-black text-sm sm:text-base uppercase tracking-wide">CMS QUẢN TRỊ NỘI BỘ CHI BỘ</h4>
+          <h4 class="font-black text-sm sm:text-base uppercase tracking-wide">CMS QUẢN TRỊ NỘI DUNG TỔ DÂN PHỐ & CHI BỘ LƯƠNG HẬU</h4>
         </div>
         <button onclick="dongCms()" class="text-white/80 hover:text-white text-2xl font-bold">&times;</button>
       </div>
 
-      <!-- MÀN HÌNH NHẬP MÃ BẢO VỆ CMS -->
-      <div id="cms-lock-screen" class="p-6 space-y-4 text-center">
-        <div class="text-3xl">🔒</div>
-        <h3 class="font-black text-gray-900 text-base uppercase">Xác nhận quyền Quản trị / Bí thư</h3>
-        <p class="text-xs text-gray-500">Vui lòng nhập mã PIN hoặc mật khẩu quản trị để mở khóa chức năng chỉnh sửa nội dung.</p>
+      <!-- MÀN HÌNH KHÓA MÃ PIN BẢO MẬT -->
+      <div id="cms-lock-screen" class="p-8 space-y-4 text-center my-auto">
+        <div class="w-16 h-16 bg-red-100 text-red-700 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">🔒</div>
+        <h3 class="font-black text-gray-900 text-lg uppercase">Xác nhận quyền Quản trị / Bí thư</h3>
+        <p class="text-xs text-gray-500 max-w-sm mx-auto">Vui lòng nhập mã PIN quản trị để mở khóa chức năng Thêm mới, Chỉnh sửa và Xóa dữ liệu trên Cổng thông tin.</p>
         <div class="max-w-xs mx-auto space-y-2">
-          <input type="password" id="cms-pin" placeholder="Nhập mã PIN quản trị (Mặc định: 2026)" class="w-full text-center border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-red-600 focus:outline-none font-bold" />
-          <div id="cms-pin-err" class="hidden text-xs text-red-600 font-bold">Mã PIN không chính xác!</div>
-          <button onclick="kiemTraPinCms()" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 rounded-lg text-xs shadow">Mở Khóa Quản Trị</button>
+          <input type="password" id="cms-pin" placeholder="Nhập mã PIN (Mặc định: 2026 hoặc 1989)" class="w-full text-center border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-red-600 focus:outline-none font-bold" />
+          <div id="cms-pin-err" class="hidden text-xs text-red-600 font-bold">Mã PIN quản trị không chính xác!</div>
+          <button onclick="kiemTraPinCms()" class="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2.5 rounded-lg text-xs shadow-md transition">Mở Khóa Bảng Điều Khiển</button>
         </div>
       </div>
 
-      <!-- FORM CHỈNH SỬA CMS (SAU KHI NHẬP ĐÚNG PIN) -->
-      <div id="cms-form-screen" class="hidden p-5 overflow-y-auto space-y-3.5 text-xs sm:text-sm text-gray-800 flex-1">
-        <div>
-          <label class="block font-bold text-gray-700 mb-1">Phân hệ cập nhật:</label>
-          <select id="cms-loai-nb" class="w-full border border-gray-300 rounded-lg p-2 bg-gray-50 font-medium focus:ring-2 focus:ring-red-600 focus:outline-none">
-            <option value="nghi-quyet">📜 Nghị quyết Chi bộ</option>
-            <option value="van-ban-nb">📁 Văn bản / Chỉ thị Đảng ủy</option>
-            <option value="phan-cong-nb">👥 Cập nhật nhiệm vụ Đảng viên</option>
-            <option value="thong-bao-nb">📢 Thông báo nội bộ</option>
-          </select>
+      <!-- BẢNG ĐIỀU KHIỂN CMS CHÍNH (THEO DÀN Ý 5 PHÂN HỆ) -->
+      <div id="cms-panel-screen" class="hidden flex-1 flex flex-col overflow-hidden">
+        
+        <!-- THANH CHUYỂN TAB 5 PHÂN HỆ -->
+        <div class="bg-gray-50 border-b border-gray-200 px-4 py-2 flex items-center gap-1.5 overflow-x-auto text-xs font-bold">
+          <button onclick="chuyenTabCms('nghi-quyet')" id="tab-btn-nghi-quyet" class="px-3 py-1.5 bg-red-700 text-white rounded-lg whitespace-nowrap shadow-sm">📜 Nghị quyết & Họp</button>
+          <button onclick="chuyenTabCms('nhiem-vu')" id="tab-btn-nhiem-vu" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg whitespace-nowrap">👥 Phân công 6 Rõ</button>
+          <button onclick="chuyenTabCms('van-ban')" id="tab-btn-van-ban" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg whitespace-nowrap">🏛️ Văn bản 3 Cấp</button>
+          <button onclick="chuyenTabCms('bieu-mau')" id="tab-btn-bieu-mau" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg whitespace-nowrap">📑 Kho Biểu mẫu</button>
+          <button onclick="chuyenTabCms('thong-bao')" id="tab-btn-thong-bao" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg whitespace-nowrap">📢 Thông báo dân cư</button>
         </div>
-        <div>
-          <label class="block font-bold text-gray-700 mb-1">Tiêu đề / Trích yếu:</label>
-          <input type="text" id="cms-tieude-nb" placeholder="Nhập nội dung trích yếu..." class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-gray-700 mb-1">Số hiệu / Ký hiệu:</label>
-            <input type="text" id="cms-sohieu-nb" placeholder="VD: 09-NQ/CB" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+
+        <div class="p-5 overflow-y-auto space-y-5 flex-1 text-xs sm:text-sm text-gray-800">
+
+          <!-- FORM NHẬP LIỆU THEO PHÂN HỆ ĐANG CHỌN -->
+          <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+              <h5 id="form-title-label" class="font-black text-red-900 uppercase">THÊM MỚI NGHỊ QUYẾT & KỲ HỌP CHI BỘ</h5>
+              <span class="text-[11px] text-gray-500 italic">* Không để trống các trường có dấu sao</span>
+            </div>
+
+            <!-- 1. CÁC TRƯỜNG DỮ LIỆU ĐỘNG -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block font-bold text-gray-700 mb-1">Tiêu đề / Trích yếu <span class="text-red-600">*</span>:</label>
+                <input type="text" id="cms-input-title" placeholder="Nhập tiêu đề hoặc trích yếu..." class="w-full border border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+              </div>
+
+              <div>
+                <label class="block font-bold text-gray-700 mb-1" id="label-meta1">Số ký hiệu / Số NQ <span class="text-red-600">*</span>:</label>
+                <input type="text" id="cms-input-meta1" placeholder="Ví dụ: 09-NQ/CB hoặc 33-HD/ĐU" class="w-full border border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-bold text-gray-700 mb-1" id="label-meta2">Cấp / Lĩnh vực / Mức độ:</label>
+                <select id="cms-input-meta2" class="w-full border border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium">
+                  <!-- Sẽ thay đổi tùy tab -->
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-bold text-gray-700 mb-1" id="label-meta3">Người phụ trách / Cơ quan:</label>
+                <input type="text" id="cms-input-meta3" placeholder="Đ/c Hồ Văn Mão hoặc Đảng ủy Phường" class="w-full border border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+              </div>
+
+              <div>
+                <label class="block font-bold text-gray-700 mb-1" id="label-meta4">Thời hạn / Tiến độ (%):</label>
+                <input type="text" id="cms-input-meta4" placeholder="Ví dụ: 30/09/2026 hoặc 89" class="w-full border border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Đường dẫn tệp gốc (Google Drive / PDF / DOCX / Nguồn):</label>
+              <input type="url" id="cms-input-file" placeholder="https://drive.google.com/file/d/..." class="w-full border border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+            </div>
+
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Nội dung chi tiết / Tóm tắt:</label>
+              <textarea id="cms-input-desc" rows="2" placeholder="Nhập tóm tắt chỉ đạo hoặc hướng dẫn..." class="w-full border border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-1">
+              <button onclick="resetFormCms()" class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 font-bold text-gray-700 rounded-lg text-xs">Làm mới</button>
+              <button onclick="luuDuLieuCms()" class="px-4 py-1.5 bg-red-700 hover:bg-red-800 font-bold text-white rounded-lg text-xs shadow">+ Thêm / Cập Nhật Mục Này</button>
+            </div>
           </div>
-          <div>
-            <label class="block font-bold text-gray-700 mb-1">Đường dẫn tệp gốc (Drive/PDF/Word):</label>
-            <input type="url" id="cms-filelink-nb" placeholder="https://drive.google.com/..." class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none font-medium" />
+
+          <!-- 2. BẢNG QUẢN LÝ DANH SÁCH HIỆN CÓ (CÓ NÚT XÓA) -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h5 class="font-black text-gray-900 uppercase text-xs sm:text-sm">DANH SÁCH DỮ LIỆU ĐANG CÓ TRÊN HỆ THỐNG</h5>
+              <span class="text-[11px] text-gray-500">Bấm 'Xóa' để gỡ bỏ ngay lập tức</span>
+            </div>
+
+            <div class="border border-gray-200 rounded-xl overflow-x-auto">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="bg-gray-100 border-b border-gray-200 text-gray-700 font-bold uppercase">
+                    <th class="p-2.5">Tiêu đề / Ký hiệu</th>
+                    <th class="p-2.5">Phân loại / Phụ trách</th>
+                    <th class="p-2.5">File đính kèm</th>
+                    <th class="p-2.5 text-center">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="cms-data-table-body" class="divide-y divide-gray-200">
+                  <!-- Render bảng dữ liệu -->
+                </tbody>
+              </table>
+            </div>
           </div>
+
         </div>
-        <div>
-          <label class="block font-bold text-gray-700 mb-1">Nội dung chỉ đạo chi tiết:</label>
-          <textarea id="cms-noidung-nb" rows="3" placeholder="Nhập tóm tắt chỉ đạo hoặc phân công nhiệm vụ..." class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-red-600 focus:outline-none"></textarea>
+
+        <div class="bg-gray-100 px-5 py-3 border-t border-gray-200 flex justify-between items-center text-xs">
+          <span class="text-gray-500 italic">* Mọi thay đổi lưu trên CMS sẽ phản ánh tức thì trên trang web nội bộ và công khai.</span>
+          <button onclick="dongCms()" class="px-4 py-2 bg-gray-800 hover:bg-black font-bold text-white rounded-lg shadow-sm">Đóng Quản Trị</button>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="dongCms()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 font-bold text-gray-700 rounded-lg text-xs">Đóng</button>
-          <button onclick="luuCmsNoiBo()" class="px-5 py-2 bg-red-700 hover:bg-red-800 font-bold text-white rounded-lg text-xs shadow">Lưu & Đăng Nội Bộ</button>
-        </div>
+
       </div>
 
     </div>
@@ -362,8 +384,9 @@
     </div>
   </footer>
 
-  <!-- SCRIPT ĐIỀU KHIỂN PHIÊN & CMS -->
+  <!-- SCRIPT LOGIC PHIÊN VÀ DATABASE NỘI BỘ -->
   <script>
+    // 1. DỮ LIỆU ĐẢNG VIÊN XÁC THỰC
     var MEMBERS = [
       { name: "hồ văn mão", dob: "1989", fullDob: "02/02/1989" },
       { name: "nguyễn trọng nghĩa", dob: "1984", fullDob: "1984" },
@@ -372,6 +395,206 @@
       { name: "nguyễn văn quân", dob: "1985", fullDob: "1985" }
     ];
 
+    // 2. KHO DỮ LIỆU ĐỘNG THEO DÀN Ý (ĐỌC TỪ LOCALSTORAGE NẾU CÓ)
+    var DEFAULT_STORE = {
+      'nghi-quyet': [
+        { id: 1, title: 'Lãnh đạo thực hiện nhiệm vụ chính trị & Địa bàn dân cư Quý III/2026', meta1: '09-NQ/CB', meta2: 'Nghị quyết tháng', meta3: 'Đ/c Hồ Văn Mão (Chủ trì)', meta4: '19h30 03/09/2026', file: 'https://drive.google.com/file/d/1PMml4khek3hMY-Pm-WM_gzDk2-XYdED0/view', desc: 'Quán triệt Kết luận 83-KL/TW, Chỉ thị 02-CT/ĐU về BHXH-BHYT; đôn đốc 100% đảng viên đi đầu tham gia Ngày Chủ nhật xanh; phương án 4 tại chỗ PCTT mưa lũ.' }
+      ],
+      'nhiem-vu': [
+        { id: 2, title: 'Phụ trách chung toàn diện công tác Chi bộ, đôn đốc Sổ tay ĐVĐT, KT-GS', meta1: 'Nhiệm vụ Bí thư', meta2: 'Hoàn thành tốt', meta3: 'Đ/c Hồ Văn Mão', meta4: '90', file: 'https://drive.google.com/file/d/1UWWcbbTCzyIVAGLcJjQhQjn0fh7NiOQbnEge4fDrYps/view', desc: 'Phụ trách địa bàn Đội 11' },
+        { id: 3, title: 'Điều hành chính quyền TDP, PCTT-TKCN 4 tại chỗ, thu các loại quỹ', meta1: 'Nhiệm vụ Tổ trưởng', meta2: 'Đang thực hiện', meta3: 'Đ/c Nguyễn Trọng Nghĩa', meta4: '85', file: 'https://drive.google.com/file/d/1UWWcbbTCzyIVAGLcJjQhQjn0fh7NiOQbnEge4fDrYps/view', desc: 'Phụ trách địa bàn Đội 8' },
+        { id: 4, title: 'Khối đại đoàn kết, công tác Mặt trận, hòa giải cơ sở, thi đua', meta1: 'Nhiệm vụ Mặt trận', meta2: 'Đang thực hiện', meta3: 'Đ/c Hoàng Hữu Rớt', meta4: '85', file: 'https://drive.google.com/file/d/1UWWcbbTCzyIVAGLcJjQhQjn0fh7NiOQbnEge4fDrYps/view', desc: 'Phụ trách địa bàn Đội 9' }
+      ],
+      'van-ban': [
+        { id: 5, title: 'Đảng ủy P. Hương Thủy: Tổ chức quán triệt Kết luận 83-KL/TW về công nghiệp vật liệu', meta1: '33-HD/ĐU', meta2: 'Phường Hương Thủy', meta3: 'Đảng ủy Phường', meta4: '14/09/2026', file: 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo', desc: 'Thực hiện Hướng dẫn số 54-HD/BTGDVTU' },
+        { id: 6, title: 'Đảng ủy P. Hương Thủy: Tăng cường lãnh đạo công tác BHXH tự nguyện, BHYT', meta1: '02-CT/ĐU', meta2: 'Phường Hương Thủy', meta3: 'Đảng ủy Phường', meta4: '14/09/2026', file: 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo', desc: 'Đưa chỉ tiêu vào đánh giá chi bộ' },
+        { id: 7, title: 'Đảng ủy P. Hương Thủy: Phong trào thi đua Dân vận khéo giai đoạn 2026-2030 (mô hình 6 rõ)', meta1: '71-KH/ĐU', meta2: 'Phường Hương Thủy', meta3: 'Đảng ủy Phường', meta4: '04/09/2026', file: 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo', desc: 'Trọng tâm Tổ CNSCĐ và ANTT cơ sở' }
+      ],
+      'bieu-mau': [
+        { id: 8, title: 'Giấy đề nghị xác nhận thông tin cư trú / nhân thân', meta1: 'BM-TDP-01', meta2: 'Hành chính TDP', meta3: 'Tổ dân phố Lương Hậu', meta4: '15/01/2026', file: 'https://drive.google.com/file/d/1PMml4khek3hMY-Pm-WM_gzDk2-XYdED0/view', desc: 'Định dạng DOCX và PDF' },
+        { id: 9, title: 'Đơn đề nghị hòa giải tranh chấp đất đai / mâu thuẫn cơ sở', meta1: 'BM-MT-02', meta2: 'Mặt trận & Hòa giải', meta3: 'Ban CTMT Lương Hậu', meta4: '05/02/2026', file: 'https://drive.google.com/file/d/1PMml4khek3hMY-Pm-WM_gzDk2-XYdED0/view', desc: 'Định dạng DOCX' }
+      ],
+      'thong-bao': [
+        { id: 10, title: 'Ra quân Ngày Chủ nhật xanh đợt 4 năm 2026', meta1: '14/TB-TDP', meta2: 'Quan trọng', meta3: 'Ban cán sự TDP', meta4: '13/09/2026', file: 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo', desc: 'Khơi thông mương rãnh phòng dịch và bão lũ' },
+        { id: 11, title: 'Lịch tiêm chủng mở rộng tháng 9/2026', meta1: '15/TB-TDP', meta2: 'Bình thường', meta3: 'Trạm Y tế KV3', meta4: '23-24/09/2026', file: 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo', desc: 'Tại Trạm Y tế phường Hương Thủy KV3' }
+      ]
+    };
+
+    var STORE = (function() {
+      try {
+        var s = localStorage.getItem('luonghau_cms_store');
+        return s ? JSON.parse(s) : DEFAULT_STORE;
+      } catch(e) {
+        return DEFAULT_STORE;
+      }
+    })();
+
+    function saveStore() {
+      try {
+        localStorage.setItem('luonghau_cms_store', JSON.stringify(STORE));
+      } catch(e) {}
+    }
+
+    var currentTab = 'nghi-quyet';
+
+    // RENDER RA GIAO DIỆN TRANG NỘI BỘ
+    function renderMainView() {
+      // 1. Nghị quyết
+      var nqEl = document.getElementById('display-nghi-quyet-list');
+      if (nqEl) {
+        nqEl.innerHTML = STORE['nghi-quyet'].map(function(item) {
+          return '<div class="bg-gradient-to-r from-red-800 to-red-950 text-white p-4 rounded-xl shadow-md space-y-2">' +
+            '<div class="flex items-center justify-between">' +
+              '<span class="bg-yellow-400 text-red-950 text-[10px] font-black px-2 py-0.5 rounded uppercase">' + item.meta1 + '</span>' +
+              '<span class="text-[11px] text-red-200">' + item.meta4 + '</span>' +
+            '</div>' +
+            '<h4 class="font-bold text-sm sm:text-base text-yellow-300 leading-snug">' + item.title + '</h4>' +
+            '<p class="text-xs text-red-100 leading-relaxed">' + item.desc + '</p>' +
+            '<div class="pt-1 flex gap-2">' +
+              '<a href="' + item.file + '" target="_blank" rel="noreferrer" class="px-3 py-1.5 bg-yellow-400 hover:bg-yellow-500 text-red-950 font-bold rounded-lg text-xs shadow-sm">Xem toàn văn</a>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // 2. Nhiệm vụ 6 Rõ
+      var nvEl = document.getElementById('display-nhiem-vu-list');
+      if (nvEl) {
+        nvEl.innerHTML = STORE['nhiem-vu'].map(function(item, idx) {
+          return '<div class="bg-white p-2.5 rounded-lg border border-red-100 shadow-sm space-y-1">' +
+            '<div class="flex justify-between items-center">' +
+              '<span class="font-bold text-gray-900">' + (idx + 1) + '. ' + item.meta3 + '</span>' +
+              '<span class="text-[11px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded">' + item.meta4 + '%</span>' +
+            '</div>' +
+            '<p class="text-[11.5px] text-gray-600">' + item.title + '</p>' +
+            '<div class="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">' +
+              '<div class="bg-red-700 h-1.5 rounded-full" style="width: ' + item.meta4 + '%"></div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+
+      // 3. Văn bản Đảng ủy
+      var vbEl = document.getElementById('display-van-ban-list');
+      if (vbEl) {
+        vbEl.innerHTML = STORE['van-ban'].map(function(item) {
+          return '<div class="pt-2">' +
+            '<span class="font-bold text-red-700 font-mono">' + item.meta1 + ' • ' + item.meta4 + '</span>' +
+            '<p class="font-bold text-gray-900 mt-0.5 leading-snug">' + item.title + '</p>' +
+            '<a href="' + item.file + '" target="_blank" rel="noreferrer" class="text-blue-600 hover:underline mt-1 inline-block font-semibold">[Mở tệp lưu trữ nội bộ]</a>' +
+          '</div>';
+        }).join('');
+      }
+    }
+
+    // CMS TABS & MANAGEMENT
+    function chuyenTabCms(tab) {
+      currentTab = tab;
+      ['nghi-quyet', 'nhiem-vu', 'van-ban', 'bieu-mau', 'thong-bao'].forEach(function(t) {
+        var btn = document.getElementById('tab-btn-' + t);
+        if (btn) {
+          if (t === tab) {
+            btn.className = 'px-3 py-1.5 bg-red-700 text-white rounded-lg whitespace-nowrap shadow-sm';
+          } else {
+            btn.className = 'px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg whitespace-nowrap';
+          }
+        }
+      });
+
+      // Cập nhật nhãn Form theo Tab
+      var titleMap = {
+        'nghi-quyet': 'THÊM MỚI NGHỊ QUYẾT & KỲ HỌP CHI BỘ',
+        'nhiem-vu': 'PHÂN CÔNG NHIỆM VỤ ĐẢNG VIÊN (MÔ HÌNH 6 RÕ)',
+        'van-ban': 'THÊM VĂN BẢN CHỈ ĐẠO 3 CẤP (KÈM FILE/NGUỒN)',
+        'bieu-mau': 'THÊM BIỂU MẪU ĐIỆN TỬ (DOCX / PDF)',
+        'thong-bao': 'ĐĂNG THÔNG BÁO DÂN CƯ & NỘI BỘ'
+      };
+      document.getElementById('form-title-label').innerText = titleMap[tab];
+
+      // Đổi options trường meta2
+      var meta2El = document.getElementById('cms-input-meta2');
+      if (tab === 'van-ban') {
+        meta2El.innerHTML = '<option value="Phường Hương Thủy">Phường Hương Thủy</option><option value="Thành phố Huế">Thành phố Huế</option><option value="Trung ương">Trung ương</option>';
+      } else if (tab === 'thong-bao') {
+        meta2El.innerHTML = '<option value="Bình thường">Bình thường (Normal)</option><option value="Quan trọng">Quan trọng (Important)</option><option value="Khẩn cấp">Khẩn cấp (Urgent)</option>';
+      } else if (tab === 'nhiem-vu') {
+        meta2El.innerHTML = '<option value="Đang thực hiện">Đang thực hiện</option><option value="Hoàn thành tốt">Hoàn thành tốt</option><option value="Chưa thực hiện">Chưa thực hiện</option>';
+      } else {
+        meta2El.innerHTML = '<option value="Hành chính">Hành chính Chi bộ/TDP</option><option value="Mặt trận">Mặt trận & Đoàn thể</option><option value="Khác">Khác</option>';
+      }
+
+      renderCmsTable();
+    }
+
+    function renderCmsTable() {
+      var tbody = document.getElementById('cms-data-table-body');
+      if (!tbody) return;
+      var items = STORE[currentTab] || [];
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-gray-400">Chưa có dữ liệu nào trong mục này.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = items.map(function(item) {
+        return '<tr class="hover:bg-gray-50 border-b border-gray-100">' +
+          '<td class="p-2.5 font-bold text-gray-900"><div class="font-mono text-xs text-red-700">' + item.meta1 + '</div>' + item.title + '</td>' +
+          '<td class="p-2.5 text-gray-600">' + item.meta2 + (item.meta3 ? '<br><span class="text-[11px] text-gray-400">' + item.meta3 + '</span>' : '') + '</td>' +
+          '<td class="p-2.5"><a href="' + item.file + '" target="_blank" class="text-blue-600 hover:underline">[Xem tệp]</a></td>' +
+          '<td class="p-2.5 text-center"><button onclick="xoaMucCms(' + item.id + ')" class="px-2.5 py-1 bg-red-100 hover:bg-red-200 text-red-800 font-bold rounded text-[11px]">Xóa</button></td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function luuDuLieuCms() {
+      var title = document.getElementById('cms-input-title').value.trim();
+      var meta1 = document.getElementById('cms-input-meta1').value.trim();
+      var meta2 = document.getElementById('cms-input-meta2').value;
+      var meta3 = document.getElementById('cms-input-meta3').value.trim();
+      var meta4 = document.getElementById('cms-input-meta4').value.trim();
+      var file = document.getElementById('cms-input-file').value.trim();
+      var desc = document.getElementById('cms-input-desc').value.trim();
+
+      if (!title || !meta1) {
+        alert('Vui lòng điền đầy đủ Tiêu đề và Số ký hiệu!');
+        return;
+      }
+
+      STORE[currentTab].unshift({
+        id: Date.now(),
+        title: title,
+        meta1: meta1,
+        meta2: meta2,
+        meta3: meta3 || 'Chi bộ TDP Lương Hậu',
+        meta4: meta4 || '21/09/2026',
+        file: file || 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo',
+        desc: desc || title
+      });
+
+      saveStore();
+      renderCmsTable();
+      renderMainView();
+      resetFormCms();
+      alert('✓ Đã thêm thành công vào mục ' + currentTab.toUpperCase() + '!');
+    }
+
+    function xoaMucCms(id) {
+      if (confirm('Đ/c có chắc chắn muốn xóa mục dữ liệu này khỏi hệ thống?')) {
+        STORE[currentTab] = STORE[currentTab].filter(function(item) { return item.id !== id; });
+        saveStore();
+        renderCmsTable();
+        renderMainView();
+      }
+    }
+
+    function resetFormCms() {
+      document.getElementById('cms-input-title').value = '';
+      document.getElementById('cms-input-meta1').value = '';
+      document.getElementById('cms-input-meta3').value = '';
+      document.getElementById('cms-input-meta4').value = '';
+      document.getElementById('cms-input-file').value = '';
+      document.getElementById('cms-input-desc').value = '';
+    }
+
+    // XÁC THỰC & BẢO MẬT
     function handleAuth(e) {
       e.preventDefault();
       var name = document.getElementById('auth-name').value.trim().toLowerCase();
@@ -387,6 +610,7 @@
         document.getElementById('auth-box').classList.add('hidden');
         document.getElementById('internal-content').classList.remove('hidden');
         sessionStorage.setItem('luonghau_auth_session', 'true');
+        renderMainView();
       } else {
         err.classList.remove('hidden');
       }
@@ -401,7 +625,7 @@
     function moKhoaCms() {
       document.getElementById('modal-cms-noibo').classList.remove('hidden');
       document.getElementById('cms-lock-screen').classList.remove('hidden');
-      document.getElementById('cms-form-screen').classList.add('hidden');
+      document.getElementById('cms-panel-screen').classList.add('hidden');
       document.getElementById('cms-pin').value = '';
       document.getElementById('cms-pin-err').classList.add('hidden');
     }
@@ -414,22 +638,18 @@
       var pin = document.getElementById('cms-pin').value.trim();
       if (pin === '2026' || pin === '046089001112' || pin === '1989') {
         document.getElementById('cms-lock-screen').classList.add('hidden');
-        document.getElementById('cms-form-screen').classList.remove('hidden');
+        document.getElementById('cms-panel-screen').classList.remove('hidden');
+        chuyenTabCms(currentTab);
       } else {
         document.getElementById('cms-pin-err').classList.remove('hidden');
       }
     }
 
-    function luuCmsNoiBo() {
-      var tieude = document.getElementById('cms-tieude-nb').value.trim();
-      if (!tieude) { alert('Vui lòng nhập tiêu đề hoặc trích yếu!'); return; }
-      alert('✓ Đã cập nhật và lưu hồ sơ vào hệ thống nội bộ Chi bộ!');
-      dongCms();
-    }
-
+    // Tự động duy trì đăng nhập hoặc kích hoạt
     if (sessionStorage.getItem('luonghau_auth_session') === 'true') {
       document.getElementById('auth-box').classList.add('hidden');
       document.getElementById('internal-content').classList.remove('hidden');
+      renderMainView();
     }
   </script>
 </body>
