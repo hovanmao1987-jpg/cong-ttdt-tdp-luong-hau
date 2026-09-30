@@ -729,12 +729,21 @@ PA-20260902-081520</td> <td class="p-2 text-gray-500" data-astro-cid-j7pv25f6 da
 <!-- MODAL CMS QUẢN TRỊ DÀNH CHO CÁN BỘ / BÍ THƯ -->
 <div id="modal-cms-panel" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
   <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-gray-300">
-    <div class="bg-[#8b0018] text-white px-5 py-3.5 flex items-center justify-between">
+    <div class="bg-[#8b0018] text-white px-4 sm:px-5 py-3 flex items-center justify-between flex-wrap gap-2">
       <div class="flex items-center gap-2">
         <span class="text-yellow-400 text-lg">★</span>
-        <h4 class="font-black text-sm sm:text-base uppercase tracking-wide">CMS QUẢN TRỊ NỘI DUNG LƯƠNG HẬU</h4>
+        <h4 class="font-black text-xs sm:text-sm uppercase tracking-wide">CMS QUẢN TRỊ NỘI DUNG LƯƠNG HẬU</h4>
       </div>
-      <button onclick="toggleCmsModal(false)" class="text-white/80 hover:text-white text-2xl font-bold">&times;</button>
+      <div class="flex items-center gap-2">
+        <!-- NÚT ĐỒNG BỘ VÀ MỞ GOOGLE SHEET GÓC TRÊN BÊN PHẢI (VIỀN XANH LÁ NỔI BẬT) -->
+        <button type="button" id="btn-sync-gsheet-modal" onclick="dongBoGoogleSheet(this)" class="px-2.5 py-1 bg-green-700 hover:bg-green-800 text-white border-2 border-green-400 font-bold text-[11px] sm:text-xs rounded-lg shadow flex items-center gap-1 transition active:scale-95 cursor-pointer" title="Tự động kéo dữ liệu mới nhất từ Google Sheets về trang web">
+          <span>🔄</span> Đồng bộ Google Sheet
+        </button>
+        <a href="https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/edit#gid=0" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-white hover:bg-green-50 text-green-800 border-2 border-green-400 font-bold text-[11px] sm:text-xs rounded-lg shadow flex items-center gap-1 transition" title="Mở trang tính Google Sheet">
+          <span>📊</span> Mở Google Sheet ↗
+        </a>
+        <button onclick="toggleCmsModal(false)" class="text-white/80 hover:text-white text-2xl font-bold ml-1 leading-none">&times;</button>
+      </div>
     </div>
     <div class="p-5 overflow-y-auto space-y-3.5 text-xs sm:text-sm text-gray-800">
       <div>
@@ -860,6 +869,109 @@ function toggleCmsModal(show) {
   if(m) m.classList.toggle('hidden', !show);
 }
 
+window.dongBoGoogleSheet = function(btn) {
+  var originalHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳</span> Đang đồng bộ...';
+  }
+
+  var sheetUrl = 'https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/gviz/tq?tqx=out:json&t=' + Date.now();
+
+  fetch(sheetUrl)
+    .then(function(res) { return res.text(); })
+    .then(function(text) {
+      var match = text.match(/setResponse\(([\s\S]*)\);?/);
+      if (!match) throw new Error('Không phân tích được phản hồi Google Sheets');
+      var jsonStr = match[1].trim();
+      if (jsonStr.endsWith(';')) jsonStr = jsonStr.slice(0, -1);
+      var data = JSON.parse(jsonStr);
+      var rows = (data && data.table && data.table.rows) || [];
+
+      // Kích hoạt hàm đọc và hiển thị dữ liệu tin tức công khai
+      if (typeof window.taiTinTucTuGoogleSheets === 'function') {
+        window.taiTinTucTuGoogleSheets();
+      }
+
+      alert('✓ Đã đồng bộ thành công ' + rows.length + ' dòng dữ liệu mới nhất từ Google Sheets về Cổng thông tin!');
+    })
+    .catch(function(err) {
+      alert('❌ Lỗi khi đồng bộ Google Sheets: ' + err.message);
+    })
+    .finally(function() {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml || '<span>🔄</span> Đồng bộ Google Sheet';
+      }
+    });
+};
+
+var LH_APPS_SCRIPT_URL = localStorage.getItem('lh_gas_webapp_url') || '';
+
+async function dangTinLenSheets(p) {
+  var gasUrl = LH_APPS_SCRIPT_URL || localStorage.getItem('lh_gas_webapp_url');
+  if (!gasUrl) {
+    gasUrl = prompt("Nhập URL Google Apps Script Web App (https://script.google.com/macros/s/.../exec):");
+    if (gasUrl) {
+      localStorage.setItem('lh_gas_webapp_url', gasUrl.trim());
+      LH_APPS_SCRIPT_URL = gasUrl.trim();
+    } else {
+      alert("Chưa cấu hình URL Apps Script!");
+      return;
+    }
+  }
+
+  var pass = sessionStorage.getItem('lh_cms_pass') || sessionStorage.getItem('lh_cms_secret_key');
+  if (!pass) {
+    pass = prompt("Nhập mã bảo mật CMS (hoặc passcode):");
+    if (pass) {
+      sessionStorage.setItem('lh_cms_pass', pass.trim());
+    } else {
+      alert("Cần mã bảo mật để đăng bài lên Google Sheets!");
+      return;
+    }
+  }
+
+  var now = new Date();
+  var dateStr = ('0' + now.getDate()).slice(-2) + '/' + ('0' + (now.getMonth() + 1)).slice(-2) + '/' + now.getFullYear();
+
+  var payload = {
+    action: "publishPost",
+    secretKey: pass,
+    passcode: pass,
+    title: p.tieude,
+    category: p.loai === 'thong-bao' ? (p.sohieu || 'Thông báo TDP') : (p.sohieu || 'Tin tức Lương Hậu'),
+    eventDate: dateStr,
+    date: dateStr,
+    content: p.noidung || p.tieude,
+    location: 'Tổ dân phố Lương Hậu',
+    author: 'Chi bộ TDP Lương Hậu',
+    image: p.filelink || '',
+    imgSrc: p.filelink || '',
+    status: 'PUBLISHED'
+  };
+
+  try {
+    var res = await fetch(gasUrl, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+    var data = await res.json();
+    if (data.status === "success" || data.ok || data.success) {
+      alert("✓ " + (data.message || "Đăng bài thành công vào Google Sheets Tổ dân phố Lương Hậu!"));
+      toggleCmsModal(false);
+      if (typeof window.taiTinTucTuGoogleSheets === 'function') {
+        window.taiTinTucTuGoogleSheets();
+      }
+    } else {
+      alert("❌ Lỗi từ máy chủ: " + (data.message || data.error || "Không thể lưu bài viết"));
+    }
+  } catch (err) {
+    alert("❌ Lỗi kết nối Google Sheets: " + err.message);
+  }
+}
+
 function xuLyLuuCms() {
   var loai = document.getElementById('cms-loai').value;
   var tieude = document.getElementById('cms-tieude').value.trim();
@@ -869,6 +981,11 @@ function xuLyLuuCms() {
   var noidung = document.getElementById('cms-noidung').value.trim();
 
   if(!tieude) { alert('Vui lòng nhập tiêu đề bài viết hoặc trích yếu!'); return; }
+
+  if(loai === 'tin-tuc' || loai === 'thong-bao') {
+    return dangTinLenSheets({ loai: loai, tieude: tieude, sohieu: sohieu, filelink: filelink, noidung: noidung });
+  }
+
   var now = new Date();
   var dateStr = ('0' + now.getDate()).slice(-2) + '/' + ('0' + (now.getMonth() + 1)).slice(-2) + '/' + now.getFullYear();
 

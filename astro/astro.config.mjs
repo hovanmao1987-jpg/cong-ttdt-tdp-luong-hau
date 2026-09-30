@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
  */
 export default defineConfig({
   root: fileURLToPath(new URL("..", import.meta.url)),
-  site: "https://tdpluonghau.vercel.app",
+  site: "https://luong-hau.vercel.app",
   base: "/",
   trailingSlash: "ignore",
   output: "static",

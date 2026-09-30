@@ -123,7 +123,10 @@
         "<br>Không tìm thấy tin phù hợp.</li>";
     }
     return items.map(function (n) {
-      return '<li><div class="th">' + thumb(n.id, n.pill) + '</div><div class="txt">' +
+      var thHtml = n.img
+        ? '<img src="' + esc(n.img) + '" alt="' + esc(n.title) + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\'" /><div style="display:none;width:100%;height:100%">' + thumb(n.id, n.pill) + '</div>'
+        : thumb(n.id, n.pill);
+      return '<li><div class="th">' + thHtml + '</div><div class="txt">' +
         '<h3><a href="#tin-' + n.id + '" data-news="' + n.id + '">' + esc(n.title) + "</a></h3>" +
         '<div class="mt"><span class="pill ' + n.tag + '">' + esc(n.pill) + "</span>" +
         (n.hot ? '<span class="pill hot">NỔI BẬT</span>' : "") +

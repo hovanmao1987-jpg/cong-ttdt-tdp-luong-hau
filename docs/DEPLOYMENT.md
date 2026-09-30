@@ -11,7 +11,6 @@
 - **Team ID:** `hovanmao1987-7509s-projects`
 - **Tên miền sản xuất (Production Domains):**
   - `https://luong-hau.vercel.app`
-  - `https://luong-fdjmsu8xg-hovanmao1987-7509s-projects.vercel.app`
 
 ---
 

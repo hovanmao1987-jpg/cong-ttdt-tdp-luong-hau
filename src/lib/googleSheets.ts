@@ -1,12 +1,12 @@
 /**
  * src/lib/googleSheets.ts
  * Module kết nối và đọc dữ liệu bài viết từ Google Sheets quản trị
- * Sheet ID: 1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ
+ * Sheet ID: 1DgXp5p3If8xe8ZNCi1HTyQcgZ4HtfIao7aM0Kf_zvyQ
  * Các cột trong Sheet: [ThoiGian, ChuyenMuc, TieuDe, NoiDung, LinkHinhAnh]
  * Tự động phân loại: Tin tức, Thông báo, Chủ nhật xanh
  */
 
-export const DEFAULT_SHEET_ID = "1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ";
+export const DEFAULT_SHEET_ID = "1DgXp5p3If8xe8ZNCi1HTyQcgZ4HtfIao7aM0Kf_zvyQ";
 
 export interface SheetArticle {
   id: string;

@@ -17,4 +17,4 @@ Disallow: /data/data.js
 # User-agent: ClaudeBot
 # Disallow: /
 
-Sitemap: https://tdpluonghau.vercel.app/sitemap-index.xml
+Sitemap: https://luong-hau.vercel.app/sitemap-index.xml

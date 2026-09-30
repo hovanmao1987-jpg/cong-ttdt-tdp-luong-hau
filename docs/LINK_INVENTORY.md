@@ -560,7 +560,7 @@ Hệ thống: CỔNG THÔNG TIN VÀ ĐIỀU HÀNH SỐ LƯƠNG HẬU
 - `https://registry.npmjs.org/zwitch/-/zwitch-2.0.4.tgz`
 - `https://sotaydangvien.dcs.vn/auth/login`
 - `https://sotaydangvien.hue.gov.vn`
-- `https://tdpluonghau.vercel.app/sitemap-index.xml`
+- `https://luong-hau.vercel.app/sitemap-index.xml`
 - `https://tidelift.com/funding/github/npm/postcss`
 - `https://tulieuvankien.dangcongsan.vn`
 - `https://tulieuvankien.dangcongsan.vn/he-thong-van-ban/van-ban-cua-dang`

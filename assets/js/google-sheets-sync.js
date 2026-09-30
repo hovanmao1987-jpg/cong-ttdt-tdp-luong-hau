@@ -24,33 +24,15 @@
       .replace(/"/g, "&quot;");
   }
 
-  function formatGvizDate(cell) {
-    if (!cell) return "";
-    if (cell.f) {
-      var mf = cell.f.match(/^(\d{1,2}\/\d{1,2}\/\d{4})/);
-      if (mf) return mf[1];
-      return String(cell.f).trim();
-    }
-    var v = String(cell.v || "").trim();
-    var md = v.match(/Date\((\d+),(\d+),(\d+)/);
-    if (md) {
-      var y = md[1];
-      var mo = String(parseInt(md[2], 10) + 1).padStart(2, "0");
-      var d = String(parseInt(md[3], 10)).padStart(2, "0");
-      return d + "/" + mo + "/" + y;
-    }
-    return v;
-  }
-
-  function getDriveImageUrl(raw) {
-    if (!raw) return null;
-    var str = String(raw).trim();
-    if (!str) return null;
-    var m = str.match(/id=([a-zA-Z0-9_-]+)/) || str.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  function convertDriveUrl(url) {
+    if (!url) return null;
+    var s = String(url).trim();
+    if (!s) return null;
+    var m = s.match(/(?:\/file\/d\/|[?&]id=)([a-zA-Z0-9_-]{20,})/);
     if (m && m[1]) {
-      return "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1200";
+      return "https://lh3.googleusercontent.com/d/" + m[1];
     }
-    return str;
+    return s;
   }
 
   function parseGviz(text) {
@@ -60,51 +42,82 @@
       if (start === -1 || end === -1) return [];
       var json = JSON.parse(text.substring(start, end + 1));
       var rows = (json && json.table && json.table.rows) || [];
+      var cols = (json && json.table && json.table.cols) || [];
       var articles = [];
+
+      var colMap = {};
+      cols.forEach(function (c, idx) {
+        var lbl = (c.label || "").toLowerCase().trim();
+        if (lbl.indexOf("dấu thời gian") >= 0 || lbl.indexOf("timestamp") >= 0) colMap.timestamp = idx;
+        else if (lbl.indexOf("thời gian") >= 0) colMap.thoiGian = idx;
+        else if (lbl.indexOf("chuyên mục") >= 0) colMap.chuyenMuc = idx;
+        else if (lbl.indexOf("tiêu đề") >= 0) colMap.tieuDe = idx;
+        else if (lbl.indexOf("nội dung") >= 0) colMap.noiDung = idx;
+        else if (lbl.indexOf("địa điểm") >= 0) colMap.diaDiem = idx;
+        else if (lbl.indexOf("bộ phận") >= 0) colMap.boPhan = idx;
+        else if (lbl.indexOf("tải hình ảnh") >= 0) colMap.taiAnh = idx;
+        else if (lbl.indexOf("link hình ảnh") >= 0) colMap.linkAnh = idx;
+        else if (lbl.indexOf("mã bài") >= 0) colMap.maBai = idx;
+        else if (lbl.indexOf("trạng thái") >= 0) colMap.trangThai = idx;
+        else if (lbl.indexOf("ảnh đại diện") >= 0) colMap.anhDaiDien = idx;
+      });
 
       for (var i = 0; i < rows.length; i++) {
         var cells = rows[i].c || [];
         var getVal = function (idx) {
-          if (!cells[idx] || cells[idx].v === null || cells[idx].v === undefined) return "";
-          return String(cells[idx].v).trim();
+          if (idx === undefined || idx === null || !cells[idx]) return "";
+          if (cells[idx].f !== null && cells[idx].f !== undefined) return String(cells[idx].f).trim();
+          if (cells[idx].v !== null && cells[idx].v !== undefined) {
+            var val = String(cells[idx].v).trim();
+            var m = val.match(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)/);
+            if (m) {
+              var y = m[1], mo = parseInt(m[2], 10) + 1, d = m[3];
+              return (d < 10 ? "0" + d : d) + "/" + (mo < 10 ? "0" + mo : mo) + "/" + y;
+            }
+            return val;
+          }
+          return "";
         };
 
-        // Thứ tự cột chuẩn theo Google Sheets TDP Lương Hậu:
-        // Col 0: Dấu thời gian
-        // Col 1: Thời gian diễn ra
-        // Col 2: Chuyên mục
-        // Col 3: Tiêu đề thông tin
-        // Col 4: Nội dung chi tiết bài viết
-        // Col 5: Địa điểm thực hiện
-        // Col 6: Bộ phận đăng tin
-        // Col 7: Tải hình ảnh (Drive URL)
-        // Col 8: Link hình ảnh
-        var timeStamp = formatGvizDate(cells[0]);
-        var eventDate = formatGvizDate(cells[1]);
-        var thoiGian = eventDate || timeStamp;
-        var chuyenMuc = getVal(2);
-        var tieuDe = getVal(3);
-        var noiDung = getVal(4);
-        var diaDiem = getVal(5);
-        var boPhan = getVal(6);
-        var rawImg = getVal(7) || getVal(8);
-        var linkHinhAnh = getDriveImageUrl(rawImg);
+        // Xác định vị trí các cột
+        var isFullSheet = cells.length >= 8 || colMap.tieuDe !== undefined;
+        var idxThoiGian = colMap.thoiGian !== undefined ? colMap.thoiGian : (isFullSheet ? 1 : 0);
+        var idxChuyenMuc = colMap.chuyenMuc !== undefined ? colMap.chuyenMuc : (isFullSheet ? 2 : 1);
+        var idxTieuDe = colMap.tieuDe !== undefined ? colMap.tieuDe : (isFullSheet ? 3 : 2);
+        var idxNoiDung = colMap.noiDung !== undefined ? colMap.noiDung : (isFullSheet ? 4 : 3);
+        var idxTaiAnh = colMap.taiAnh !== undefined ? colMap.taiAnh : 7;
+        var idxLinkAnh = colMap.linkAnh !== undefined ? colMap.linkAnh : (isFullSheet ? 8 : 4);
+        var idxMaBai = colMap.maBai !== undefined ? colMap.maBai : 9;
+        var idxTrangThai = colMap.trangThai !== undefined ? colMap.trangThai : 10;
+        var idxAnhDaiDien = colMap.anhDaiDien !== undefined ? colMap.anhDaiDien : 11;
 
-        // Bỏ qua dòng tiêu đề nếu có
-        var lowThoiGian = (thoiGian || "").toLowerCase();
-        var lowChuyenMuc = (chuyenMuc || "").toLowerCase();
-        var lowTieuDe = (tieuDe || "").toLowerCase();
+        var thoiGian = getVal(idxThoiGian) || getVal(0);
+        var chuyenMuc = getVal(idxChuyenMuc);
+        var tieuDe = getVal(idxTieuDe);
+        var noiDung = getVal(idxNoiDung);
+        var maBai = getVal(idxMaBai);
+        var trangThai = getVal(idxTrangThai);
+        var rawImg = getVal(idxAnhDaiDien) || getVal(idxLinkAnh) || getVal(idxTaiAnh);
+        var linkHinhAnh = convertDriveUrl(rawImg);
+
+        // Bỏ qua dòng tiêu đề
+        var lowThoiGian = thoiGian.toLowerCase();
+        var lowChuyenMuc = chuyenMuc.toLowerCase();
         if (
           lowThoiGian.indexOf("thoigian") >= 0 ||
           lowThoiGian.indexOf("thời gian") >= 0 ||
           lowChuyenMuc.indexOf("chuyenmuc") >= 0 ||
-          lowChuyenMuc.indexOf("chuyên mục") >= 0 ||
-          lowTieuDe.indexOf("tiêu đề") >= 0
+          lowChuyenMuc.indexOf("chuyên mục") >= 0
         ) {
           continue;
         }
 
         if (!tieuDe && !noiDung) continue;
+
+        // RÀNG BUỘC BẮT BUỘC: Nếu cột trạng thái tồn tại và KHÁC PUBLISHED thì BỎ QUA NGAY
+        if (trangThai && String(trangThai).trim().toUpperCase() !== "PUBLISHED") {
+          continue;
+        }
 
         // Chuẩn hóa loại chuyên mục
         var norm = (chuyenMuc || "")
@@ -122,14 +135,12 @@
         var body = noiDung ? noiDung.split(/\n+/).map(function (s) { return s.trim(); }).filter(Boolean) : [];
 
         articles.push({
-          id: "gsheet_" + i,
+          id: maBai || ("gsheet_" + i),
           thoiGian: thoiGian || "Hôm nay",
           chuyenMuc: chuyenMuc || (catType === "thongbao" ? "Thông báo" : (catType === "chunhatxanh" ? "Chủ nhật xanh" : "Tin tức")),
           categoryType: catType,
           tieuDe: tieuDe || "Thông tin từ Tổ dân phố Lương Hậu",
           noiDung: noiDung || "",
-          diaDiem: diaDiem || "Tổ dân phố Lương Hậu",
-          boPhan: boPhan || "Ban điều hành TDP",
           body: body.length ? body : [noiDung || ""],
           linkHinhAnh: linkHinhAnh || null,
         });
@@ -321,7 +332,7 @@
   }
 
   function fetchAndApply() {
-    var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:json";
+    var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:json&_t=" + Date.now();
 
     fetch(url)
       .then(function (res) {
@@ -362,9 +373,26 @@
       });
   }
 
+  // Hàm đồng bộ thủ công gọi từ nút bấm CMS
+  window.dongBoGoogleSheet = function (btn) {
+    var origHtml = btn ? btn.innerHTML : "";
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = "⏳ Đang kéo dữ liệu...";
+    }
+    fetchAndApply(true);
+    setTimeout(function () {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml || "🔄 Đồng bộ Google Sheet";
+      }
+      alert("✓ Đã đồng bộ thành công dữ liệu mới nhất từ Google Sheets về trang web!");
+    }, 1200);
+  };
+
   // Tự động kích hoạt khi DOM sẵn sàng
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", fetchAndApply);
+    document.addEventListener("DOMContentLoaded", function () { fetchAndApply(); });
   } else {
     fetchAndApply();
   }

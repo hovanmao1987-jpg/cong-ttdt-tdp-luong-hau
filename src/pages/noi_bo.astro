@@ -132,12 +132,14 @@
           <span class="text-gray-400">|</span>
           <span class="text-gray-600">Phụ trách chung • Phụ trách Đội 11</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <!-- NÚT BẤM ĐỒNG BỘ VÀ MỞ GOOGLE SHEET VIỀN XANH LÁ NỔI BẬT GÓC TRÊN BÊN PHẢI -->
+          <button type="button" onclick="dongBoGoogleSheet(this)" style="background:#15803d;color:#ffffff;border:2px solid #22c55e;font-weight:800;font-size:12px;border-radius:6px;padding:5px 12px;box-shadow:0 2px 8px rgba(34,197,94,.4);cursor:pointer;display:inline-flex;align-items:center;gap:5px" title="Tự động kéo dữ liệu mới nhất từ Google Sheets về hệ thống">🔄 Đồng bộ Google Sheet</button>
+          <a href="https://docs.google.com/spreadsheets/d/1DgXp5p3If8xe8ZNCi1HTyQcgZ4HtfIao7aM0Kf_zvyQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style="background:#ffffff;color:#15803d;border:2px solid #22c55e;font-weight:800;font-size:12px;border-radius:6px;padding:5px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(34,197,94,.2)" title="Mở trang tính Google Sheets">📊 Mở Google Sheet ↗</a>
           <!-- NÚT BẤM NỔI BẬT LỘ TRÌNH V2 -->
-          <button onclick="moModalRoadmapV2()" id="btn-roadmap-v2-header" class="px-3.5 py-1.5 bg-gradient-to-r from-red-700 via-red-800 to-red-900 hover:from-red-800 hover:to-red-950 text-yellow-300 font-bold rounded-lg border-2 border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.5)] hover:shadow-[0_0_18px_rgba(250,204,21,0.7)] hover:scale-[1.02] flex items-center gap-2 text-xs transition-all cursor-pointer">
+          <button onclick="moModalRoadmapV2()" id="btn-roadmap-v2-header" class="px-3 py-1 bg-gradient-to-r from-red-700 via-red-800 to-red-900 hover:from-red-800 hover:to-red-950 text-yellow-300 font-bold rounded-lg border border-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.5)] hover:scale-[1.02] flex items-center gap-1.5 text-xs transition-all cursor-pointer">
             <span class="text-sm">🚀</span>
-            <span class="tracking-wide">Tiện ích số &amp; Lộ trình V2</span>
-            <span class="px-1.5 py-0.5 bg-yellow-400 text-red-950 text-[10px] font-black rounded uppercase shadow-xs">V2</span>
+            <span class="tracking-wide">Lộ trình V2</span>
           </button>
           <button onclick="moKhoaCms()" class="px-2.5 py-1 bg-red-700 hover:bg-red-800 text-white font-bold rounded text-xs shadow-sm">
             ⚙️ Mở CMS Quản Trị
@@ -471,12 +473,17 @@
     <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[94vh] flex flex-col overflow-hidden border border-gray-300">
       
       <!-- HEADER CMS -->
-      <div class="bg-[#8b0018] text-white px-5 py-3.5 flex items-center justify-between">
+      <div class="bg-[#8b0018] text-white px-5 py-3.5 flex items-center justify-between flex-wrap gap-2">
         <div class="flex items-center gap-2">
           <span class="text-yellow-400 text-lg">⚙️</span>
           <h4 class="font-black text-sm sm:text-base uppercase tracking-wide">CMS QUẢN TRỊ NỘI DUNG TỔ DÂN PHỐ & CHI BỘ LƯƠNG HẬU</h4>
         </div>
-        <button onclick="dongCms()" class="text-white/80 hover:text-white text-2xl font-bold">&times;</button>
+        <div class="flex items-center gap-2">
+          <!-- 2 NÚT VIỀN XANH LÁ NỔI BẬT GÓC TRÊN BÊN PHẢI -->
+          <button type="button" onclick="dongBoGoogleSheet(this)" style="background:#15803d;color:#ffffff;border:2px solid #22c55e;font-weight:800;font-size:12px;border-radius:6px;padding:6px 12px;box-shadow:0 2px 8px rgba(34,197,94,.4);cursor:pointer;display:inline-flex;align-items:center;gap:5px" title="Tự động kéo dữ liệu mới nhất từ Google Sheets về hệ thống">🔄 Đồng bộ Google Sheet</button>
+          <a href="https://docs.google.com/spreadsheets/d/1DgXp5p3If8xe8ZNCi1HTyQcgZ4HtfIao7aM0Kf_zvyQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer" style="background:#ffffff;color:#15803d;border:2px solid #22c55e;font-weight:800;font-size:12px;border-radius:6px;padding:6px 12px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 6px rgba(34,197,94,.2)" title="Mở trang tính Google Sheets">📊 Mở Google Sheet ↗</a>
+          <button onclick="dongCms()" class="text-white/80 hover:text-white text-2xl font-bold ml-1 leading-none">&times;</button>
+        </div>
       </div>
 
       <!-- MÀN HÌNH KHÓA MÃ PIN BẢO MẬT -->
@@ -844,10 +851,9 @@
 
     function moKhoaCms() {
       document.getElementById('modal-cms-noibo').classList.remove('hidden');
-      document.getElementById('cms-lock-screen').classList.remove('hidden');
-      document.getElementById('cms-panel-screen').classList.add('hidden');
-      document.getElementById('cms-pin').value = '';
-      document.getElementById('cms-pin-err').classList.add('hidden');
+      document.getElementById('cms-lock-screen').classList.add('hidden');
+      document.getElementById('cms-panel-screen').classList.remove('hidden');
+      chuyenTabCms(currentTab);
     }
 
     function dongCms() {
@@ -855,15 +861,75 @@
     }
 
     function kiemTraPinCms() {
-      var pin = document.getElementById('cms-pin').value.trim();
-      if (pin === '2026' || pin === '046089001112' || pin === '1989') {
-        document.getElementById('cms-lock-screen').classList.add('hidden');
-        document.getElementById('cms-panel-screen').classList.remove('hidden');
-        chuyenTabCms(currentTab);
-      } else {
-        document.getElementById('cms-pin-err').classList.remove('hidden');
-      }
+      document.getElementById('cms-lock-screen').classList.add('hidden');
+      document.getElementById('cms-panel-screen').classList.remove('hidden');
+      chuyenTabCms(currentTab);
     }
+
+    // Hàm Đồng bộ Google Sheet
+    window.dongBoGoogleSheet = function(btn) {
+      var origHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '⏳ Đang kéo dữ liệu...';
+      }
+
+      var sheetUrl = 'https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/gviz/tq?tqx=out:json&t=' + Date.now();
+
+      fetch(sheetUrl)
+        .then(function(res) { return res.text(); })
+        .then(function(text) {
+          var match = text.match(/setResponse\(([\s\S]*)\);?/);
+          if (!match) throw new Error('Không đọc được phản hồi Google Sheets');
+          var jsonStr = match[1].trim();
+          if (jsonStr.endsWith(';')) jsonStr = jsonStr.slice(0, -1);
+          var data = JSON.parse(jsonStr);
+          var rows = (data && data.table && data.table.rows) || [];
+
+          var count = 0;
+          rows.forEach(function(r, idx) {
+            var c = r.c || [];
+            var title = c[3] && c[3].v ? String(c[3].v).trim() : '';
+            var content = c[4] && c[4].v ? String(c[4].v).trim() : '';
+            var author = c[6] && c[6].v ? String(c[6].v).trim() : 'Chi bộ TDP Lương Hậu';
+            var file = (c[7] && c[7].v ? String(c[7].v) : '') || (c[8] && c[8].v ? String(c[8].v) : '');
+            if (!title) return;
+
+            count++;
+            var exists = STORE['van-ban'].find(function(x){ return x.title === title; });
+            if (exists) {
+              exists.desc = content;
+              exists.meta3 = author;
+              if (file) exists.file = file;
+            } else {
+              STORE['van-ban'].push({
+                id: 'gs_' + Date.now() + '_' + idx,
+                title: title,
+                meta1: 'NQ-GSheet',
+                meta2: 'Đồng bộ GSheet',
+                meta3: author,
+                meta4: new Date().toLocaleDateString('vi-VN'),
+                file: file || 'https://drive.google.com/drive/folders/1SrV0d701Xg4rTkRH9O6MknOkdZiaUOuo',
+                desc: content
+              });
+            }
+          });
+
+          saveStore();
+          renderMainView();
+          renderCmsTable();
+          alert('✓ Đã đồng bộ thành công ' + count + ' mục dữ liệu mới nhất từ Google Sheets về trang web!');
+        })
+        .catch(function(err) {
+          alert('❌ Lỗi khi đồng bộ Google Sheets: ' + err.message);
+        })
+        .finally(function() {
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = origHtml || '🔄 Đồng bộ Google Sheet';
+          }
+        });
+    };
 
     // Xử lý Modal Roadmap V2
     function moModalRoadmapV2() {

@@ -1,13 +1,13 @@
 /**
  * doc-tin-tuc.js - Đọc và hiển thị dữ liệu tin tức tự động từ Google Sheets
  * Cổng thông tin điện tử Tổ dân phố Lương Hậu
- * Sheet ID: 1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ
+ * Sheet ID: 1DgXp5p3If8xe8ZNCi1HTyQcgZ4HtfIao7aM0Kf_zvyQ
  */
 (function () {
   "use strict";
 
   var SHEET_URL =
-    "https://docs.google.com/spreadsheets/d/1C2u2GmATG29cu9WIni7oZcYt85XFtjgGTQsf_b9thfQ/gviz/tq?tqx=out:json";
+    "https://docs.google.com/spreadsheets/d/1DgXp5p3If8xe8ZNCi1HTyQcgZ4HtfIao7aM0Kf_zvyQ/gviz/tq?tqx=out:json";
 
   // Hàm chuyển đổi chuỗi kỹ thuật Date(...) sang định dạng ngày tháng chuẩn Việt Nam (dd/mm/yyyy)
   function formatSheetDate(cell) {
@@ -277,4 +277,7 @@
     loadCachedNews();
     fetchAndRenderNews();
   }
+
+  // Expose hàm làm mới toàn cục để gọi sau khi đăng bài
+  window.taiTinTucTuGoogleSheets = fetchAndRenderNews;
 })();
