@@ -19,6 +19,8 @@ const jobs = [
     .filter((f) => f.endsWith(".js"))
     .map((f) => ({ from: `assets/js/${f}`, to: `public/assets/js/${f}` })),
   { from: "data/data.js", to: "public/data/data.js" },
+  { from: "admin.html", to: "public/admin.html" },
+  { from: "cms.html", to: "public/cms.html" },
 ];
 
 let n = 0, bytes = 0;
