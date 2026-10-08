@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Thư Viện Hồ Sơ Chi Bộ Điện Tử — Chi Bộ TDP Lương Hậu</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%2393061d'/><path d='M32 14l2.6 6.4 6.9.5-5.3 4.5 1.7 6.7L32 28.6l-5.9 3.5 1.7-6.7-5.3-4.5 6.9-.5z' fill='%23FFC72C'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f1f5f9;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #0f172a;
+    }
+    .page-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .back-nav {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .back-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #93061d;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      padding: 6px 12px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .back-nav a:hover {
+      background: #f8fafc;
+    }
+
+    /* CSS SCOPE: .tvcb-* */
+    .tvcb-wrapper {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .tvcb-container {
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 24px;
+      padding: clamp(18px, 3vw, 32px);
+      box-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.05), 0 2px 8px -1px rgba(15, 23, 42, 0.02);
+    }
+    .tvcb-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 22px;
+      border-bottom: 1.5px solid #f1f5f9;
+    }
+    .tvcb-header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 680px;
+    }
+    .tvcb-header-emblem {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      border: 1.5px solid #fecaca;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(185, 28, 28, 0.08);
+    }
+    .tvcb-sub-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #991b1b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: #fef2f2;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid #fee2e2;
+    }
+    .tvcb-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #dc2626;
+      display: inline-block;
+    }
+    .tvcb-title {
+      margin: 4px 0 2px;
+      font-size: clamp(17px, 2.2vw, 22px);
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    .tvcb-subtitle {
+      margin: 0;
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+    .tvcb-btn-root {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+      transition: all 0.25s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .tvcb-btn-root:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+      background: linear-gradient(135deg, #334155, #1e293b);
+    }
+    .tvcb-btn-icon { font-size: 22px; }
+    .tvcb-btn-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      line-height: 1.25;
+    }
+    .tvcb-btn-text strong {
+      font-size: 13px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .tvcb-btn-text small {
+      font-size: 10.5px;
+      color: #94a3b8;
+      font-family: monospace;
+    }
+    .tvcb-arrow {
+      font-size: 16px;
+      color: #fde047;
+      font-weight: 800;
+    }
+    .tvcb-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 22px;
+    }
+    .tvcb-search-box {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+      max-width: 420px;
+    }
+    .tvcb-search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+    .tvcb-search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 14px 10px 36px;
+      font-size: 13px;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .tvcb-search-input:focus {
+      background: #ffffff;
+      border-color: #0e8360;
+      box-shadow: 0 0 0 3px rgba(14, 131, 96, 0.12);
+    }
+    .tvcb-filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tvcb-tab-btn {
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tvcb-tab-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    .tvcb-tab-btn.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+    .tvcb-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .tvcb-grid { grid-template-columns: 1fr; gap: 16px; }
+      .tvcb-header-left { max-width: 100%; }
+      .tvcb-search-box { max-width: 100%; }
+    }
+    .tvcb-card {
+      border-radius: 20px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .tvcb-card-inner {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px;
+      box-sizing: border-box;
+    }
+    /* THẺ XANH LÁ (#0e8360) - CỘT TRÁI */
+    .tvcb-card-green {
+      background: #ffffff;
+      border: 1.5px solid #a7f3d0;
+      box-shadow: 0 4px 18px -2px rgba(14, 131, 96, 0.08), 0 2px 6px -1px rgba(14, 131, 96, 0.04);
+    }
+    .tvcb-card-green:hover {
+      transform: translateY(-3px);
+      border-color: #0e8360;
+      box-shadow: 0 8px 26px -2px rgba(14, 131, 96, 0.16), 0 4px 10px -1px rgba(14, 131, 96, 0.08);
+    }
+    .tvcb-card-green .tvcb-tag-badge {
+      background: #ecfdf5;
+      border: 1px solid #d1fae5;
+    }
+    /* THẺ TÍM LAM (#6366f1) - CỘT PHẢI */
+    .tvcb-card-purple {
+      background: #ffffff;
+      border: 1.5px solid #c7d2fe;
+      box-shadow: 0 4px 18px -2px rgba(99, 102, 241, 0.08), 0 2px 6px -1px rgba(99, 102, 241, 0.04);
+    }
+    .tvcb-card-purple:hover {
+      transform: translateY(-3px);
+      border-color: #6366f1;
+      box-shadow: 0 8px 26px -2px rgba(99, 102, 241, 0.16), 0 4px 10px -1px rgba(99, 102, 241, 0.08);
+    }
+    .tvcb-card-purple .tvcb-tag-badge {
+      background: #eef2ff;
+      border: 1px solid #e0e7ff;
+    }
+    .tvcb-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .tvcb-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .tvcb-card-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tvcb-tag-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+    .tvcb-num-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      background: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .tvcb-card-body {
+      flex: 1;
+      margin-bottom: 18px;
+    }
+    .tvcb-card-title {
+      margin: 0 0 6px 0;
+      font-size: 17px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+    .tvcb-card-desc {
+      margin: 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.55;
+    }
+    .tvcb-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px dashed #e2e8f0;
+      gap: 12px;
+    }
+    .tvcb-meta-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #64748b;
+    }
+    .tvcb-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+      display: inline-block;
+    }
+    .tvcb-id-text code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10.5px;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    .tvcb-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--card-theme-color);
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+    .tvcb-card-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    .tvcb-btn-arrow {
+      font-size: 14px;
+      font-weight: 900;
+    }
+    .tvcb-footer {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #f1f5f9;
+    }
+    @media (max-width: 768px) {
+      .tvcb-footer { grid-template-columns: 1fr; }
+    }
+    .tvcb-footer-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+      background: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+    }
+    .tvcb-footer-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .tvcb-footer-item strong {
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+    <div class="back-nav">
+      <a href="noi_bo.html">← Về Cổng Nội Bộ Chi Bộ</a>
+      <a href="index.html">🏠 Về Trang Chủ Công Khai</a>
+    </div>
+
+    <!-- MÔ-ĐUN THƯ VIỆN DỮ LIỆU CHI BỘ -->
+    <section id="ho-so-noi-bo" class="tvcb-wrapper">
+      <div class="tvcb-container">
+        
+        <!-- HEADER PANO THƯ VIỆN DỮ LIỆU -->
+        <header class="tvcb-header">
+          <div class="tvcb-header-left">
+            <div class="tvcb-header-emblem" aria-hidden="true">
+              <span>📁</span>
+            </div>
+            <div>
+              <div class="tvcb-sub-badge">
+                <span class="tvcb-dot"></span> HỆ THỐNG DỮ LIỆU SỐ HÓA CHI BỘ
+              </div>
+              <h2 class="tvcb-title">THƯ VIỆN HỒ SƠ CHI BỘ ĐIỆN TỬ</h2>
+              <p class="tvcb-subtitle">
+                Kho lưu trữ hồ sơ, văn kiện & tư liệu nghiệp vụ Chi bộ TDP Lương Hậu • Liên kết Google Drive tự động cập nhật thời gian thực
+              </p>
+            </div>
+          </div>
+
+          <!-- NÚT MỞ THƯ MỤC GỐC GOOGLE DRIVE -->
+          <div class="tvcb-header-right">
+            <a 
+              href="https://drive.google.com/drive/folders/1ROTktG2wbPu5x_s6q4PlMJOiU_Pb9wVj" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="tvcb-btn-root"
+              title="Mở toàn bộ Thư viện Hồ sơ Chi bộ trên Google Drive"
+            >
+              <span class="tvcb-btn-icon">📂</span>
+              <span class="tvcb-btn-text">
+                <strong>Mở Thư Mục Gốc</strong>
+                <small>ID: 1ROTktG2wb...</small>
+              </span>
+              <span class="tvcb-arrow">↗</span>
+            </a>
+          </div>
+        </header>
+
+        <!-- THANH TÌM KIẾM & LỌC NHANH (CLIENT-SIDE) -->
+        <div class="tvcb-filter-bar">
+          <div class="tvcb-search-box">
+            <span class="tvcb-search-icon">🔍</span>
+            <input 
+              type="text" 
+              id="tvcb-search-input" 
+              class="tvcb-search-input" 
+              placeholder="Tìm kiếm hồ sơ, nghị quyết, đảng phí, văn bản..." 
+              aria-label="Tìm kiếm trong thư viện dữ liệu chi bộ"
+            />
+          </div>
+          <div class="tvcb-filter-tabs">
+            <button type="button" class="tvcb-tab-btn active" data-filter="all">Tất cả (6)</button>
+            <button type="button" class="tvcb-tab-btn" data-filter="green">Cột Xanh: Đảng vụ & Tài chính</button>
+            <button type="button" class="tvcb-tab-btn" data-filter="purple">Cột Tím: Chỉ đạo & Phối hợp</button>
+          </div>
+        </div>
+
+        <!-- GRID 2 CỘT 6 THẺ TRỰC QUAN (XANH LÁ - TÍM LAM) -->
+        <div class="tvcb-grid" id="tvcb-cards-grid">
+          
+          <!-- THẺ 1: HỒ SƠ ĐẢNG VIÊN (CỘT XANH LÁ #0e8360) -->
+          <article 
+            class="tvcb-card tvcb-card-green" 
+            data-theme="green"
+            data-search="hồ sơ đảng viên tổ chức & cán bộ 22 đảng viên lý lịch quyết định chuẩn y"
+          >
+            <div class="tvcb-card-inner">
+              <div class="tvcb-card-top">
+                <div class="tvcb-card-icon" style="background-color: #ecfdf5; color: #0e8360;">
+                  <span class="tvcb-icon-emoji">📇</span>
+                </div>
+                <div class="tvcb-card-badges">
+                  <span class="tvcb-tag-badge" style="color: #0e8360;">Tổ chức & Cán bộ</span>
+                  <span class="tvcb-num-badge">#1</span>
+                </div>
+              </div>
+              <div class="tvcb-card-body">
+                <h3 class="tvcb-card-title">Hồ sơ Đảng viên</h3>
+                <p class="tvcb-card-desc">Lưu trữ danh sách 22 Đảng viên, lý lịch, quyết định chuẩn y, đánh giá xếp loại đảng viên hằng năm và hồ sơ kết nạp.</p>
+              </div>
+              <div class="tvcb-card-bottom">
+                <div class="tvcb-meta-info">
+                  <span class="tvcb-live-dot" title="Tự động đồng bộ không qua trung gian"></span>
+                  <span class="tvcb-id-text">Drive ID: <code>1AsVE7yOxKzH1l...</code></span>
+                </div>
+                <a 
+                  href="https://drive.google.com/drive/folders/1AsVE7yOxKzH1lOW0MzDAl3o-ANFayyn1" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tvcb-card-btn"
+                  style="--card-theme-color: #0e8360;"
+                  title="Mở thư mục Google Drive: Hồ sơ Đảng viên"
+                >
+                  <span>Mở thư mục Drive</span>
+                  <span class="tvcb-btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- THẺ 2: NGHỊ QUYẾT & BIÊN BẢN (CỘT TÍM LAM #6366f1) -->
+          <article 
+            class="tvcb-card tvcb-card-purple" 
+            data-theme="purple"
+            data-search="nghị quyết & biên bản lãnh đạo & điều hành nghị quyết sinh hoạt định kỳ chi ủy"
+          >
+            <div class="tvcb-card-inner">
+              <div class="tvcb-card-top">
+                <div class="tvcb-card-icon" style="background-color: #eef2ff; color: #6366f1;">
+                  <span class="tvcb-icon-emoji">📜</span>
+                </div>
+                <div class="tvcb-card-badges">
+                  <span class="tvcb-tag-badge" style="color: #6366f1;">Lãnh đạo & Điều hành</span>
+                  <span class="tvcb-num-badge">#2</span>
+                </div>
+              </div>
+              <div class="tvcb-card-body">
+                <h3 class="tvcb-card-title">Nghị quyết & Biên bản</h3>
+                <p class="tvcb-card-desc">Nghị quyết sinh hoạt định kỳ ngày 03 hằng tháng, nghị quyết chuyên đề, chương trình công tác toàn khóa và biên bản họp Chi bộ.</p>
+              </div>
+              <div class="tvcb-card-bottom">
+                <div class="tvcb-meta-info">
+                  <span class="tvcb-live-dot" title="Tự động đồng bộ không qua trung gian"></span>
+                  <span class="tvcb-id-text">Drive ID: <code>1RBvLd19DPMKFt...</code></span>
+                </div>
+                <a 
+                  href="https://drive.google.com/drive/folders/1RBvLd19DPMKFt1yOu3DRWlhwotRV3SiP" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tvcb-card-btn"
+                  style="--card-theme-color: #6366f1;"
+                  title="Mở thư mục Google Drive: Nghị quyết & Biên bản"
+                >
+                  <span>Mở thư mục Drive</span>
+                  <span class="tvcb-btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- THẺ 3: THU - CHI ĐẢNG PHÍ (CỘT XANH LÁ #0e8360) -->
+          <article 
+            class="tvcb-card tvcb-card-green" 
+            data-theme="green"
+            data-search="thu - chi đảng phí tài chính chi bộ đảng phí 22 đảng viên chứng từ sổ sách quyết toán"
+          >
+            <div class="tvcb-card-inner">
+              <div class="tvcb-card-top">
+                <div class="tvcb-card-icon" style="background-color: #ecfdf5; color: #0e8360;">
+                  <span class="tvcb-icon-emoji">💳</span>
+                </div>
+                <div class="tvcb-card-badges">
+                  <span class="tvcb-tag-badge" style="color: #0e8360;">Tài chính Chi bộ</span>
+                  <span class="tvcb-num-badge">#3</span>
+                </div>
+              </div>
+              <div class="tvcb-card-body">
+                <h3 class="tvcb-card-title">Thu - Chi Đảng phí</h3>
+                <p class="tvcb-card-desc">Sổ theo dõi thu nộp đảng phí của 22 đảng viên, chứng từ thu chi, báo cáo quyết toán tài chính định kỳ và trích nộp Đảng ủy cấp trên.</p>
+              </div>
+              <div class="tvcb-card-bottom">
+                <div class="tvcb-meta-info">
+                  <span class="tvcb-live-dot" title="Tự động đồng bộ không qua trung gian"></span>
+                  <span class="tvcb-id-text">Drive ID: <code>1y58rKlmutWCuo...</code></span>
+                </div>
+                <a 
+                  href="https://drive.google.com/drive/folders/1y58rKlmutWCuor3jJh8JbQcxpEU7w5Ar" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tvcb-card-btn"
+                  style="--card-theme-color: #0e8360;"
+                  title="Mở thư mục Google Drive: Thu - Chi Đảng phí"
+                >
+                  <span>Mở thư mục Drive</span>
+                  <span class="tvcb-btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- THẺ 4: VĂN BẢN & CHỈ ĐẠO (CỘT TÍM LAM #6366f1) -->
+          <article 
+            class="tvcb-card tvcb-card-purple" 
+            data-theme="purple"
+            data-search="văn bản & chỉ đạo văn kiện cấp trên chỉ thị nghị quyết thông tri trung ương thành ủy đảng ủy"
+          >
+            <div class="tvcb-card-inner">
+              <div class="tvcb-card-top">
+                <div class="tvcb-card-icon" style="background-color: #eef2ff; color: #6366f1;">
+                  <span class="tvcb-icon-emoji">📂</span>
+                </div>
+                <div class="tvcb-card-badges">
+                  <span class="tvcb-tag-badge" style="color: #6366f1;">Văn kiện Cấp trên</span>
+                  <span class="tvcb-num-badge">#4</span>
+                </div>
+              </div>
+              <div class="tvcb-card-body">
+                <h3 class="tvcb-card-title">Văn bản & Chỉ đạo</h3>
+                <p class="tvcb-card-desc">Hệ thống chỉ thị, nghị quyết, thông tri và hướng dẫn chỉ đạo từ Ban Chấp hành Trung ương, Thành ủy Huế và Đảng ủy phường Hương Thủy.</p>
+              </div>
+              <div class="tvcb-card-bottom">
+                <div class="tvcb-meta-info">
+                  <span class="tvcb-live-dot" title="Tự động đồng bộ không qua trung gian"></span>
+                  <span class="tvcb-id-text">Drive ID: <code>1eISbkU_EGC7da...</code></span>
+                </div>
+                <a 
+                  href="https://drive.google.com/drive/folders/1eISbkU_EGC7daLcsqa5n2OECI86ItXnJ" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tvcb-card-btn"
+                  style="--card-theme-color: #6366f1;"
+                  title="Mở thư mục Google Drive: Văn bản & Chỉ đạo"
+                >
+                  <span>Mở thư mục Drive</span>
+                  <span class="tvcb-btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- THẺ 5: KIỂM TRA & GIÁM SÁT (CỘT XANH LÁ #0e8360) -->
+          <article 
+            class="tvcb-card tvcb-card-green" 
+            data-theme="green"
+            data-search="kiểm tra & giám sát kỷ cương & kỷ luật 01-ct/ktgs kế hoạch giám sát thẩm tra điều lệ đảng"
+          >
+            <div class="tvcb-card-inner">
+              <div class="tvcb-card-top">
+                <div class="tvcb-card-icon" style="background-color: #ecfdf5; color: #0e8360;">
+                  <span class="tvcb-icon-emoji">🛡️</span>
+                </div>
+                <div class="tvcb-card-badges">
+                  <span class="tvcb-tag-badge" style="color: #0e8360;">Kỷ cương & Kỷ luật</span>
+                  <span class="tvcb-num-badge">#5</span>
+                </div>
+              </div>
+              <div class="tvcb-card-body">
+                <h3 class="tvcb-card-title">Kiểm tra & Giám sát</h3>
+                <p class="tvcb-card-desc">Chương trình kiểm tra, giám sát toàn khóa (01-CT/KTGS), kế hoạch giám sát chuyên đề và hồ sơ thẩm tra đảng viên chấp hành Điều lệ Đảng.</p>
+              </div>
+              <div class="tvcb-card-bottom">
+                <div class="tvcb-meta-info">
+                  <span class="tvcb-live-dot" title="Tự động đồng bộ không qua trung gian"></span>
+                  <span class="tvcb-id-text">Drive ID: <code>15KeWNJCU0zZs5...</code></span>
+                </div>
+                <a 
+                  href="https://drive.google.com/drive/folders/15KeWNJCU0zZs594v5dOn4C9gG8zXVadm" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tvcb-card-btn"
+                  style="--card-theme-color: #0e8360;"
+                  title="Mở thư mục Google Drive: Kiểm tra & Giám sát"
+                >
+                  <span>Mở thư mục Drive</span>
+                  <span class="tvcb-btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- THẺ 6: PHỐI HỢP ĐOÀN THỂ & TDP (CỘT TÍM LAM #6366f1) -->
+          <article 
+            class="tvcb-card tvcb-card-purple" 
+            data-theme="purple"
+            data-search="phối hợp đoàn thể & tdp mặt trận & đoàn thể ccb phụ nữ nông dân thanh niên"
+          >
+            <div class="tvcb-card-inner">
+              <div class="tvcb-card-top">
+                <div class="tvcb-card-icon" style="background-color: #eef2ff; color: #6366f1;">
+                  <span class="tvcb-icon-emoji">🤝</span>
+                </div>
+                <div class="tvcb-card-badges">
+                  <span class="tvcb-tag-badge" style="color: #6366f1;">Mặt trận & Đoàn thể</span>
+                  <span class="tvcb-num-badge">#6</span>
+                </div>
+              </div>
+              <div class="tvcb-card-body">
+                <h3 class="tvcb-card-title">Phối hợp Đoàn thể & TDP</h3>
+                <p class="tvcb-card-desc">Kế hoạch và quy chế phối hợp công tác giữa Chi bộ với Ban cán sự TDP, Ban Công tác Mặt trận, Chi hội CCB, Phụ nữ, Nông dân và Đoàn thanh niên.</p>
+              </div>
+              <div class="tvcb-card-bottom">
+                <div class="tvcb-meta-info">
+                  <span class="tvcb-live-dot" title="Tự động đồng bộ không qua trung gian"></span>
+                  <span class="tvcb-id-text">Drive ID: <code>1QW-7r-8TDhd1n...</code></span>
+                </div>
+                <a 
+                  href="https://drive.google.com/drive/folders/1QW-7r-8TDhd1nkacuKBko1vuKV5ZvR6I" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="tvcb-card-btn"
+                  style="--card-theme-color: #6366f1;"
+                  title="Mở thư mục Google Drive: Phối hợp Đoàn thể & TDP"
+                >
+                  <span>Mở thư mục Drive</span>
+                  <span class="tvcb-btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- FOOTER GHI CHÚ BẢO MẬT & NGUYÊN TẮC HOẠT ĐỘNG -->
+        <footer class="tvcb-footer">
+          <div class="tvcb-footer-item">
+            <span class="tvcb-footer-icon">⚡</span>
+            <div>
+              <strong>Cập nhật tự động (Zero-code Update):</strong> Mọi tài liệu khi Cấp ủy hoặc Đảng viên tải lên các thư mục Google Drive trên sẽ hiển thị trực tiếp tức thì, không cần can thiệp mã nguồn website.
+            </div>
+          </div>
+          <div class="tvcb-footer-item">
+            <span class="tvcb-footer-icon">🔒</span>
+            <div>
+              <strong>Phân quyền lưu hành nội bộ:</strong> Tài liệu chỉ phục vụ công tác lãnh đạo, điều hành của Chi bộ TDP Lương Hậu. Đảng viên sử dụng tài khoản được cấp quyền để truy cập và tra cứu.
+            </div>
+          </div>
+        </footer>
+
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const searchInput = document.getElementById('tvcb-search-input');
+      const tabBtns = document.querySelectorAll('.tvcb-tab-btn');
+      const cards = document.querySelectorAll('.tvcb-card');
+
+      if (!searchInput || !cards.length) return;
+
+      let currentFilter = 'all';
+      let currentSearch = '';
+
+      function applyFilter() {
+        cards.forEach(card => {
+          const theme = card.getAttribute('data-theme');
+          const searchContent = card.getAttribute('data-search') || '';
+          
+          const matchTab = (currentFilter === 'all') || (currentFilter === theme);
+          const matchText = !currentSearch || searchContent.includes(currentSearch);
+
+          if (matchTab && matchText) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      searchInput.addEventListener('input', function (e) {
+        currentSearch = (e.target.value || '').trim().toLowerCase();
+        applyFilter();
+      });
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          currentFilter = this.getAttribute('data-filter') || 'all';
+          applyFilter();
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

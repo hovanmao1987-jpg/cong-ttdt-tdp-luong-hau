@@ -70,6 +70,7 @@
     { "source": "/chuyen-doi-so", "destination": "/index.html" },
     { "source": "/phan-anh", "destination": "/index.html" },
     { "source": "/lien-he", "destination": "/index.html" },
+    { "source": "/thu-vien-chi-bo", "destination": "/thu-vien-chi-bo.html" },
 
     { "source": "/dang-vien", "destination": "/dang-vien.html" },
     { "source": "/dang-vien/:path*", "destination": "/dang-vien.html" },

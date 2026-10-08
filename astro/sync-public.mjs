@@ -21,6 +21,7 @@ const jobs = [
   { from: "data/data.js", to: "public/data/data.js" },
   { from: "admin.html", to: "public/admin.html" },
   { from: "cms.html", to: "public/cms.html" },
+  { from: "thu-vien-chi-bo.html", to: "public/thu-vien-chi-bo.html" },
 ];
 
 let n = 0, bytes = 0;
