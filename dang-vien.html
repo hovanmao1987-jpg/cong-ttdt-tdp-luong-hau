@@ -13,6 +13,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="/src/css/style.css">
+  <link rel="stylesheet" href="/assets/css/zalo-notify.css">
 
   <style>
     .party-header {
@@ -1423,6 +1424,7 @@ input, select, textarea {
         <button class="party-tab-btn" onclick="window.switchTab('phan-cong')"><i class="fa-solid fa-list-check"></i> Phân Công "6 Rõ"</button>
         <button class="party-tab-btn" onclick="window.switchTab('tai-lieu')"><i class="fa-solid fa-folder-tree"></i> Văn Kiện & Tài Liệu</button>
         <button class="party-tab-btn" onclick="window.switchTab('thong-bao')"><i class="fa-solid fa-bell"></i> Thông Báo Nội Bộ</button>
+        <button class="party-tab-btn" onclick="window.switchTab('zalo-notify')"><i class="fa-solid fa-bullhorn"></i> Thông Báo Zalo</button>
       </div>
     </nav>
 
@@ -1673,6 +1675,11 @@ input, select, textarea {
         </div>
       </section>
 
+      <!-- TAB 8: THÔNG BÁO ZALO CÁ NHÂN -->
+      <section id="module-zalo-notify" class="party-module">
+        <div id="dangvien-zn-box"></div>
+      </section>
+
     </main>
 
     <!-- FOOTER -->
@@ -1698,6 +1705,10 @@ input, select, textarea {
       <a href="javascript:void(0)" onclick="window.switchTab('nghi-quyet')" class="bottom-nav-item">
         <i class="fa-solid fa-stamp"></i>
         <span>Nghị quyết</span>
+      </a>
+      <a href="javascript:void(0)" onclick="window.switchTab('zalo-notify')" class="bottom-nav-item">
+        <i class="fa-solid fa-bell"></i>
+        <span>Zalo Notify</span>
       </a>
       <a href="javascript:void(0)" onclick="window.switchTab('tai-lieu')" class="bottom-nav-item">
         <i class="fa-solid fa-folder-tree"></i>
@@ -3099,6 +3110,13 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
 
       const targetMod = document.getElementById(`module-${tabName}`);
       if (targetMod) targetMod.classList.add('active');
+
+      if (tabName === 'zalo-notify') {
+        const u = auth ? auth.getCurrentUser() : null;
+        if (window.ZaloNotifyModule) {
+          window.ZaloNotifyModule.mount('#dangvien-zn-box', u);
+        }
+      }
     };
 
     // Initialize Data in Party Portal
@@ -3186,5 +3204,6 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
 
     checkAuth();
   </script>
+<script src="/assets/js/zalo-notify.js"></script>
 </body>
 </html>

@@ -51,3 +51,6 @@ VAN-HANH-NOI-BO.md
 # Backups
 backup-before-ui-reset/
 backup_20260919_222629/
+.env*
+
+backup/

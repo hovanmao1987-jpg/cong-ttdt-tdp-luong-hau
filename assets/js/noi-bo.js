@@ -344,6 +344,7 @@
       "<span class='rank'>XẾP LOẠI: XUẤT SẮC</span></div></div>" +
       '<div class="btn-row" style="margin-top:11px">' +
       ((user && canUser("VIEW_CMS", null, user)) ? ('<button class="btn sm" style="background:#0b4d97;color:#fff" data-go="cms">' + ic("grid") + ' Quản trị CMS</button>') : '') +
+      '<button class="btn sm" style="background:#0068ff;color:#fff;border-color:#0052cc" data-go="zalonotify">' + ic("bell") + ' Thông báo Zalo</button>' +
       '<button class="btn sm" data-go="canbo">' + ic("users") + ' Dashboard “6 Rõ”</button>' +
       '<button class="btn out sm" data-go="vanban">' + ic("doc") + " Văn bản Chi bộ</button>" +
       '<button class="btn blue sm" data-go="sotay">' + ic("book") + " Sổ tay Đảng viên</button></div>" +
@@ -3204,10 +3205,20 @@
       renderOverview();
     });
   }
+  /* ---------------- ZALO NOTIFY RENDERER ---------------- */
+  function renderZaloNotify() {
+    var box = $("#zn-box");
+    if (!box) return;
+    if (window.ZaloNotifyModule) {
+      window.ZaloNotifyModule.mount(box, user);
+    }
+  }
+
   /* ---------------- TABS ---------------- */
   var TABS = [
     { k: "tongquan", l: "Tổng quan", i: "home" },
     { k: "cms", l: "Quản trị CMS", i: "grid" },
+    { k: "zalonotify", l: "Thông báo Zalo", i: "bell" },
     { k: "vanbanmoi", l: "Văn bản mới Phường & TP", i: "star" },
     { k: "canbo", l: "Cán bộ, đảng viên", i: "users" },
     { k: "vanban", l: "Văn bản Chi bộ", i: "doc" },
@@ -3222,6 +3233,9 @@
         if (bithuUser) user = bithuUser;
       }
       renderCms();
+    }
+    if (k === "zalonotify") {
+      renderZaloNotify();
     }
     if (!TABS.filter(function (t) { return t.k === k; }).length) k = "tongquan";
     $$(".nb-tabs button").forEach(function (b) { b.classList.toggle("on", b.dataset.t === k); });

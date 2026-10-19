@@ -12,6 +12,7 @@
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B91C1C'/><polygon points='50,15 61,40 88,40 66,56 75,81 50,65 25,81 34,56 12,40 39,40' fill='%23FDE047'/></svg>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="/src/css/style.css">
+  <link rel="stylesheet" href="/assets/css/zalo-notify.css">
 
   <style>
     .cms-layout {
@@ -1491,6 +1492,7 @@
             Dashboard</a></li>
         <li onclick="window.switchCmsTab('tin-tuc', this)"><a><i class="fa-solid fa-newspaper"></i> Tin Tức</a></li>
         <li onclick="window.switchCmsTab('thong-bao', this)"><a><i class="fa-solid fa-bullhorn"></i> Thông Báo</a></li>
+        <li onclick="window.switchCmsTab('zalo-notify', this)"><a><i class="fa-solid fa-bell"></i> Thông Báo Zalo</a></li>
         <li onclick="window.switchCmsTab('van-ban', this)"><a><i class="fa-solid fa-file-invoice"></i> Văn Bản & Biểu
             Mẫu</a></li>
         <li onclick="window.switchCmsTab('lich', this)"><a><i class="fa-solid fa-calendar-days"></i> Lịch Hoạt Động</a>
@@ -1708,6 +1710,11 @@
             </tbody>
           </table>
         </div>
+      </div>
+
+      <!-- 3B. THÔNG BÁO ZALO CÁ NHÂN -->
+      <div class="cms-tab" id="tab-zalo-notify">
+        <div id="cms-zn-box"></div>
       </div>
 
       <!-- 4. VĂN BẢN & BIỂU MẪU -->
@@ -3322,9 +3329,16 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
         'phan-anh': 'Xử Lý Phản Ánh',
         'nguoi-dung': 'Người Dùng & RBAC',
         'nhat-ky': 'Nhật Ký Audit Log',
-        'cai-dat': 'Cài Đặt & Sao Lưu'
+        'cai-dat': 'Cài Đặt & Sao Lưu',
+        'zalo-notify': 'Quản Lý Thông Báo Zalo Cá Nhân'
       };
       document.getElementById('cmsPageTitle').innerText = titles[tabName] || 'Quản Trị CMS';
+      if (tabName === 'zalo-notify') {
+        const u = auth ? auth.getCurrentUser() : null;
+        if (window.ZaloNotifyModule) {
+          window.ZaloNotifyModule.mount('#cms-zn-box', u);
+        }
+      }
     };
 
     // 1. Dashboard Stats
@@ -3749,6 +3763,7 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
       renderAuditTable();
     }
   </script>
+<script src="/assets/js/zalo-notify.js"></script>
 </body>
 
 </html>

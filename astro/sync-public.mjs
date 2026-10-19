@@ -15,6 +15,7 @@ import { dirname, join, basename } from "node:path";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jobs = [
   { from: "assets/css/portal.css", to: "public/assets/css/portal.css" },
+  { from: "assets/css/zalo-notify.css", to: "public/assets/css/zalo-notify.css" },
   ...readdirSync(join(ROOT, "assets/js"))
     .filter((f) => f.endsWith(".js"))
     .map((f) => ({ from: `assets/js/${f}`, to: `public/assets/js/${f}` })),
