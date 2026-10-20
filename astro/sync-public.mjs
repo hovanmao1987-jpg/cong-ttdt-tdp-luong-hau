@@ -23,6 +23,10 @@ const jobs = [
   { from: "admin.html", to: "public/admin.html" },
   { from: "cms.html", to: "public/cms.html" },
   { from: "thu-vien-chi-bo.html", to: "public/thu-vien-chi-bo.html" },
+  { from: "noi-bo.html", to: "public/noi-bo.html" },
+  { from: "noi_bo.html", to: "public/noi_bo.html" },
+  { from: "dang-vien.html", to: "public/dang-vien.html" },
+  { from: "bi-thu.html", to: "public/bi-thu.html" },
 ];
 
 let n = 0, bytes = 0;

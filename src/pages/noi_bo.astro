@@ -17,6 +17,7 @@ import ThuVienDuLieuChiBo from "../components/ThuVienDuLieuChiBo.astro";
     .bg-dang { background-color: #b91c1c; }
     .bg-dang-dark { background-color: #881337; }
   </style>
+  <link rel="stylesheet" href="/assets/css/zalo-notify.css" />
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col text-gray-800">
 
@@ -70,6 +71,9 @@ import ThuVienDuLieuChiBo from "../components/ThuVienDuLieuChiBo.astro";
         </a>
         <button onclick="moModalRoadmapV2()" class="px-2.5 py-1 bg-gradient-to-r from-amber-500 to-yellow-400 text-red-950 rounded hover:from-amber-600 hover:to-yellow-500 whitespace-nowrap font-black border border-yellow-200 shadow flex items-center gap-1 cursor-pointer">
           <span>🚀</span> TIỆN ÍCH SỐ &amp; LỘ TRÌNH V2
+        </button>
+        <button onclick="if(window.ZaloNotify){window.ZaloNotify.openModule();}else{alert('Đang tải module Zalo Notify...');}" class="px-2.5 py-1 bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded hover:from-blue-800 hover:to-indigo-900 whitespace-nowrap font-black border border-blue-300 shadow flex items-center gap-1 cursor-pointer" title="Lương Hậu Zalo Notify - Quản lý thông báo Zalo cá nhân">
+          <span>💬</span> THÔNG BÁO ZALO
         </button>
       </div>
       <button onclick="moKhoaCms()" class="ml-2 px-3 py-1 bg-red-950 hover:bg-black text-yellow-300 rounded border border-yellow-400/50 text-xs font-black flex items-center gap-1.5 whitespace-nowrap shadow">
@@ -149,7 +153,8 @@ import ThuVienDuLieuChiBo from "../components/ThuVienDuLieuChiBo.astro";
             🚪 Đăng xuất
           </button>
         </div>
-      </div>
+      <!-- MODULE ZALO NOTIFY CONTAINER -->
+      <div id="zn-box" style="margin-bottom: 20px;"></div>
 
       <!-- BỐ CỤC 3 CỘT NỘI BỘ -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -971,5 +976,6 @@ import ThuVienDuLieuChiBo from "../components/ThuVienDuLieuChiBo.astro";
       renderMainView();
     }
   </script>
+  <script src="/assets/js/zalo-notify.js"></script>
 </body>
 </html>
