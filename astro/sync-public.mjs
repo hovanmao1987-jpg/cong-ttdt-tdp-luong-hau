@@ -16,10 +16,13 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jobs = [
   { from: "assets/css/portal.css", to: "public/assets/css/portal.css" },
   { from: "assets/css/zalo-notify.css", to: "public/assets/css/zalo-notify.css" },
+  { from: "assets/css/quan-ly-dan-cu.css", to: "public/assets/css/quan-ly-dan-cu.css" },
   ...readdirSync(join(ROOT, "assets/js"))
     .filter((f) => f.endsWith(".js"))
     .map((f) => ({ from: `assets/js/${f}`, to: `public/assets/js/${f}` })),
   { from: "data/data.js", to: "public/data/data.js" },
+  { from: "data/dan_cu_seed.json", to: "public/data/dan_cu_seed.json" },
+  { from: "bando.html", to: "public/bando.html" },
   { from: "admin.html", to: "public/admin.html" },
   { from: "cms.html", to: "public/cms.html" },
   { from: "thu-vien-chi-bo.html", to: "public/thu-vien-chi-bo.html" },

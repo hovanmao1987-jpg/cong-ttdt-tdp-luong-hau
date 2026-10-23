@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="/src/css/style.css">
   <link rel="stylesheet" href="/assets/css/zalo-notify.css">
+  <link rel="stylesheet" href="/assets/css/quan-ly-dan-cu.css">
 
   <style>
     .cms-layout {
@@ -1492,6 +1493,8 @@
             Dashboard</a></li>
         <li onclick="window.switchCmsTab('tin-tuc', this)"><a><i class="fa-solid fa-newspaper"></i> Tin Tức</a></li>
         <li onclick="window.switchCmsTab('thong-bao', this)"><a><i class="fa-solid fa-bullhorn"></i> Thông Báo</a></li>
+        <li onclick="window.open('bando.html', '_blank')"><a style="color:#FBBF24"><i class="fa-solid fa-map-location-dot"></i> Bản Đồ Số GIS ↗</a></li>
+        <li onclick="window.open('https://earth.google.com/web/@16.43039139,107.70034889,6.55694455a,6239.3459629d,30y,-0h,0t,0r/data=CgRCAggBMikKJwolCiExQUtCd3hpWW5qWjRfR25KcXJWTi1WeER6VGRqTUZfTGYgAToDCgEwQgIIAEoICNucmPIDEAE', '_blank')"><a style="color:#38BDF8"><i class="fa-solid fa-earth-americas"></i> Google Earth 3D ↗</a></li>
         <li onclick="window.switchCmsTab('zalo-notify', this)"><a><i class="fa-solid fa-bell"></i> Thông Báo Zalo</a></li>
         <li onclick="window.switchCmsTab('van-ban', this)"><a><i class="fa-solid fa-file-invoice"></i> Văn Bản & Biểu
             Mẫu</a></li>
@@ -1499,6 +1502,7 @@
         </li>
         <li onclick="window.switchCmsTab('phan-anh', this)"><a><i class="fa-solid fa-comments"></i> Phản Ánh Dân Cư</a>
         </li>
+        <li onclick="window.switchCmsTab('dan-cu', this)"><a style="color:#FBBF24;font-weight:700"><i class="fa-solid fa-users-rectangle"></i> Quản Lý Dân Cư <span class="badge badge-warning" style="font-size:0.65rem;padding:1px 5px;margin-left:auto">v2.3.0</span></a></li>
         <li onclick="window.switchCmsTab('nguoi-dung', this)"><a><i class="fa-solid fa-users-gear"></i> Người Dùng &
             RBAC</a></li>
         <li onclick="window.switchCmsTab('nhat-ky', this)"><a><i class="fa-solid fa-clock-rotate-left"></i> Nhật Ký
@@ -1851,6 +1855,11 @@
             </tbody>
           </table>
         </div>
+      </div>
+
+      <!-- QUẢN LÝ DÂN CƯ SỐ LƯƠNG HẬU 2.3.0 -->
+      <div class="cms-tab" id="tab-dan-cu">
+        <div id="dan-cu-module-mount"></div>
       </div>
 
       <!-- 7. NGƯỜI DÙNG & RBAC -->
@@ -2760,14 +2769,19 @@ class LuongHauDatabase {
           const parsed = JSON.parse(raw);
           // Check that all 17 tables exist
           const tables = Object.keys(SEED_DATA);
-          let valid = true;
           for (const tbl of tables) {
             if (!Array.isArray(parsed[tbl])) {
-              valid = false;
-              break;
+              parsed[tbl] = SEED_DATA[tbl] ? JSON.parse(JSON.stringify(SEED_DATA[tbl])) : [];
             }
           }
-          if (valid) return parsed;
+          if (typeof window !== 'undefined' && window.DAN_CU_SEED) {
+            Object.keys(window.DAN_CU_SEED).forEach(k => {
+              if (!Array.isArray(parsed[k])) {
+                parsed[k] = JSON.parse(JSON.stringify(window.DAN_CU_SEED[k]));
+              }
+            });
+          }
+          return parsed;
         }
       } catch (e) {
         console.warn('LocalStorage load error, reverting to SEED_DATA', e);
@@ -3327,12 +3341,18 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
         'van-ban': 'Kho Văn Bản & Biểu Mẫu',
         'lich': 'Quản Lý Lịch Hoạt Động',
         'phan-anh': 'Xử Lý Phản Ánh',
+        'dan-cu': 'Quản Lý Dân Cư Số Lương Hậu — Version 2.3.0',
         'nguoi-dung': 'Người Dùng & RBAC',
         'nhat-ky': 'Nhật Ký Audit Log',
         'cai-dat': 'Cài Đặt & Sao Lưu',
         'zalo-notify': 'Quản Lý Thông Báo Zalo Cá Nhân'
       };
       document.getElementById('cmsPageTitle').innerText = titles[tabName] || 'Quản Trị CMS';
+      if (tabName === 'dan-cu') {
+        if (window.QuanLyDanCu) {
+          window.QuanLyDanCu.mount('#dan-cu-module-mount', db, auth);
+        }
+      }
       if (tabName === 'zalo-notify') {
         const u = auth ? auth.getCurrentUser() : null;
         if (window.ZaloNotifyModule) {
@@ -3764,6 +3784,8 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
     }
   </script>
 <script src="/assets/js/zalo-notify.js"></script>
+<script src="/assets/js/dan-cu-seed.js"></script>
+<script src="/assets/js/quan-ly-dan-cu.js"></script>
 </body>
 
 </html>
