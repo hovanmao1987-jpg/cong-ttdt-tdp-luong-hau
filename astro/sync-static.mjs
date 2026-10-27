@@ -18,7 +18,6 @@ import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jobs = [
-  { from: "dist/index.html", to: "index.html", label: "Khu công khai" },
   { from: "dist/noi_bo/index.html", to: "noi_bo.html", label: "Khu nội bộ Chi bộ" },
   { from: "dist/noi-bo/van-ban-moi/index.html", to: "van-ban-moi.html", label: "Văn bản mới Phường & Thành phố" },
   { from: "dist/van-ban/index.html", to: "van-ban.html", label: "Văn bản 3 cấp & Kế hoạch 333" },
@@ -60,6 +59,13 @@ for (const j of jobs) {
 }
 
 if (ok === jobs.length) {
+  // Đồng bộ index.html chuẩn sang dist/ và public/ để phục vụ Vercel production
+  if (existsSync(join(ROOT, "index.html"))) {
+    const masterIndex = readFileSync(join(ROOT, "index.html"), "utf8");
+    writeFileSync(join(ROOT, "dist/index.html"), masterIndex, "utf8");
+    writeFileSync(join(ROOT, "public/index.html"), masterIndex, "utf8");
+    console.log(`  ✔ index.html  →  dist/index.html & public/index.html (Bảo toàn 100% Giao diện gốc Hue-S Mobile V3)`);
+  }
   console.log(`\n✔ Đã đồng bộ ${ok} file tĩnh ở thư mục gốc từ bản Astro build.`);
   console.log("  Mở trực tiếp: index.html · noi_bo.html   |   Local server: npm run serve");
 } else {

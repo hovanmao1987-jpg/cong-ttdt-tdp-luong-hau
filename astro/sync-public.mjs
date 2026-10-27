@@ -23,6 +23,7 @@ const jobs = [
   { from: "data/data.js", to: "public/data/data.js" },
   { from: "data/dan_cu_seed.json", to: "public/data/dan_cu_seed.json" },
   { from: "data/gis_seed.json", to: "public/data/gis_seed.json" },
+  { from: "index.html", to: "public/index.html" },
   { from: "bando.html", to: "public/bando.html" },
   { from: "admin.html", to: "public/admin.html" },
   { from: "cms.html", to: "public/cms.html" },
