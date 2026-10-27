@@ -1,0 +1,165 @@
+{
+  "tieuDe": "Công khai danh sách 10 cán bộ chủ chốt Tổ dân phố Lương Hậu nhiệm kỳ 2025-2030",
+  "toDanPho": "Tổ dân phố Lương Hậu",
+  "phuong": "Phường Hương Thủy",
+  "thanhPho": "Thành phố Huế",
+  "nhiemKy": "2025-2030",
+  "soLuongCanBo": 10,
+  "canCuPhapLy": [
+    "Luật Thực hiện dân chủ ở cơ sở năm 2022",
+    "Quy chế tổ chức và hoạt động của Tổ dân phố trên địa bàn thành phố Huế",
+    "Nghị quyết của Chi bộ và Đề án nhân sự cán bộ Tổ dân phố Lương Hậu nhiệm kỳ 2025 - 2030"
+  ],
+  "mucDich": "Công khai minh bạch chức danh, lĩnh vực phân công, nhiệm vụ cụ thể, địa bàn phụ trách và số điện thoại liên hệ công vụ của 10 đồng chí cán bộ chủ chốt để toàn thể nhân dân trên địa bàn 4 khu vực (Đội 8, Đội 9, Đội 10, Đội 11) biết, giám sát và thuận tiện liên hệ giải quyết công việc.",
+  "thoiGianCongKhai": "Tháng 09/2026",
+  "diaChiTruSo": "Nhà sinh hoạt cộng đồng TDP Lương Hậu, đường Lương Hậu, phường Hương Thủy, thành phố Huế",
+  "hotlineTdp": "0965 712 812",
+  "emailTiepNhan": "hovanmao1987@gmail.com",
+  "heThongTiepNhanPhanAnh": {
+    "tieuDe": "Hệ thống Tiếp nhận phản ánh công dân trực tuyến Tổ dân phố Lương Hậu",
+    "moTa": "Kênh tiếp nhận ý kiến, kiến nghị, phản ánh về an ninh trật tự, vệ sinh môi trường, hạ tầng đô thị và đời sống dân sinh của nhân dân trên địa bàn 4 khu vực (Đội 8, Đội 9, Đội 10, Đội 11).",
+    "phuongThucTiepNhan": "Chạy ngầm mã Access Key 183b93c6-fffd-4323-a730-103d1e16b3a0 và gửi tức thì 1 bức thư về Gmail hovanmao1987@gmail.com",
+    "maAccessKey": "183b93c6-fffd-4323-a730-103d1e16b3a0",
+    "emailNhanThu": "hovanmao1987@gmail.com",
+    "canBoTiepNhan": "Đồng chí Hồ Văn Mão - Bí thư Chi bộ Tổ dân phố Lương Hậu",
+    "soDienThoaiTiepNhan": "0962 481 112",
+    "hotlineKhanCap": "0965 712 812 (Đ/c Nguyễn Trọng Nghĩa - Tổ trưởng TDP)",
+    "thoiHanPhanHoi": "Trong vòng 24 giờ kể từ khi tiếp nhận phản ánh",
+    "cauHinhTichHop": {
+      "coCheGuiThu": "Chạy ngầm mã Access Key gửi tự động (Web3Forms API) không làm gián đoạn hay tải lại trang",
+      "accessKey": "183b93c6-fffd-4323-a730-103d1e16b3a0",
+      "guiTucThiGmail": "hovanmao1987@gmail.com",
+      "dinhDangGui": "JSON qua https://api.web3forms.com/submit",
+      "trangThaiTichHop": "Đã tích hợp chạy ngầm mã Access Key 183b93c6-fffd-4323-a730-103d1e16b3a0 và gửi tức thì 1 bức thư về Gmail hovanmao1987@gmail.com vào mục Phản ánh công dân",
+      "noiDungThuBaoGom": [
+        "Mã phản ánh duy nhất định dạng PA-YYYYMMDD-HHMMSS",
+        "Thời gian tiếp nhận phản ánh",
+        "Họ và tên người phản ánh",
+        "Số điện thoại liên hệ",
+        "Địa chỉ nơi cư trú (Đội 8, Đội 9, Đội 10, Đội 11)",
+        "Lĩnh vực phản ánh (An ninh trật tự, Môi trường, Đô thị, Dân sinh...)",
+        "Mức độ ưu tiên phản ánh",
+        "Nội dung phản ánh chi tiết"
+      ]
+    },
+    "quyTrinhTiepNhanVaXuLy5Buoc": [
+      "Bước 1: Công dân điền thông tin và bấm 'Gửi phản ánh' trên Cổng TTĐT TDP Lương Hậu.",
+      "Bước 2: Hệ thống chạy ngầm mã Access Key 183b93c6-fffd-4323-a730-103d1e16b3a0 và gửi tức thì 1 bức thư về Gmail hovanmao1987@gmail.com của đồng chí Bí thư Chi bộ.",
+      "Bước 3: Hệ thống cấp mã số phản ánh (PA-...) và lưu nhật ký trên thiết bị công dân để tiện theo dõi, tra cứu.",
+      "Bước 4: Đồng chí Bí thư Chi bộ và Ban điều hành TDP tiếp nhận, phân công cán bộ phụ trách khu vực xác minh thực tế.",
+      "Bước 5: Phản hồi kết quả xử lý cho công dân trong vòng 24 giờ kể từ khi tiếp nhận."
+    ]
+  },
+  "danhSachCanBo": [
+    {
+      "stt": 1,
+      "hoTen": "Hồ Văn Mão",
+      "namSinh": "1989",
+      "chucVu": "Bí thư Chi bộ",
+      "linhVuc": "Lãnh đạo toàn diện & Công tác xây dựng Đảng",
+      "diaBanPhuTrach": "Phụ trách Đội 11 (theo dõi chung toàn địa bàn)",
+      "soDienThoai": "0962 481 112",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Là người chịu trách nhiệm cao nhất trước Đảng ủy phường Hương Thủy và trước Chi bộ về toàn bộ hoạt động của hệ thống chính trị tại tổ dân phố Lương Hậu. Chủ trì các kỳ họp của Chi ủy, Chi bộ; chủ động đề xuất chủ trương, giải pháp lãnh đạo thực hiện nhiệm vụ chính trị, kinh tế - xã hội, quốc phòng - an ninh tại địa bàn sáp nhập. Trực tiếp phụ trách công tác chính trị tư tưởng, xây dựng tổ chức Đảng, kiểm tra, giám sát, kỷ luật Đảng và quản lý hồ sơ đảng viên. Thay mặt Chi bộ ký các văn bản, nghị quyết, báo cáo định kỳ; thường xuyên kiểm tra, đôn đốc các chi ủy viên và đảng viên thực hiện nhiệm vụ được phân công."
+    },
+    {
+      "stt": 2,
+      "hoTen": "Nguyễn Trọng Nghĩa",
+      "namSinh": "1980",
+      "chucVu": "Phó Bí thư Chi bộ - Tổ trưởng Tổ dân phố",
+      "linhVuc": "Quản lý hành chính Nhà nước & Kinh tế - Xã hội",
+      "diaBanPhuTrach": "Phụ trách Đội 8",
+      "soDienThoai": "0965 712 812",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chịu trách nhiệm trước Ủy ban nhân dân phường Hương Thủy và trước Chi bộ về toàn bộ công tác quản lý hành chính, nhà nước và thực hiện các chỉ tiêu phát triển kinh tế - xã hội trên địa bàn. Cụ thể hóa các nghị quyết, chủ trương của Chi bộ thành kế hoạch hoạt động của Ban điều hành tổ dân phố để tổ chức cho nhân dân thực hiện. Lãnh đạo điều hành quản lý dân cư, biến động nhân khẩu, hộ khẩu; chủ trì triển khai phong trào xây dựng nếp sống văn minh đô thị, thu các loại quỹ pháp định và vận động nhân dân đóng góp công khai, minh bạch. Phối hợp chặt chẽ với Mặt trận, các đoàn thể giải quyết kịp thời các kiến nghị chính đáng của công dân; thay mặt Ban điều hành tổ dân phố ký các văn bản hành chính theo thẩm quyền."
+    },
+    {
+      "stt": 3,
+      "hoTen": "Hoàng Hữu Rớt",
+      "namSinh": "1978",
+      "chucVu": "Chi ủy viên - Trưởng ban Công tác Mặt trận",
+      "linhVuc": "Khối Đại đoàn kết toàn dân & Giám sát, hòa giải",
+      "diaBanPhuTrach": "Phụ trách Đội 9",
+      "soDienThoai": "0965 943 303",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chịu trách nhiệm trước Chi bộ và Ủy ban MTTQ Việt Nam phường về công tác Mặt trận, xây dựng khối đại đoàn kết toàn dân và thực hiện quy chế dân chủ ở cơ sở tại địa bàn. Chủ trì phối hợp với các chi hội đoàn thể tuyên truyền, vận động nhân dân chấp hành tốt chủ trương của Đảng, pháp luật của Nhà nước; tổ chức Ngày hội Đại đoàn kết toàn dân tộc hằng năm. Trực tiếp phụ trách công tác hòa giải các mâu thuẫn trong nội bộ nhân dân; thực hiện chức năng giám sát, phản biện xã hội đối với hoạt động của Ban điều hành tổ dân phố. Kiêm nhiệm phụ trách công tác phối hợp bồi dưỡng quần chúng ưu tú để tạo nguồn phát triển đảng viên mới."
+    },
+    {
+      "stt": 4,
+      "hoTen": "Nguyễn Thị Mừng",
+      "namSinh": "1979",
+      "chucVu": "Chi hội trưởng Chi hội Phụ nữ",
+      "linhVuc": "Phong trào Phụ nữ, Đời sống gia đình & Vệ sinh môi trường",
+      "diaBanPhuTrach": "Phụ trách Đội 9",
+      "soDienThoai": "0377 412 815",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chịu trách nhiệm trước Chi bộ và Ban Thường vụ Hội LHPN phường về phong trào và hoạt động của Hội Phụ nữ tại tổ dân phố. Phụ trách đôn đốc thu nộp đảng phí của chi bộ; tuyên truyền, phổ biến giáo dục pháp luật, bình đẳng giới, chăm sóc sức khỏe sinh sản và kế hoạch hóa gia đình cho hội viên. Vận động hội viên nòng cốt đi đầu thực hiện đề án 'Ngày Chủ nhật xanh', vệ sinh đường làng ngõ xóm, phân loại rác thải sinh hoạt và bỏ rác đúng giờ quy định."
+    },
+    {
+      "stt": 5,
+      "hoTen": "Nguyễn Thúc Thành",
+      "namSinh": "1970",
+      "chucVu": "Chi hội trưởng Chi hội Nông dân - Tổ trưởng Lực lượng ANTT cơ sở",
+      "linhVuc": "Kinh tế Nông nghiệp & An ninh trật tự cơ sở",
+      "diaBanPhuTrach": "Toàn TDP (4 khu vực: Đội 8, 9, 10, 11)",
+      "soDienThoai": "0975 175 361",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Về công tác Nông hội: Chịu trách nhiệm lãnh đạo hoạt động sản xuất nông nghiệp, hướng dẫn phát triển các mô hình kinh tế hộ gia đình đạt hiệu quả (như làm nấm rơm, duy trì ao nuôi cá nước ngọt); đôn đốc nạo vét kênh mương thủy lợi phục vụ sản xuất. Về công tác ANTT: Trực tiếp chỉ huy Lực lượng tham gia bảo vệ an ninh, trật tự ở cơ sở tại địa bàn; phối hợp với Công an phường tuần tra, kiểm soát, giữ gìn trật tự công cộng, trật tự an toàn giao thông và kịp thời xử lý các vụ việc phức tạp phát sinh về ANTT tại khu dân cư."
+    },
+    {
+      "stt": 6,
+      "hoTen": "Nguyễn Cưỡng",
+      "namSinh": "1964",
+      "chucVu": "Chi hội trưởng Chi hội Cựu chiến binh",
+      "linhVuc": "Giáo dục truyền thống cách mạng & An ninh Tổ quốc",
+      "diaBanPhuTrach": "Toàn TDP (4 khu vực: Đội 8, 9, 10, 11)",
+      "soDienThoai": "0981 710 242",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chịu trách nhiệm trước Chi bộ và Hội CCB phường về công tác và các phong trào thi đua của Cựu chiến binh tại địa bàn. Vận động hội viên giữ vững và phát huy bản chất, truyền thống 'Bộ đội Cụ Hồ', gương mẫu thực hiện các nghĩa vụ công dân; tham gia giáo dục truyền thống cách mạng cho thế hệ trẻ. Tích cực tham gia xây dựng và bảo vệ Đảng, chính quyền; đi đầu trong phong trào toàn dân bảo vệ an ninh Tổ quốc và công tác phòng cháy, chữa cháy tại khu dân cư."
+    },
+    {
+      "stt": 7,
+      "hoTen": "Phan Đăng Chiến",
+      "namSinh": "1951",
+      "chucVu": "Chi hội trưởng Chi hội Người cao tuổi",
+      "linhVuc": "Phong trào Tuổi cao gương sáng & Nếp sống văn minh",
+      "diaBanPhuTrach": "Toàn TDP (4 khu vực: Đội 8, 9, 10, 11)",
+      "soDienThoai": "0913 469 434",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chịu trách nhiệm trước Chi bộ và Hội Người cao tuổi phường về phong trào thi đua 'Tuổi cao gương sáng' tại địa bàn. Vận động hội viên gương mẫu xây dựng gia đình văn hóa, ông bà mẫu mực, con cháu thảo hiền; tham gia đóng góp ý kiến xây dựng hệ thống chính trị ở cơ sở. Tuyên truyền nhân dân đẩy mạnh cuộc vận động xây dựng nếp sống văn minh trong việc cưới, việc tang (Quy định 2322/QĐ-UBND), bài trừ các hủ tục lạc hậu và không rải vàng mã ra đường gây mất mỹ quan đô thị."
+    },
+    {
+      "stt": 8,
+      "hoTen": "Nguyễn Thị Ngọc Tú",
+      "namSinh": "2003",
+      "chucVu": "Bí thư Chi đoàn Thanh niên Cộng sản Hồ Chí Minh",
+      "linhVuc": "Thanh thiếu nhi & Chuyển đổi số cộng đồng",
+      "diaBanPhuTrach": "Toàn TDP (4 khu vực: Đội 8, 9, 10, 11)",
+      "soDienThoai": "0386 003 175",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chịu trách nhiệm trước Chi bộ và Ban Chấp hành Đoàn phường về công tác Đoàn và phong trào thanh thiếu nhi tại tổ dân phố. Tổ chức tập hợp, giáo dục chính trị, đạo đức, lối sống cho đoàn viên, thanh niên; chủ trì quản lý học sinh và tổ chức các hoạt động sinh hoạt hè, chiến dịch tình nguyện, phong trào khuyến học khuyến tài tại địa phương. Xung kích đi đầu trong việc tuyên truyền, hỗ trợ hướng dẫn nhân dân thực hiện công tác chuyển đổi số, dịch vụ công trực tuyến và cài đặt các ứng dụng thông minh."
+    },
+    {
+      "stt": 9,
+      "hoTen": "Nguyễn Như Khải",
+      "namSinh": "1993",
+      "chucVu": "Tổ đội trưởng Quân sự",
+      "linhVuc": "Quân sự, Quốc phòng địa phương & Phụ trách Đội 10",
+      "diaBanPhuTrach": "Phụ trách Đội 10",
+      "soDienThoai": "0388 886 876",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chịu trách nhiệm trước Chi bộ, Tổ trưởng TDP và Ban Chỉ huy Quân sự phường về công tác quân sự, quốc phòng địa phương. Làm tốt công tác quản lý thực lực thanh niên trong độ tuổi sẵn sàng nhập ngũ; phối hợp đăng ký tuổi 17 và đôn đốc khám tuyển nghĩa vụ quân sự hằng năm đạt 100% chỉ tiêu. Tổ chức quản lý lực lượng dân quân tự vệ tại địa bàn, xây dựng kế hoạch và sẵn sàng trực chiến đấu cơ động, phòng chống thiên tai, bão lụt khi có lệnh điều động của cấp trên."
+    },
+    {
+      "stt": 10,
+      "hoTen": "Phạm Thị Thu Thanh",
+      "namSinh": "1987",
+      "chucVu": "Cộng tác viên Dân số - Y tế Tổ dân phố",
+      "linhVuc": "Y tế cơ sở, Dân số - Kế hoạch hóa gia đình & An sinh",
+      "diaBanPhuTrach": "Toàn TDP (4 khu vực: Đội 8, 9, 10, 11)",
+      "soDienThoai": "0332 886 309",
+      "trangThai": "Chính thức",
+      "nhiemVu": "Chăm sóc sức khỏe ban đầu, sơ cấp cứu tại chỗ cho nhân dân; theo dõi, quản lý đối tượng người cao tuổi, phụ nữ mang thai và trẻ em dưới 5 tuổi; tuyên truyền, vận động thực hiện tốt chính sách dân số - kế hoạch hóa gia đình; phối hợp chặt chẽ với Trạm Y tế phường triển khai các chương trình tiêm chủng mở rộng, vệ sinh an toàn thực phẩm và giám sát phòng chống dịch bệnh trên địa bàn."
+    }
+  ]
+}

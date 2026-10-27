@@ -9,10 +9,8 @@ dist/
 .vercel/
 .build/
 
-# --- Tệp sinh tự động (npm run sync) — có thể tạo lại bất cứ lúc nào ---
-# (public/robots.txt là nội dung gốc nên VẪN được commit)
-public/assets/
-public/data/
+# --- Tệp sinh tự động (npm run sync) — đã được theo dõi trong git để bảo đảm Vercel deploy đủ asset ---
+
 
 # --- Môi trường / bí mật ---
 .env
