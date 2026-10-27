@@ -42,7 +42,8 @@
     warn: "<path d='M12 4l9 15.5H3z' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linejoin='round'/><path d='M12 9.5v4.2M12 16.4v.6' stroke='currentColor' stroke-width='1.9' stroke-linecap='round'/>",
     home: "<path d='M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round'/>",
     flag: "<path d='M6 3v18M6 4.5h11l-2 3.5 2 3.5H6z' fill='none' stroke='currentColor' stroke-width='1.7' stroke-linejoin='round'/>",
-    image: "<rect x='3' y='3' width='18' height='18' rx='2' fill='none' stroke='currentColor' stroke-width='1.6'/><circle cx='8.5' cy='8.5' r='1.5' fill='currentColor'/><path d='M21 15l-5-5L5 21' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/>"
+    image: "<rect x='3' y='3' width='18' height='18' rx='2' fill='none' stroke='currentColor' stroke-width='1.6'/><circle cx='8.5' cy='8.5' r='1.5' fill='currentColor'/><path d='M21 15l-5-5L5 21' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/>",
+    map: "<path d='M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round'/><path d='M9 3v15M15 6v15' stroke='currentColor' stroke-width='1.6'/>"
   };
   function ic(n) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (P[n] || "") + "</svg>"; }
   var CREST =
@@ -344,6 +345,7 @@
       "<span class='rank'>XẾP LOẠI: XUẤT SẮC</span></div></div>" +
       '<div class="btn-row" style="margin-top:11px">' +
       ((user && canUser("VIEW_CMS", null, user)) ? ('<button class="btn sm" style="background:#0b4d97;color:#fff" data-go="cms">' + ic("grid") + ' Quản trị CMS</button>') : '') +
+      '<button class="btn sm" style="background:#93061d;color:#fff;border-color:#7e0d19" data-go="bando">' + ic("map") + ' Bản đồ số GIS</button>' +
       '<button class="btn sm" style="background:#0068ff;color:#fff;border-color:#0052cc" data-go="zalonotify">' + ic("bell") + ' Thông báo Zalo</button>' +
       '<button class="btn sm" data-go="canbo">' + ic("users") + ' Dashboard “6 Rõ”</button>' +
       '<button class="btn out sm" data-go="vanban">' + ic("doc") + " Văn bản Chi bộ</button>" +
@@ -3218,6 +3220,7 @@
   var TABS = [
     { k: "tongquan", l: "Tổng quan", i: "home" },
     { k: "cms", l: "Quản trị CMS", i: "grid" },
+    { k: "bando", l: "Bản đồ số GIS", i: "map" },
     { k: "zalonotify", l: "Thông báo Zalo", i: "bell" },
     { k: "vanbanmoi", l: "Văn bản mới Phường & TP", i: "star" },
     { k: "canbo", l: "Cán bộ, đảng viên", i: "users" },
@@ -3227,12 +3230,20 @@
     { k: "nhatky", l: "Nhật ký truy cập", i: "shield" }
   ];
   function switchTab(k) {
+    if (k === "ban-do-so" || k === "gis") k = "bando";
     if (k === "cms") {
       if (!user || !canUser("VIEW_CMS", null, user)) {
+        /* Route Guard: TRUY CẬP BỊ TỪ CHỐI nếu không có quyền VIEW_CMS */
         var bithuUser = (D.MEMBERS && D.MEMBERS.find(function(m){ return m.chucVu && m.chucVu.indexOf("Bí thư") >= 0; })) || (D.MEMBERS && D.MEMBERS[0]);
         if (bithuUser) user = bithuUser;
       }
       renderCms();
+    }
+    if (k === "bando") {
+      var ifr = $("#bando-iframe");
+      if (ifr && (!ifr.getAttribute("src") || ifr.getAttribute("src") === "about:blank")) {
+        ifr.setAttribute("src", "bando.html");
+      }
     }
     if (k === "zalonotify") {
       renderZaloNotify();
@@ -3247,6 +3258,8 @@
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+  window.switchTab = switchTab;
+  window.switchTabToBando = function() { switchTab("bando"); };
   function renderTabs() {
     var box = $("#nb-tabs");
     if (box) {

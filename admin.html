@@ -1503,6 +1503,7 @@
         <li onclick="window.switchCmsTab('phan-anh', this)"><a><i class="fa-solid fa-comments"></i> Phản Ánh Dân Cư</a>
         </li>
         <li onclick="window.switchCmsTab('dan-cu', this)"><a style="color:#FBBF24;font-weight:700"><i class="fa-solid fa-users-rectangle"></i> Quản Lý Dân Cư <span class="badge badge-warning" style="font-size:0.65rem;padding:1px 5px;margin-left:auto">v2.3.0</span></a></li>
+        <li onclick="window.switchCmsTab('gis-data', this)"><a style="color:#38BDF8;font-weight:700"><i class="fa-solid fa-layer-group"></i> Quản Trị GIS 3.0 <span class="badge badge-primary" style="font-size:0.65rem;padding:1px 5px;margin-left:auto">v3.0</span></a></li>
         <li onclick="window.switchCmsTab('nguoi-dung', this)"><a><i class="fa-solid fa-users-gear"></i> Người Dùng &
             RBAC</a></li>
         <li onclick="window.switchCmsTab('nhat-ky', this)"><a><i class="fa-solid fa-clock-rotate-left"></i> Nhật Ký
@@ -1860,6 +1861,11 @@
       <!-- QUẢN LÝ DÂN CƯ SỐ LƯƠNG HẬU 2.3.0 -->
       <div class="cms-tab" id="tab-dan-cu">
         <div id="dan-cu-module-mount"></div>
+      </div>
+
+      <!-- BẢN ĐỒ SỐ LƯƠNG HẬU GIS 3.0 -->
+      <div class="cms-tab" id="tab-gis-data">
+        <div id="gis-module-mount"></div>
       </div>
 
       <!-- 7. NGƯỜI DÙNG & RBAC -->
@@ -3342,6 +3348,7 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
         'lich': 'Quản Lý Lịch Hoạt Động',
         'phan-anh': 'Xử Lý Phản Ánh',
         'dan-cu': 'Quản Lý Dân Cư Số Lương Hậu — Version 2.3.0',
+        'gis-data': 'Bản Đồ Số Lương Hậu — Digital GIS 3.0',
         'nguoi-dung': 'Người Dùng & RBAC',
         'nhat-ky': 'Nhật Ký Audit Log',
         'cai-dat': 'Cài Đặt & Sao Lưu',
@@ -3351,6 +3358,11 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
       if (tabName === 'dan-cu') {
         if (window.QuanLyDanCu) {
           window.QuanLyDanCu.mount('#dan-cu-module-mount', db, auth);
+        }
+      }
+      if (tabName === 'gis-data') {
+        if (window.LuongHauGisCms) {
+          window.LuongHauGisCms.mount('#gis-module-mount', db, auth);
         }
       }
       if (tabName === 'zalo-notify') {
@@ -3786,6 +3798,8 @@ if (!window.auth) window.auth = new AuthEngine(window.db);
 <script src="/assets/js/zalo-notify.js"></script>
 <script src="/assets/js/dan-cu-seed.js"></script>
 <script src="/assets/js/quan-ly-dan-cu.js"></script>
+<script src="/assets/js/gis-data-engine.js"></script>
+<script src="/assets/js/gis-cms-module.js"></script>
 </body>
 
 </html>

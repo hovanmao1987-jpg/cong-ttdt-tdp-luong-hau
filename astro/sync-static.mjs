@@ -37,6 +37,7 @@ function toStatic(html) {
     .replace(/(["'])\/noi-bo\/van-ban-moi(["'#])/g, "$1van-ban-moi.html$2")
     // liên kết chuyên mục tĩnh
     .replace(/(["'])\/van-ban(["'#])/g, "$1van-ban.html$2")
+    .replace(/(["'])\/bando(\.html)?(["'#])/g, "$1bando.html$3")
     .replace(/(["'])\/chu-nhat-xanh(["'#])/g, "$1chu-nhat-xanh.html$2")
     // liên kết về trang chủ (nút ← trong màn hình đối soát hoặc trang con)
     .replace(/href="\/"/g, 'href="index.html"')

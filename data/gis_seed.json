@@ -1,0 +1,357 @@
+{
+  "settings": {
+    "crs": "EPSG:4326",
+    "center": [16.429312, 107.694743],
+    "default_zoom": 16,
+    "min_zoom": 13,
+    "max_zoom": 19,
+    "bounds": {
+      "min_lat": 16.420000,
+      "max_lat": 16.440000,
+      "min_lng": 107.685000,
+      "max_lng": 107.715000
+    },
+    "organization": "Tổ dân phố Lương Hậu, phường Hương Thủy, thành phố Huế",
+    "version": "GIS 3.0"
+  },
+  "layers": [
+    {
+      "id": "layer_boundary",
+      "code": "BOUNDARY",
+      "name": "Ranh giới Tổ dân phố",
+      "geometry_type": "Polygon",
+      "visibility": "PUBLIC",
+      "sensitivity_level": "LOW",
+      "style_config": {
+        "color": "#facc15",
+        "weight": 4,
+        "opacity": 1.0,
+        "fillColor": "#fef08a",
+        "fillOpacity": 0.08
+      },
+      "is_active": true,
+      "display_order": 1,
+      "icon": "fa-draw-polygon"
+    },
+    {
+      "id": "layer_roads",
+      "code": "ROADS",
+      "name": "Tuyến đường & Ngõ kiệt",
+      "geometry_type": "LineString",
+      "visibility": "PUBLIC",
+      "sensitivity_level": "LOW",
+      "style_config": {
+        "color": "#3b82f6",
+        "weight": 3,
+        "opacity": 0.85
+      },
+      "is_active": true,
+      "display_order": 2,
+      "icon": "fa-road"
+    },
+    {
+      "id": "layer_households",
+      "code": "HOUSEHOLDS",
+      "name": "Vị trí Hộ dân cư (466 hộ)",
+      "geometry_type": "Point",
+      "visibility": "PUBLIC",
+      "sensitivity_level": "HIGH",
+      "style_config": {
+        "cluster": true,
+        "color": "#ef4444"
+      },
+      "is_active": true,
+      "display_order": 3,
+      "icon": "fa-house-user"
+    },
+    {
+      "id": "layer_infra",
+      "code": "INFRA",
+      "name": "Hạ tầng kỹ thuật & Chiếu sáng",
+      "geometry_type": "Point",
+      "visibility": "INTERNAL",
+      "sensitivity_level": "MEDIUM",
+      "style_config": {
+        "color": "#eab308"
+      },
+      "is_active": true,
+      "display_order": 4,
+      "icon": "fa-lightbulb"
+    },
+    {
+      "id": "layer_landmarks",
+      "code": "LANDMARKS",
+      "name": "Công trình & Địa điểm công cộng",
+      "geometry_type": "Point",
+      "visibility": "PUBLIC",
+      "sensitivity_level": "LOW",
+      "style_config": {
+        "color": "#dc2626"
+      },
+      "is_active": true,
+      "display_order": 5,
+      "icon": "fa-landmark"
+    },
+    {
+      "id": "layer_incidents",
+      "code": "INCIDENTS",
+      "name": "Phản ánh hiện trường",
+      "geometry_type": "Point",
+      "visibility": "INTERNAL",
+      "sensitivity_level": "MEDIUM",
+      "style_config": {
+        "color": "#f97316"
+      },
+      "is_active": true,
+      "display_order": 6,
+      "icon": "fa-triangle-exclamation"
+    },
+    {
+      "id": "layer_tasks",
+      "code": "TASKS",
+      "name": "Công việc theo vị trí",
+      "geometry_type": "Point",
+      "visibility": "INTERNAL",
+      "sensitivity_level": "LOW",
+      "style_config": {
+        "color": "#10b981"
+      },
+      "is_active": true,
+      "display_order": 7,
+      "icon": "fa-list-check"
+    },
+    {
+      "id": "layer_flood",
+      "code": "FLOOD",
+      "name": "Cảnh báo ngập lụt & Môi trường",
+      "geometry_type": "Polygon",
+      "visibility": "PUBLIC",
+      "sensitivity_level": "LOW",
+      "style_config": {
+        "color": "#f43f5e",
+        "weight": 2,
+        "fillColor": "#ffe4e6",
+        "fillOpacity": 0.25,
+        "dashArray": "4, 4"
+      },
+      "is_active": true,
+      "display_order": 8,
+      "icon": "fa-water"
+    },
+    {
+      "id": "layer_security",
+      "code": "SECURITY",
+      "name": "An ninh trật tự nội bộ",
+      "geometry_type": "Point",
+      "visibility": "RESTRICTED",
+      "sensitivity_level": "HIGH",
+      "style_config": {
+        "color": "#6366f1"
+      },
+      "is_active": false,
+      "display_order": 9,
+      "icon": "fa-shield-halved"
+    }
+  ],
+  "features": [
+    {
+      "id": "feat_boundary_main",
+      "layer_id": "layer_boundary",
+      "external_id": "LH-BOUNDARY-01",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [107.689141, 16.429846],
+            [107.691630, 16.431178],
+            [107.694097, 16.432193],
+            [107.698389, 16.433593],
+            [107.703238, 16.432543],
+            [107.705899, 16.430046],
+            [107.703710, 16.426211],
+            [107.697402, 16.425237],
+            [107.691308, 16.426563],
+            [107.689377, 16.428514],
+            [107.689141, 16.429846]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Ranh giới hành chính Tổ dân phố Lương Hậu",
+        "area_ha": 125.8,
+        "perimeter_km": 4.85,
+        "source": "Bản đồ quy hoạch Tổ dân phố Lương Hậu",
+        "verified_at": "2026-10-24T00:00:00Z",
+        "status": "VERIFIED"
+      },
+      "source_id": "survey_cadastral",
+      "verification_status": "VERIFIED",
+      "publication_status": "PUBLISHED",
+      "created_by": "system",
+      "updated_by": "system",
+      "created_at": "2026-10-24T00:00:00Z",
+      "updated_at": "2026-10-24T00:00:00Z"
+    },
+    {
+      "id": "feat_landmark_nvh",
+      "layer_id": "layer_landmarks",
+      "external_id": "LM-NVH-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [107.695350, 16.428850]
+      },
+      "properties": {
+        "name": "Nhà sinh hoạt cộng đồng TDP Lương Hậu",
+        "address": "Số 83 Thái Thuận, TDP Lương Hậu",
+        "type": "TRU_SO",
+        "description": "Địa điểm hội họp, tiếp công dân, sinh hoạt Chi bộ và điểm sơ tán phòng chống bão lụt",
+        "responsible": "Ban điều hành TDP Lương Hậu",
+        "phone": "0965.712.812"
+      },
+      "source_id": "field_survey",
+      "verification_status": "VERIFIED",
+      "publication_status": "PUBLISHED",
+      "created_by": "system",
+      "updated_by": "system",
+      "created_at": "2026-10-24T00:00:00Z",
+      "updated_at": "2026-10-24T00:00:00Z"
+    },
+    {
+      "id": "feat_landmark_dinh",
+      "layer_id": "layer_landmarks",
+      "external_id": "LM-DINH-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [107.696120, 16.429950]
+      },
+      "properties": {
+        "name": "Đình làng Lương Hậu",
+        "address": "Kiệt 28 Thái Vĩnh Chinh, TDP Lương Hậu",
+        "type": "DI_TICH",
+        "description": "Di tích văn hóa tín ngưỡng tâm linh cộng đồng dân cư Lương Hậu",
+        "responsible": "Ban trị sự làng Lương Hậu"
+      },
+      "source_id": "field_survey",
+      "verification_status": "VERIFIED",
+      "publication_status": "PUBLISHED",
+      "created_by": "system",
+      "updated_by": "system",
+      "created_at": "2026-10-24T00:00:00Z",
+      "updated_at": "2026-10-24T00:00:00Z"
+    },
+    {
+      "id": "feat_infra_as_01",
+      "layer_id": "layer_infra",
+      "external_id": "TS-CS-01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [107.695120, 16.429100]
+      },
+      "properties": {
+        "name": "Cột đèn chiếu sáng Kiệt 23 Trần Hoàn #01",
+        "asset_code": "TS-CS-01",
+        "asset_type": "STREET_LIGHT",
+        "condition": "GOOD",
+        "power": "LED 50W",
+        "maintenance_date": "2026-09-15",
+        "responsible_unit": "Ban điều hành TDP Lương Hậu"
+      },
+      "source_id": "field_infra_survey",
+      "verification_status": "VERIFIED",
+      "publication_status": "PUBLISHED",
+      "created_by": "system",
+      "updated_by": "system",
+      "created_at": "2026-10-24T00:00:00Z",
+      "updated_at": "2026-10-24T00:00:00Z"
+    },
+    {
+      "id": "feat_infra_as_02",
+      "layer_id": "layer_infra",
+      "external_id": "TS-CS-02",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [107.695580, 16.429350]
+      },
+      "properties": {
+        "name": "Cột đèn chiếu sáng Kiệt 23 Trần Hoàn #02",
+        "asset_code": "TS-CS-02",
+        "asset_type": "STREET_LIGHT",
+        "condition": "NEEDS_CHECK",
+        "power": "LED 50W",
+        "maintenance_date": "2026-08-10",
+        "responsible_unit": "Ban điều hành TDP Lương Hậu"
+      },
+      "source_id": "field_infra_survey",
+      "verification_status": "VERIFIED",
+      "publication_status": "PUBLISHED",
+      "created_by": "system",
+      "updated_by": "system",
+      "created_at": "2026-10-24T00:00:00Z",
+      "updated_at": "2026-10-24T00:00:00Z"
+    },
+    {
+      "id": "feat_incident_01",
+      "layer_id": "layer_incidents",
+      "external_id": "LH-2026-000001",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [107.695580, 16.429350]
+      },
+      "properties": {
+        "incident_code": "LH-2026-000001",
+        "title": "Bóng đèn đường chiếu sáng không sáng",
+        "address": "Gần nhà số 15 Kiệt 23 Trần Hoàn",
+        "status": "PROCESSING",
+        "priority": "HIGH",
+        "sender_name": "Người dân Tổ 8 (Đã ẩn danh)",
+        "assigned_to": "Tổ xung kích tự quản",
+        "reported_at": "2026-10-25T19:30:00Z",
+        "notes": "Đã khảo sát lúc 20h00, dây nối bị lỏng, đang chờ thợ điện kiểm tra"
+      },
+      "source_id": "resident_report",
+      "verification_status": "VERIFIED",
+      "publication_status": "PUBLISHED",
+      "created_by": "to_truong",
+      "updated_by": "to_truong",
+      "created_at": "2026-10-25T19:30:00Z",
+      "updated_at": "2026-10-26T08:00:00Z"
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset_01",
+      "feature_id": "feat_infra_as_01",
+      "asset_code": "TS-CS-01",
+      "asset_type": "STREET_LIGHT",
+      "condition": "GOOD",
+      "maintenance_date": "2026-09-15",
+      "next_inspection_date": "2026-12-15",
+      "responsible_unit": "Ban điều hành TDP Lương Hậu"
+    },
+    {
+      "id": "asset_02",
+      "feature_id": "feat_infra_as_02",
+      "asset_code": "TS-CS-02",
+      "asset_type": "STREET_LIGHT",
+      "condition": "NEEDS_CHECK",
+      "maintenance_date": "2026-08-10",
+      "next_inspection_date": "2026-11-10",
+      "responsible_unit": "Ban điều hành TDP Lương Hậu"
+    }
+  ],
+  "import_jobs": [],
+  "audit_logs": [
+    {
+      "id": "log_init_01",
+      "actor_id": "system",
+      "actor_role": "ADMIN",
+      "action": "INIT_GIS_DATABASE",
+      "resource_type": "DATABASE",
+      "resource_id": "root",
+      "timestamp": "2026-10-27T00:00:00Z",
+      "change_summary": {
+        "message": "Khởi tạo hệ thống Bản đồ số Lương Hậu GIS 3.0 với 9 lớp nghiệp vụ và ranh giới chuẩn"
+      }
+    }
+  ]
+}
