@@ -18,7 +18,6 @@ import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jobs = [
-  { from: "dist/noi_bo/index.html", to: "noi_bo.html", label: "Khu nội bộ Chi bộ" },
   { from: "dist/noi-bo/van-ban-moi/index.html", to: "van-ban-moi.html", label: "Văn bản mới Phường & Thành phố" },
   { from: "dist/van-ban/index.html", to: "van-ban.html", label: "Văn bản 3 cấp & Kế hoạch 333" },
   { from: "dist/chu-nhat-xanh/index.html", to: "chu-nhat-xanh.html", label: "Ngày Chủ Nhật Xanh" },
@@ -65,6 +64,22 @@ if (ok === jobs.length) {
     writeFileSync(join(ROOT, "dist/index.html"), masterIndex, "utf8");
     writeFileSync(join(ROOT, "public/index.html"), masterIndex, "utf8");
     console.log(`  ✔ index.html  →  dist/index.html & public/index.html (Bảo toàn 100% Giao diện gốc Hue-S Mobile V3)`);
+  }
+  // Đồng bộ noi_bo.html chuẩn sang dist/ và public/ để phục vụ Vercel production
+  if (existsSync(join(ROOT, "noi_bo.html"))) {
+    const masterNoiBo = readFileSync(join(ROOT, "noi_bo.html"), "utf8");
+    writeFileSync(join(ROOT, "dist/noi_bo.html"), masterNoiBo, "utf8");
+    writeFileSync(join(ROOT, "dist/noi-bo.html"), masterNoiBo, "utf8");
+    writeFileSync(join(ROOT, "public/noi_bo.html"), masterNoiBo, "utf8");
+    writeFileSync(join(ROOT, "public/noi-bo.html"), masterNoiBo, "utf8");
+    writeFileSync(join(ROOT, "noi-bo.html"), masterNoiBo, "utf8");
+    if (existsSync(join(ROOT, "dist/noi_bo"))) {
+      writeFileSync(join(ROOT, "dist/noi_bo/index.html"), masterNoiBo, "utf8");
+    }
+    if (existsSync(join(ROOT, "dist/noi-bo"))) {
+      writeFileSync(join(ROOT, "dist/noi-bo/index.html"), masterNoiBo, "utf8");
+    }
+    console.log(`  ✔ noi_bo.html  →  dist/noi_bo/index.html & noi-bo.html (Bảo toàn 100% Giao diện DangCongSan Mobile V2)`);
   }
   console.log(`\n✔ Đã đồng bộ ${ok} file tĩnh ở thư mục gốc từ bản Astro build.`);
   console.log("  Mở trực tiếp: index.html · noi_bo.html   |   Local server: npm run serve");
